@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Playground</string>
+    <string name="playground_deviceid_text">DeviceId</string>
+    <string name="playground_hardware_fingerprint_text">Hardware fingerprint</string>
+    <string name="playground_osbuild_fingerprint_text">OsBuild fingerprint</string>
+</resources>
