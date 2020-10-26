@@ -3,9 +3,20 @@ package com.fingerprintjs.android.fingerprint
 
 import android.app.ActivityManager
 import android.content.Context
+import android.hardware.SensorManager
+import android.hardware.input.InputManager
 import android.os.Environment
 import android.os.StatFs
-import com.fingerprintjs.android.fingerprint.datasources.*
+import com.fingerprintjs.android.fingerprint.datasources.CpuInfoProvider
+import com.fingerprintjs.android.fingerprint.datasources.CpuInfoProviderImpl
+import com.fingerprintjs.android.fingerprint.datasources.InputDeviceDataSource
+import com.fingerprintjs.android.fingerprint.datasources.InputDevicesDataSourceImpl
+import com.fingerprintjs.android.fingerprint.datasources.MemInfoProvider
+import com.fingerprintjs.android.fingerprint.datasources.MemInfoProviderImpl
+import com.fingerprintjs.android.fingerprint.datasources.OsBuildInfoProvider
+import com.fingerprintjs.android.fingerprint.datasources.OsBuildInfoProviderImpl
+import com.fingerprintjs.android.fingerprint.datasources.SensorDataSource
+import com.fingerprintjs.android.fingerprint.datasources.SensorDataSourceImpl
 import com.fingerprintjs.android.fingerprint.device_id_providers.AndroidIdProvider
 import com.fingerprintjs.android.fingerprint.device_id_providers.DeviceIdProvider
 import com.fingerprintjs.android.fingerprint.device_id_providers.DeviceIdProviderImpl
@@ -22,8 +33,8 @@ object FingerprintAndroidAgentFactory {
     private var configuration: FingerprintAndroidConfiguration = defaultConfiguration()
     private var instance: FingerprintAndroidAgent? = null
 
-    private var context: Context? = null
-    
+    private lateinit var context: Context
+
     @JvmStatic
     fun getInitializedInstance(
         context: Context,
@@ -81,6 +92,8 @@ object FingerprintAndroidAgentFactory {
             createCpuInfoProvider(),
             createMemoryInfoProvider(),
             createOsBuildInfoProvider(),
+            sensorDataSource(),
+            inputDevicesDataSource(),
             getHasherWithType(),
             configuration.hardwareFingerprintVersion
         )
@@ -109,9 +122,9 @@ object FingerprintAndroidAgentFactory {
     }
 
     private fun createMemoryInfoProvider(): MemInfoProvider {
-        val activityManager = context?.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val internalStorageStatFs = StatFs(Environment.getRootDirectory().absolutePath)
-        val externalStorageStatFs = StatFs(context?.getExternalFilesDir(null)?.absolutePath!!)
+        val externalStorageStatFs = StatFs(context.getExternalFilesDir(null)?.absolutePath!!)
         return MemInfoProviderImpl(activityManager, internalStorageStatFs, externalStorageStatFs)
     }
 
@@ -120,11 +133,23 @@ object FingerprintAndroidAgentFactory {
     }
 
     private fun gsfIdProvider(): GsfIdProvider {
-        return GsfIdProvider(context?.contentResolver!!)
+        return GsfIdProvider(context.contentResolver!!)
     }
 
     private fun androidIdProvider(): AndroidIdProvider {
-        return AndroidIdProvider(context?.contentResolver!!)
+        return AndroidIdProvider(context.contentResolver!!)
+    }
+
+    private fun sensorDataSource(): SensorDataSource {
+        return SensorDataSourceImpl(
+            context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        )
+    }
+
+    private fun inputDevicesDataSource(): InputDeviceDataSource {
+        return InputDevicesDataSourceImpl(
+            context.getSystemService(Context.INPUT_SERVICE) as InputManager
+        )
     }
     //endregion
 }
