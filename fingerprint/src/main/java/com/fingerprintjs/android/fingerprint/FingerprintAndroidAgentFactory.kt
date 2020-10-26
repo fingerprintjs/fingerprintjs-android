@@ -6,14 +6,15 @@ import android.content.Context
 import android.os.Environment
 import android.os.StatFs
 import com.fingerprintjs.android.fingerprint.datasources.*
+import com.fingerprintjs.android.fingerprint.device_id_providers.AndroidIdProvider
 import com.fingerprintjs.android.fingerprint.device_id_providers.DeviceIdProvider
 import com.fingerprintjs.android.fingerprint.device_id_providers.DeviceIdProviderImpl
 import com.fingerprintjs.android.fingerprint.device_id_providers.GsfIdProvider
 import com.fingerprintjs.android.fingerprint.fingerprinters.HardwareFingerprinter
 import com.fingerprintjs.android.fingerprint.fingerprinters.OsBuildFingerprinter
-import com.fingerprintjs.android.fingerprint.hashers.EmptyHasher
 import com.fingerprintjs.android.fingerprint.hashers.Hasher
 import com.fingerprintjs.android.fingerprint.hashers.HasherType
+import com.fingerprintjs.android.fingerprint.hashers.MurMur3x64x128Hasher
 
 
 object FingerprintAndroidAgentFactory {
@@ -34,11 +35,13 @@ object FingerprintAndroidAgentFactory {
 
         this.configuration = configuration
         this.context = context
-        return FingerprintAndroidAgentImpl(
+        this.instance = FingerprintAndroidAgentImpl(
             createHardwareFingerprinter(),
             createOsBuildInfoFingerprinter(),
-            createDeviceIdProvider()
+            createDeviceIdProvider(),
+            getHasherWithType()
         )
+        return instance!!
     }
 
     private fun defaultConfiguration(): FingerprintAndroidConfiguration {
@@ -52,13 +55,12 @@ object FingerprintAndroidAgentFactory {
     }
 
     private fun getHasherWithType(): Hasher {
-        return EmptyHasher()
-//        return when (configuration.hasherType) {
-//            HasherType.MurMur3 -> {
-//                MurMur3x64x128Hasher()
-//            }
-//            else -> MurMur3x64x128Hasher()
-//        }
+        return when (configuration.hasherType) {
+            HasherType.MurMur3 -> {
+                MurMur3x64x128Hasher()
+            }
+            else -> MurMur3x64x128Hasher()
+        }
     }
 
     //region:Fingerprinters
@@ -83,7 +85,8 @@ object FingerprintAndroidAgentFactory {
 
     private fun createDeviceIdProvider(): DeviceIdProvider {
         return DeviceIdProviderImpl(
-            gsfIdProvider()
+            gsfIdProvider(),
+            androidIdProvider()
         )
     }
 
@@ -106,9 +109,11 @@ object FingerprintAndroidAgentFactory {
     }
 
     private fun gsfIdProvider(): GsfIdProvider {
-        val contentResolver = context?.contentResolver!!
-        return GsfIdProvider(contentResolver)
+        return GsfIdProvider(context?.contentResolver!!)
+    }
 
+    private fun androidIdProvider(): AndroidIdProvider {
+        return AndroidIdProvider(context?.contentResolver!!)
     }
     //endregion
 }

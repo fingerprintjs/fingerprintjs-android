@@ -3,7 +3,7 @@ package com.fingerprintjs.android.fingerprint
 
 interface FingerprintAndroidAgent {
     fun deviceId(): String
-    fun getFingerprint(flags: Int = (HARDWARE or OS_BUILD or DEVICE_STATE))
+    fun getFingerprint(flags: Int = (HARDWARE or OS_BUILD or DEVICE_STATE)): String
 
     fun hardwareFingerprint(): String
     fun osBuildFingerprint(): String

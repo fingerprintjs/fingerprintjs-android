@@ -1,16 +1,14 @@
 package com.fingerprintjs.android.playground
 
-import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
+
 import android.os.Bundle
 import android.os.Parcelable
 import android.os.PersistableBundle
-import android.util.AttributeSet
-import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.fingerprintjs.android.fingerprint.FingerprintAndroidAgentFactory
 
-class MainActivity : AppCompatActivity() {
 
+class MainActivity : AppCompatActivity() {
 
     private lateinit var presenter: PlaygroundPresenter
 
@@ -18,25 +16,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         init(savedInstanceState)
-    }
-
-    override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
-        val view = super.onCreateView(name, context, attrs) ?: return null
-        presenter.attachView(
-            PlaygroundViewImpl(
-                view
-            )
-        )
-        return view
+        presenter.attachView(PlaygroundViewImpl(this))
     }
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
         outState.putParcelable(PLAYGROUND_PRESENTER_STATE_KEY, presenter.onSaveState())
     }
 
-
     private fun init(state: Bundle?) {
-        val fingerprintAndroidAgent = FingerprintAndroidAgentFactory.getInitializedInstance(this)
+        val fingerprintAndroidAgent = FingerprintAndroidAgentFactory.getInitializedInstance(applicationContext)
         val presenterState: Parcelable? = state?.getParcelable(PLAYGROUND_PRESENTER_STATE_KEY)
         presenter = PlaygroundPresenterImpl(
             fingerprintAndroidAgent, presenterState

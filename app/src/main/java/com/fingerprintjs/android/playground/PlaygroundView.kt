@@ -1,7 +1,7 @@
 package com.fingerprintjs.android.playground
 
 
-import android.view.View
+import android.app.Activity
 import android.widget.TextView
 
 
@@ -12,13 +12,13 @@ interface PlaygroundView {
 }
 
 class PlaygroundViewImpl(
-    rootView: View
+    activity: Activity
 ) : PlaygroundView {
-    private val deviceIdView: TextView = rootView.findViewById(R.id.device_id)
+    private val deviceIdView: TextView = activity.findViewById(R.id.device_id)
     private val hardwareFingerprintView: TextView =
-        rootView.findViewById(R.id.hardware_fingerprint_text_view)
+        activity.findViewById(R.id.hardware_fingerprint_text_view)
     private val osBuildFingerprintView: TextView =
-        rootView.findViewById(R.id.os_build_fingerprint_text_view)
+        activity.findViewById(R.id.os_build_fingerprint_text_view)
 
     override fun setDeviceId(deviceId: String) {
         deviceIdView.text = deviceId

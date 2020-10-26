@@ -1,9 +1,11 @@
 package com.fingerprintjs.android.fingerprint
 
+
 import com.fingerprintjs.android.fingerprint.hashers.MurMur3x64x128Hasher
 import org.junit.Test
 
 import org.junit.Assert.assertEquals
+
 
 class HashTests {
     // Base check of the implementation with http://murmurhash.shorelabs.com/
