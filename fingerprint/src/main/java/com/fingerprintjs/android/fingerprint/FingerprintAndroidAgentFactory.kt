@@ -23,25 +23,36 @@ object FingerprintAndroidAgentFactory {
     private var instance: FingerprintAndroidAgent? = null
 
     private var context: Context? = null
-
+    
     @JvmStatic
     fun getInitializedInstance(
         context: Context,
         configuration: FingerprintAndroidConfiguration = defaultConfiguration()
     ): FingerprintAndroidAgent {
-        instance?.let {
-            return it
+
+        if (instance == null) {
+            synchronized(FingerprintAndroidAgentFactory::class.java) {
+                if (instance == null) {
+                    instance = initializeFingerprintAndroidAgent(context, configuration)
+                }
+            }
         }
 
+        return instance!!
+    }
+
+    private fun initializeFingerprintAndroidAgent(
+        context: Context,
+        configuration: FingerprintAndroidConfiguration
+    ): FingerprintAndroidAgent {
         this.configuration = configuration
         this.context = context
-        this.instance = FingerprintAndroidAgentImpl(
+        return FingerprintAndroidAgentImpl(
             createHardwareFingerprinter(),
             createOsBuildInfoFingerprinter(),
             createDeviceIdProvider(),
             getHasherWithType()
         )
-        return instance!!
     }
 
     private fun defaultConfiguration(): FingerprintAndroidConfiguration {
