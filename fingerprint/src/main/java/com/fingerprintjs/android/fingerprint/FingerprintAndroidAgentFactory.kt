@@ -15,13 +15,17 @@ import com.fingerprintjs.android.fingerprint.datasources.MemInfoProvider
 import com.fingerprintjs.android.fingerprint.datasources.MemInfoProviderImpl
 import com.fingerprintjs.android.fingerprint.datasources.OsBuildInfoProvider
 import com.fingerprintjs.android.fingerprint.datasources.OsBuildInfoProviderImpl
+import com.fingerprintjs.android.fingerprint.datasources.PackageManagerDataSource
+import com.fingerprintjs.android.fingerprint.datasources.PackageManagerDataSourceImpl
 import com.fingerprintjs.android.fingerprint.datasources.SensorDataSource
 import com.fingerprintjs.android.fingerprint.datasources.SensorDataSourceImpl
 import com.fingerprintjs.android.fingerprint.device_id_providers.AndroidIdProvider
 import com.fingerprintjs.android.fingerprint.device_id_providers.DeviceIdProvider
 import com.fingerprintjs.android.fingerprint.device_id_providers.DeviceIdProviderImpl
 import com.fingerprintjs.android.fingerprint.device_id_providers.GsfIdProvider
+import com.fingerprintjs.android.fingerprint.fingerprinters.DeviceStateFingerprinter
 import com.fingerprintjs.android.fingerprint.fingerprinters.HardwareFingerprinter
+import com.fingerprintjs.android.fingerprint.fingerprinters.InstalledAppsFingerprinter
 import com.fingerprintjs.android.fingerprint.fingerprinters.OsBuildFingerprinter
 import com.fingerprintjs.android.fingerprint.hashers.Hasher
 import com.fingerprintjs.android.fingerprint.hashers.HasherType
@@ -62,6 +66,8 @@ object FingerprintAndroidAgentFactory {
             createHardwareFingerprinter(),
             createOsBuildInfoFingerprinter(),
             createDeviceIdProvider(),
+            createInstalledApplicationsFingerprinter(),
+            createDeviceStateFingerprinter(),
             getHasherWithType()
         )
     }
@@ -92,8 +98,8 @@ object FingerprintAndroidAgentFactory {
             createCpuInfoProvider(),
             createMemoryInfoProvider(),
             createOsBuildInfoProvider(),
-            sensorDataSource(),
-            inputDevicesDataSource(),
+            createSensorDataSource(),
+            createInputDevicesDataSource(),
             getHasherWithType(),
             configuration.hardwareFingerprintVersion
         )
@@ -107,10 +113,22 @@ object FingerprintAndroidAgentFactory {
         )
     }
 
+    private fun createInstalledApplicationsFingerprinter(): InstalledAppsFingerprinter {
+        return InstalledAppsFingerprinter(
+            createPackageManagerDataSource(),
+            getHasherWithType(),
+            configuration.installedAppsFingerprintVersion
+        )
+    }
+
+    private fun createDeviceStateFingerprinter(): DeviceStateFingerprinter {
+        return DeviceStateFingerprinter(configuration.deviceStateFingerprintVersion)
+    }
+
     private fun createDeviceIdProvider(): DeviceIdProvider {
         return DeviceIdProviderImpl(
-            gsfIdProvider(),
-            androidIdProvider()
+            createGsfIdProvider(),
+            createAndroidIdProvider()
         )
     }
 
@@ -132,23 +150,29 @@ object FingerprintAndroidAgentFactory {
         return OsBuildInfoProviderImpl()
     }
 
-    private fun gsfIdProvider(): GsfIdProvider {
+    private fun createGsfIdProvider(): GsfIdProvider {
         return GsfIdProvider(context.contentResolver!!)
     }
 
-    private fun androidIdProvider(): AndroidIdProvider {
+    private fun createAndroidIdProvider(): AndroidIdProvider {
         return AndroidIdProvider(context.contentResolver!!)
     }
 
-    private fun sensorDataSource(): SensorDataSource {
+    private fun createSensorDataSource(): SensorDataSource {
         return SensorDataSourceImpl(
             context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         )
     }
 
-    private fun inputDevicesDataSource(): InputDeviceDataSource {
+    private fun createInputDevicesDataSource(): InputDeviceDataSource {
         return InputDevicesDataSourceImpl(
             context.getSystemService(Context.INPUT_SERVICE) as InputManager
+        )
+    }
+
+    private fun createPackageManagerDataSource(): PackageManagerDataSource {
+        return PackageManagerDataSourceImpl(
+            context.packageManager
         )
     }
     //endregion
