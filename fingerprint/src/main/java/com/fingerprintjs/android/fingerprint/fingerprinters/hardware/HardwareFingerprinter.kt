@@ -18,7 +18,7 @@ class HardwareFingerprinter(
     private val inputDeviceDataSource: InputDeviceDataSource,
     private val hasher: Hasher,
     version: Int
-) : Fingerprinter(
+) : Fingerprinter<HardwareRawData>(
     version
 ) {
     override fun calculate(): String {
@@ -48,4 +48,14 @@ class HardwareFingerprinter(
 
         return hasher.hash(sb.toString())
     }
+
+    override fun rawData(): HardwareRawData {
+        TODO("Not yet implemented")
+    }
 }
+
+
+//TODO: Implement
+data class HardwareRawData(
+    val cpuInfo: String
+)
