@@ -3,12 +3,20 @@ package com.fingerprintjs.android.fingerprint.device_id_providers
 
 import android.content.ContentResolver
 import android.net.Uri
+import com.fingerprintjs.android.fingerprint.tools.executeSafe
 
 
 class GsfIdProvider(
     private val contentResolver: ContentResolver
 ) {
+
     fun getGsfAndroidId(): String? {
+        return executeSafe(
+            { getGsfId() }, ""
+        )
+    }
+
+    private fun getGsfId(): String? {
         val URI = Uri.parse(URI_GSF_CONTENT_PROVIDER)
         val params = arrayOf(ID_KEY)
         return try {

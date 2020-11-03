@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        tools:text="HardwareFingerprint" />
+        tools:text="Fingerprint" />
 
     <TextView
         style="@style/TextAppearance.AppCompat.Headline"
@@ -50,6 +50,36 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        tools:text="HardwareFingerprint" />
+        tools:text="Fingerprint" />
+
+    <TextView
+        style="@style/TextAppearance.AppCompat.Headline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:text="@string/playground_installed_applications_fingerprint_text" />
+
+    <TextView
+        android:id="@+id/installed_applications_fingerprint_text_view"
+        style="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        tools:text="Fingerprint" />
+
+    <TextView
+        style="@style/TextAppearance.AppCompat.Headline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:text="@string/playground_device_state_fingerprint_text" />
+
+    <TextView
+        android:id="@+id/device_state_fingerprint_text_view"
+        style="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        tools:text="Fingerprint" />
 
 </LinearLayout>

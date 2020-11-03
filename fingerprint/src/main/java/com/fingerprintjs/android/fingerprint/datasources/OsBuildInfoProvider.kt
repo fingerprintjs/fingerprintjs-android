@@ -2,6 +2,7 @@ package com.fingerprintjs.android.fingerprint.datasources
 
 
 import android.os.Build
+import com.fingerprintjs.android.fingerprint.tools.executeSafe
 
 
 interface OsBuildInfoProvider {
@@ -12,14 +13,14 @@ interface OsBuildInfoProvider {
 
 class OsBuildInfoProviderImpl : OsBuildInfoProvider {
     override fun modelName(): String {
-        return Build.MODEL
+        return executeSafe( { Build.MODEL }, "")
     }
 
     override fun manufacturerName(): String {
-        return Build.MANUFACTURER
+        return executeSafe( { Build.MANUFACTURER }, "")
     }
 
     override fun fingerprint(): String {
-        return Build.FINGERPRINT
+        return executeSafe( { Build.FINGERPRINT }, "")
     }
 }

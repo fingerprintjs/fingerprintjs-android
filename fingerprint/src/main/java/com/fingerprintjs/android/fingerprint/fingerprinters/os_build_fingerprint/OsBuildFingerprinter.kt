@@ -1,15 +1,20 @@
-package com.fingerprintjs.android.fingerprint.fingerprinters
+package com.fingerprintjs.android.fingerprint.fingerprinters.os_build_fingerprint
 
 
 import com.fingerprintjs.android.fingerprint.datasources.OsBuildInfoProvider
-import com.fingerprintjs.android.fingerprint.hashers.Hasher
+import com.fingerprintjs.android.fingerprint.fingerprinters.Fingerprinter
+import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 
 
 class OsBuildFingerprinter(
     private val osBuildInfoProvider: OsBuildInfoProvider,
     private val hasher: Hasher,
     version: Int
-) : Fingerprinter(version) {
+) : Fingerprinter<OsBuildRawData>(version) {
+
+    private val rawData = OsBuildRawData(
+        osBuildInfoProvider.fingerprint()
+    )
 
     override fun calculate(): String {
         return when (version) {
@@ -18,9 +23,11 @@ class OsBuildFingerprinter(
         }
     }
 
+    override fun rawData() = rawData
+
     private fun v1(): String {
         val osBuildInfoSB = StringBuilder()
-        osBuildInfoSB.append(osBuildInfoProvider.fingerprint())
+        osBuildInfoSB.append(rawData.fingerprint)
         return hasher.hash(osBuildInfoSB.toString())
     }
 }

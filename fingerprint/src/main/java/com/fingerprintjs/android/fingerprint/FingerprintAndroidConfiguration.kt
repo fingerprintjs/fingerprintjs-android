@@ -1,7 +1,7 @@
 package com.fingerprintjs.android.fingerprint
 
 
-import com.fingerprintjs.android.fingerprint.hashers.HasherType
+import com.fingerprintjs.android.fingerprint.tools.hashers.HasherType
 
 
 data class FingerprintAndroidConfiguration(

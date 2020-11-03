@@ -3,4 +3,6 @@
     <string name="playground_deviceid_text">DeviceId</string>
     <string name="playground_hardware_fingerprint_text">Hardware fingerprint</string>
     <string name="playground_osbuild_fingerprint_text">OsBuild fingerprint</string>
+    <string name="playground_installed_applications_fingerprint_text">Installed applications fingerprint</string>
+    <string name="playground_device_state_fingerprint_text">Device state fingerprint</string>
 </resources>

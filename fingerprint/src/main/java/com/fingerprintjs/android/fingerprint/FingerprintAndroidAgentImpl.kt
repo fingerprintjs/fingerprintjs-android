@@ -2,12 +2,12 @@ package com.fingerprintjs.android.fingerprint
 
 
 import com.fingerprintjs.android.fingerprint.device_id_providers.DeviceIdProvider
-import com.fingerprintjs.android.fingerprint.fingerprinters.DeviceStateFingerprinter
 import com.fingerprintjs.android.fingerprint.fingerprinters.Fingerprinter
-import com.fingerprintjs.android.fingerprint.fingerprinters.HardwareFingerprinter
-import com.fingerprintjs.android.fingerprint.fingerprinters.InstalledAppsFingerprinter
-import com.fingerprintjs.android.fingerprint.fingerprinters.OsBuildFingerprinter
-import com.fingerprintjs.android.fingerprint.hashers.Hasher
+import com.fingerprintjs.android.fingerprint.fingerprinters.device_state.DeviceStateFingerprinter
+import com.fingerprintjs.android.fingerprint.fingerprinters.hardware.HardwareFingerprinter
+import com.fingerprintjs.android.fingerprint.fingerprinters.installed_apps.InstalledAppsFingerprinter
+import com.fingerprintjs.android.fingerprint.fingerprinters.os_build_fingerprint.OsBuildFingerprinter
+import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 import java.util.LinkedList
 
 
@@ -24,7 +24,7 @@ class FingerprintAndroidAgentImpl(
 
     override fun getFingerprint(flags: Int): String {
         val fingerprintSb = StringBuilder()
-        val fingerprinters = LinkedList<Fingerprinter>()
+        val fingerprinters = LinkedList<Fingerprinter<*>>()
 
         if (flags and FingerprintAndroidAgent.HARDWARE != 0) {
             fingerprinters.add(hardwareFingerprinter)
@@ -49,11 +49,11 @@ class FingerprintAndroidAgentImpl(
         return hasher.hash(fingerprintSb.toString())
     }
 
-    override fun hardwareFingerprint() = hardwareFingerprinter.calculate()
+    override fun hardwareFingerprinter() = hardwareFingerprinter
 
-    override fun osBuildFingerprint() = osBuildFingerprinter.calculate()
+    override fun osBuildFingerprinter() = osBuildFingerprinter
 
-    override fun installedAppsFingerprint() = installedAppsFingerprinter.calculate()
+    override fun installedAppsFingerprinter() = installedAppsFingerprinter
 
-    override fun deviceStateFingerprint() = deviceStateFingerprinter.calculate()
+    override fun deviceStateFingerprinter() = deviceStateFingerprinter
 }

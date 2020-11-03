@@ -22,6 +22,8 @@ class PlaygroundPresenterImpl(
     private var deviceId: String? = null
     private var hardwareFingerprint: String? = null
     private var osBuildFingerprint: String? = null
+    private var installedAppsFingerprint: String? = null
+    private var deviceStateFingerprint: String? = null
 
     init {
         val savedState = state as? State
@@ -29,16 +31,28 @@ class PlaygroundPresenterImpl(
             deviceId = it.deviceId
             hardwareFingerprint = it.hardwareFingerprint
             osBuildFingerprint = it.osBuildFingerprint
+            installedAppsFingerprint = it.installedAppsFingerprint
+            deviceStateFingerprint = it.deviceStateFingerprint
         }
     }
 
-
-
     override fun attachView(playgroundView: PlaygroundView) {
         view = playgroundView
-        view?.setDeviceId(deviceId ?: fingerprinter.deviceId())
-        view?.setHardwareFingerprint(hardwareFingerprint ?: fingerprinter.hardwareFingerprint())
-        view?.setOsBuildFingerprint(osBuildFingerprint ?: fingerprinter.osBuildFingerprint())
+        view?.apply {
+            setDeviceId(deviceId ?: fingerprinter.deviceId())
+            setHardwareFingerprint(
+                hardwareFingerprint ?: fingerprinter.hardwareFingerprinter().calculate()
+            )
+            setOsBuildFingerprint(
+                osBuildFingerprint ?: fingerprinter.osBuildFingerprinter().calculate()
+            )
+            setInstalledAppsFingerprint(
+                installedAppsFingerprint ?: fingerprinter.installedAppsFingerprinter().calculate()
+            )
+            setDeviceStateFingerprint(
+                deviceStateFingerprint ?: fingerprinter.deviceStateFingerprinter().calculate()
+            )
+        }
     }
 
     override fun detachView() {
@@ -49,7 +63,9 @@ class PlaygroundPresenterImpl(
         return State(
             deviceId,
             hardwareFingerprint,
-            osBuildFingerprint
+            osBuildFingerprint,
+            installedAppsFingerprint,
+            deviceStateFingerprint
         )
     }
 }
@@ -58,5 +74,7 @@ class PlaygroundPresenterImpl(
 private class State(
     val deviceId: String?,
     val hardwareFingerprint: String?,
-    val osBuildFingerprint: String?
+    val osBuildFingerprint: String?,
+    val installedAppsFingerprint: String?,
+    val deviceStateFingerprint: String?
 ) : Parcelable

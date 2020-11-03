@@ -3,6 +3,7 @@ package com.fingerprintjs.android.fingerprint.datasources
 
 import android.hardware.Sensor
 import android.hardware.SensorManager
+import com.fingerprintjs.android.fingerprint.tools.executeSafe
 
 
 data class SensorData(
@@ -18,8 +19,12 @@ class SensorDataSourceImpl(
     private val sensorManager: SensorManager
 ) : SensorDataSource {
     override fun sensors(): List<SensorData> {
-        return sensorManager.getSensorList(Sensor.TYPE_ALL).map {
-            SensorData(it.name, it.vendor)
-        }
+        return executeSafe(
+            {
+                sensorManager.getSensorList(Sensor.TYPE_ALL).map {
+                    SensorData(it.name, it.vendor)
+                }
+            }, emptyList()
+        )
     }
 }

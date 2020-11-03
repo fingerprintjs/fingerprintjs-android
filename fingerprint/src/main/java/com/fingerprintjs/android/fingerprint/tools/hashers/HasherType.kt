@@ -1,4 +1,4 @@
-package com.fingerprintjs.android.fingerprint.hashers
+package com.fingerprintjs.android.fingerprint.tools.hashers
 
 
 enum class HasherType {

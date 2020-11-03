@@ -1,6 +1,7 @@
 package com.fingerprintjs.android.fingerprint.datasources
 
 import android.hardware.input.InputManager
+import com.fingerprintjs.android.fingerprint.tools.executeSafe
 
 
 interface InputDeviceDataSource {
@@ -16,12 +17,16 @@ class InputDevicesDataSourceImpl(
     private val inputDeviceManager: InputManager
 ) : InputDeviceDataSource {
     override fun getInputDeviceData(): List<InputDeviceData> {
-        return inputDeviceManager.inputDeviceIds.map {
-            val inputDevice = inputDeviceManager.getInputDevice(it)
-            InputDeviceData(
-                inputDevice.name,
-                inputDevice.vendorId.toString()
-            )
-        }
+        return executeSafe(
+            {
+                inputDeviceManager.inputDeviceIds.map {
+                    val inputDevice = inputDeviceManager.getInputDevice(it)
+                    InputDeviceData(
+                        inputDevice.name,
+                        inputDevice.vendorId.toString()
+                    )
+                }
+            }, emptyList()
+        )
     }
 }

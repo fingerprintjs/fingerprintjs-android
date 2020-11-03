@@ -2,15 +2,24 @@ package com.fingerprintjs.android.fingerprint
 
 
 import android.app.ActivityManager
+import android.app.KeyguardManager
 import android.content.Context
 import android.hardware.SensorManager
 import android.hardware.input.InputManager
+import android.media.RingtoneManager
 import android.os.Environment
 import android.os.StatFs
+import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 import com.fingerprintjs.android.fingerprint.datasources.CpuInfoProvider
 import com.fingerprintjs.android.fingerprint.datasources.CpuInfoProviderImpl
+import com.fingerprintjs.android.fingerprint.datasources.DevicePersonalizationDataSource
+import com.fingerprintjs.android.fingerprint.datasources.DevicePersonalizationDataSourceImpl
+import com.fingerprintjs.android.fingerprint.datasources.FingerprintSensorInfoProvider
+import com.fingerprintjs.android.fingerprint.datasources.FingerprintSensorInfoProviderImpl
 import com.fingerprintjs.android.fingerprint.datasources.InputDeviceDataSource
 import com.fingerprintjs.android.fingerprint.datasources.InputDevicesDataSourceImpl
+import com.fingerprintjs.android.fingerprint.datasources.KeyGuardInfoProvider
+import com.fingerprintjs.android.fingerprint.datasources.KeyGuardInfoProviderImpl
 import com.fingerprintjs.android.fingerprint.datasources.MemInfoProvider
 import com.fingerprintjs.android.fingerprint.datasources.MemInfoProviderImpl
 import com.fingerprintjs.android.fingerprint.datasources.OsBuildInfoProvider
@@ -19,17 +28,19 @@ import com.fingerprintjs.android.fingerprint.datasources.PackageManagerDataSourc
 import com.fingerprintjs.android.fingerprint.datasources.PackageManagerDataSourceImpl
 import com.fingerprintjs.android.fingerprint.datasources.SensorDataSource
 import com.fingerprintjs.android.fingerprint.datasources.SensorDataSourceImpl
+import com.fingerprintjs.android.fingerprint.datasources.SettingsDataSource
+import com.fingerprintjs.android.fingerprint.datasources.SettingsDataSourceImpl
 import com.fingerprintjs.android.fingerprint.device_id_providers.AndroidIdProvider
 import com.fingerprintjs.android.fingerprint.device_id_providers.DeviceIdProvider
 import com.fingerprintjs.android.fingerprint.device_id_providers.DeviceIdProviderImpl
 import com.fingerprintjs.android.fingerprint.device_id_providers.GsfIdProvider
-import com.fingerprintjs.android.fingerprint.fingerprinters.DeviceStateFingerprinter
-import com.fingerprintjs.android.fingerprint.fingerprinters.HardwareFingerprinter
-import com.fingerprintjs.android.fingerprint.fingerprinters.InstalledAppsFingerprinter
-import com.fingerprintjs.android.fingerprint.fingerprinters.OsBuildFingerprinter
-import com.fingerprintjs.android.fingerprint.hashers.Hasher
-import com.fingerprintjs.android.fingerprint.hashers.HasherType
-import com.fingerprintjs.android.fingerprint.hashers.MurMur3x64x128Hasher
+import com.fingerprintjs.android.fingerprint.fingerprinters.device_state.DeviceStateFingerprinter
+import com.fingerprintjs.android.fingerprint.fingerprinters.hardware.HardwareFingerprinter
+import com.fingerprintjs.android.fingerprint.fingerprinters.installed_apps.InstalledAppsFingerprinter
+import com.fingerprintjs.android.fingerprint.fingerprinters.os_build_fingerprint.OsBuildFingerprinter
+import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
+import com.fingerprintjs.android.fingerprint.tools.hashers.HasherType
+import com.fingerprintjs.android.fingerprint.tools.hashers.MurMur3x64x128Hasher
 
 
 object FingerprintAndroidAgentFactory {
@@ -122,7 +133,14 @@ object FingerprintAndroidAgentFactory {
     }
 
     private fun createDeviceStateFingerprinter(): DeviceStateFingerprinter {
-        return DeviceStateFingerprinter(configuration.deviceStateFingerprintVersion)
+        return DeviceStateFingerprinter(
+            createSettingsDataSource(),
+            createDevicePersonalizationDataSource(),
+            createKeyGuardInfoProvider(),
+            createFingerprintSensorStatusProvider(),
+            getHasherWithType(),
+            configuration.deviceStateFingerprintVersion
+        )
     }
 
     private fun createDeviceIdProvider(): DeviceIdProvider {
@@ -175,5 +193,30 @@ object FingerprintAndroidAgentFactory {
             context.packageManager
         )
     }
+
+    private fun createSettingsDataSource(): SettingsDataSource {
+        return SettingsDataSourceImpl(context.contentResolver)
+    }
+
+
+    private fun createDevicePersonalizationDataSource(): DevicePersonalizationDataSource {
+        return DevicePersonalizationDataSourceImpl(
+            RingtoneManager(context),
+            context.assets
+        )
+    }
+
+    private fun createFingerprintSensorStatusProvider(): FingerprintSensorInfoProvider {
+        return FingerprintSensorInfoProviderImpl(
+            FingerprintManagerCompat.from(context)
+        )
+    }
+
+    private fun createKeyGuardInfoProvider(): KeyGuardInfoProvider {
+        return KeyGuardInfoProviderImpl(
+            context.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+        )
+    }
+
     //endregion
 }

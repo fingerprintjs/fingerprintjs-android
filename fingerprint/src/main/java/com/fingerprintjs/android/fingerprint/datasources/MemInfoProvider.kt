@@ -3,6 +3,7 @@ package com.fingerprintjs.android.fingerprint.datasources
 
 import android.app.ActivityManager
 import android.os.StatFs
+import com.fingerprintjs.android.fingerprint.tools.executeSafe
 
 
 interface MemInfoProvider {
@@ -17,16 +18,26 @@ class MemInfoProviderImpl(
     private val externalStorageStats: StatFs
 ) : MemInfoProvider {
     override fun totalRAM(): Long {
-        val memoryInfo = ActivityManager.MemoryInfo()
-        activityManager.getMemoryInfo(memoryInfo)
-        return memoryInfo.totalMem
+        return executeSafe(
+            {
+                val memoryInfo = ActivityManager.MemoryInfo()
+                activityManager.getMemoryInfo(memoryInfo)
+                memoryInfo.totalMem
+            }, 0
+        )
     }
 
     override fun totalInternalStorageSpace(): Long {
-        return internalStorageStats.totalBytes
+        return executeSafe(
+            { internalStorageStats.totalBytes },
+            0
+        )
     }
 
     override fun totalExternalStorageSpace(): Long {
-        return externalStorageStats.totalBytes
+        return executeSafe(
+            { externalStorageStats.totalBytes },
+            0
+        )
     }
 }

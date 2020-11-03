@@ -4,6 +4,7 @@ package com.fingerprintjs.android.fingerprint.device_id_providers
 import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.provider.Settings
+import com.fingerprintjs.android.fingerprint.tools.executeSafe
 
 
 class AndroidIdProvider(
@@ -11,9 +12,11 @@ class AndroidIdProvider(
 ) {
     @SuppressLint("HardwareIds")
     fun getAndroidId(): String {
-        return Settings.Secure.getString(
-            contentResolver,
-            Settings.Secure.ANDROID_ID
-        )
+        return executeSafe({
+            Settings.Secure.getString(
+                contentResolver,
+                Settings.Secure.ANDROID_ID
+            )
+        }, "")
     }
 }
