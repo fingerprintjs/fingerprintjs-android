@@ -1,5 +1,7 @@
 package com.fingerprintjs.android.fingerprint
 
+
+import com.fingerprintjs.android.fingerprint.device_id_providers.DeviceIdProvider
 import com.fingerprintjs.android.fingerprint.fingerprinters.device_state.DeviceStateFingerprinter
 import com.fingerprintjs.android.fingerprint.fingerprinters.hardware.HardwareFingerprinter
 import com.fingerprintjs.android.fingerprint.fingerprinters.installed_apps.InstalledAppsFingerprinter
@@ -8,8 +10,9 @@ import com.fingerprintjs.android.fingerprint.fingerprinters.os_build_fingerprint
 
 interface FingerprintAndroidAgent {
     fun deviceId(): String
-    fun getFingerprint(flags: Int = (HARDWARE or OS_BUILD or DEVICE_STATE)): String
+    fun getFingerprint(flags: Int = (HARDWARE xor OS_BUILD xor DEVICE_STATE)): String
 
+    fun deviceIdProvider(): DeviceIdProvider
     fun hardwareFingerprinter(): HardwareFingerprinter
     fun osBuildFingerprinter(): OsBuildFingerprinter
     fun installedAppsFingerprinter(): InstalledAppsFingerprinter

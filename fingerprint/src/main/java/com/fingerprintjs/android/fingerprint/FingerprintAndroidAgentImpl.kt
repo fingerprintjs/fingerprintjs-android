@@ -49,6 +49,8 @@ class FingerprintAndroidAgentImpl(
         return hasher.hash(fingerprintSb.toString())
     }
 
+    override fun deviceIdProvider() = deviceIdProvider
+
     override fun hardwareFingerprinter() = hardwareFingerprinter
 
     override fun osBuildFingerprinter() = osBuildFingerprinter
