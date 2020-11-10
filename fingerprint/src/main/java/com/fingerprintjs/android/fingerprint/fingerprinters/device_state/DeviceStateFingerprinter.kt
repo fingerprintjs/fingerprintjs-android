@@ -29,7 +29,6 @@ class DeviceStateFingerprinter(
         settingsDataSource.defaultInputMethod(),
         settingsDataSource.rttCallingMode(),
         settingsDataSource.touchExplorationEnabled(),
-        settingsDataSource.accelerometerRotationEnabled(),
         settingsDataSource.alarmAlertPath(),
         settingsDataSource.dateFormat(),
         settingsDataSource.endButtonBehaviour(),
@@ -68,7 +67,6 @@ class DeviceStateFingerprinter(
             .append(rawData.rttCallingMode)
             .append(rawData.touchExplorationEnabled)
 
-            .append(rawData.accelerometerRotationEnabled)
             .append(rawData.alarmAlertPath)
             .append(rawData.dateFormat)
             .append(rawData.endButtonBehaviour)
@@ -80,7 +78,10 @@ class DeviceStateFingerprinter(
             .append(rawData.isPinSecurityEnabled)
             .append(rawData.fingerprintSensorStatus)
             .append(rawData.ringtoneSource)
-            .append(rawData.availableLocales)
+
+        rawData.availableLocales.forEach {
+            deviceStateSb.append(it)
+        }
 
         return hasher.hash(deviceStateSb.toString())
     }

@@ -14,7 +14,6 @@ data class DeviceStateRawData(
     val rttCallingMode: String,
     val touchExplorationEnabled: String,
 
-    val accelerometerRotationEnabled: String,
     val alarmAlertPath: String,
     val dateFormat: String,
     val endButtonBehaviour: String,

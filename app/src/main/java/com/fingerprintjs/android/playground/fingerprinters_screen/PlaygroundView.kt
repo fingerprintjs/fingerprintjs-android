@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fingerprintjs.android.playground.R
 import com.fingerprintjs.android.playground.fingerprinters_screen.adapter.FingerprintItemAdapter
 import com.fingerprintjs.android.playground.fingerprinters_screen.adapter.FingerprinterItem
-import java.util.*
+import java.util.LinkedList
 
 
 interface PlaygroundView {

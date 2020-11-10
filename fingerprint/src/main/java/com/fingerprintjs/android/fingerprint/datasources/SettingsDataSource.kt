@@ -20,7 +20,6 @@ interface SettingsDataSource {
     fun touchExplorationEnabled(): String
 
     // System
-    fun accelerometerRotationEnabled(): String
     fun alarmAlertPath(): String
     fun dateFormat(): String
     fun endButtonBehaviour(): String
@@ -100,11 +99,6 @@ class SettingsDataSourceImpl(
 
     //endregion
     //region: System settings
-    override fun accelerometerRotationEnabled(): String {
-        return extractSystemSettingsParam(
-            Settings.System.ACCELEROMETER_ROTATION
-        )
-    }
 
     override fun alarmAlertPath(): String {
         return extractSystemSettingsParam(

@@ -14,7 +14,7 @@ class HardwareFingerprinter(
     cpuInfoProvider: CpuInfoProvider,
     memInfoProvider: MemInfoProvider,
     osBuildInfoProvider: OsBuildInfoProvider,
-    sensorsDataSourceImpl: SensorDataSource,
+    sensorsDataSource: SensorDataSource,
     inputDeviceDataSource: InputDeviceDataSource,
     private val hasher: Hasher,
     version: Int
@@ -27,7 +27,7 @@ class HardwareFingerprinter(
         memInfoProvider.totalRAM(),
         memInfoProvider.totalInternalStorageSpace(),
         cpuInfoProvider.cpuInfo(),
-        sensorsDataSourceImpl.sensors(),
+        sensorsDataSource.sensors(),
         inputDeviceDataSource.getInputDeviceData()
     )
 
