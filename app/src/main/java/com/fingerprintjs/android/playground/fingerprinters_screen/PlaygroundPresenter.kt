@@ -23,6 +23,7 @@ class PlaygroundPresenterImpl(
     private val itemConverter = FingerprintItemConverterImpl()
 
     private var items: List<FingerprinterItem>? = null
+    private var customFingerprintMask: Int = DEFAULT_FINGERPRINT_MASK
 
     init {
         val savedState = state as? State
@@ -33,10 +34,12 @@ class PlaygroundPresenterImpl(
 
     override fun attachView(playgroundView: PlaygroundView) {
         view = playgroundView
+        setupCustomFingerprint(playgroundView)
         view?.setFingerprintItems(items ?: itemConverter.convert(fingerprintAgent))
     }
 
     override fun detachView() {
+        view?.setOnCustomFingerprintChangedListener(null)
         view = null
     }
 
@@ -45,9 +48,39 @@ class PlaygroundPresenterImpl(
             items
         )
     }
+
+    private fun setupCustomFingerprint(view: PlaygroundView) {
+        view.setOnCustomFingerprintChangedListener {
+            customFingerprintMask = customFingerprintMask xor it
+            view.setCustomFingerprint(
+                fingerprintAgent.getFingerprint(
+                    customFingerprintMask
+                )
+            )
+        }
+
+        customFingerprintMask =
+            FingerprintAndroidAgent.HARDWARE or FingerprintAndroidAgent.OS_BUILD or
+                    FingerprintAndroidAgent.DEVICE_STATE
+
+        val customFingerprintValue = fingerprintAgent.getFingerprint(
+            customFingerprintMask
+        )
+        view.setCustomFingerprint(
+            customFingerprintValue,
+            listOf(
+                FingerprintAndroidAgent.HARDWARE,
+                FingerprintAndroidAgent.OS_BUILD,
+                FingerprintAndroidAgent.DEVICE_STATE
+            )
+        )
+    }
 }
 
 @Parcelize
 private class State(
     val items: List<FingerprinterItem>?
 ) : Parcelable
+
+private val DEFAULT_FINGERPRINT_MASK =
+    (FingerprintAndroidAgent.HARDWARE or FingerprintAndroidAgent.OS_BUILD or FingerprintAndroidAgent.DEVICE_STATE)

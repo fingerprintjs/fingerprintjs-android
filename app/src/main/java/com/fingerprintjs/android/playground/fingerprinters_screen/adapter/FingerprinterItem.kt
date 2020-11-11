@@ -1,5 +1,6 @@
 package com.fingerprintjs.android.playground.fingerprinters_screen.adapter
 
+
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 

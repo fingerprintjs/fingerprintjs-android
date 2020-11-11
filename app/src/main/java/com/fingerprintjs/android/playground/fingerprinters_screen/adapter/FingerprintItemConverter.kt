@@ -109,7 +109,7 @@ class FingerprintItemConverterImpl : FingerprintItemConverter {
     private fun prepareOsBuildFingerprint(osBuildFingerprinter: OsBuildFingerprinter): FingerprinterItem {
         val osBuildDescription = FingerprintSectionDescription(
             "OS Build fingerprint",
-            listOf(Pair("", osBuildFingerprinter.rawData().fingerprint))
+            listOf(Pair("Build fingerprint", osBuildFingerprinter.rawData().fingerprint))
         )
 
         return FingerprinterItem(
@@ -128,10 +128,6 @@ class FingerprintItemConverterImpl : FingerprintItemConverter {
         val deviceStateDescription = FingerprintSectionDescription(
             "Device state fingerprint params",
             listOf(
-                Pair(
-                    "Accelerometer rotation enabled",
-                    deviceStateFingerprinter.rawData().accelerometerRotationEnabled
-                ),
                 Pair(
                     "Accessibility enabled",
                     deviceStateFingerprinter.rawData().accessibilityEnabled
@@ -156,10 +152,6 @@ class FingerprintItemConverterImpl : FingerprintItemConverter {
                 Pair(
                     "Touch exploration enabled",
                     deviceStateFingerprinter.rawData().touchExplorationEnabled
-                ),
-                Pair(
-                    "Accelerometer rotation enabled",
-                    deviceStateFingerprinter.rawData().accelerometerRotationEnabled
                 ),
                 Pair("Alarm alert path", deviceStateFingerprinter.rawData().alarmAlertPath),
                 Pair("Date format", deviceStateFingerprinter.rawData().dateFormat),
