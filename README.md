@@ -17,7 +17,7 @@ Enjoy!
 
 ## Quick start
 
-### Install from Maven (Sonatype)
+### Install as gradle dependency
 
 1. Add repository to your project
 
