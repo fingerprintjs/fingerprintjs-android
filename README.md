@@ -30,7 +30,7 @@ allprojects {
 }
 ```
 
-2. Add the dependency to the project. Also the library depends on kotlin-stdlib library So if your application is written in java - please add dependency for kotlin-stdlib. It's lightweight and has great forward and backward compatibility.
+2. Add the dependency to the project. Also the library depends on kotlin-stdlib library. So if your application is written in java - please add dependency for kotlin-stdlib. It's lightweight and has great forward and backward compatibility.
 
 ```gradle
 dependencies {
@@ -83,7 +83,7 @@ String deviceId = fingerprintAndroidAgent.deviceId();
 ```
 #### 2. Advanced
 
-Agent has configuration class. Use it, when your preferred version of fingerprints of hash type distinct from default.
+Agent has configuration class. Use it, when your preferred version of fingerprints or hash type distinct from default.
 
 ```kotlin
 data class FingerprintAndroidConfiguration(
@@ -127,7 +127,7 @@ Choose one that works for you!
 #### 3. Raw data access
 
 To get separate fingerprints you can directly call fingerprinter methods.
-Example for hardware fingerprinter:
+Here is the example for hardware fingerprinter:
 
 ```kotlin
 
