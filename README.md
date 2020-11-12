@@ -10,7 +10,7 @@
 Simple lightweight library for device-identifying and fingerprinting, fully written in Kotlin. Crash-free. 
 
 Makes an application user identifier from available identifiers and device fingerprints.
-Unlike cookies and local storage, these identifiers remain the same after reinstalling or clear application data.
+Unlike cookies and local storage, these identifiers remain the same after reinstalling or clearing application data.
 
 Enjoy!
 
