@@ -4,6 +4,7 @@
   </a>
 </p>
 
+[![](https://jitpack.io/v/fingerprintjs/fingerprint-android.svg)](https://jitpack.io/#fingerprintjs/fingerprint-android)
 # fingerprint-android
 
 Simple lightweight library for device-identifying and fingerprinting, fully written in Kotlin. Crash-free. 

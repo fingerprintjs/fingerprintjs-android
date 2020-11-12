@@ -17,14 +17,14 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
     applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "${variant.name}-${variant.versionName}.apk"
+            outputFileName = "Playground-${variant.name}-${variant.versionName}.apk"
         }
     }
 }
