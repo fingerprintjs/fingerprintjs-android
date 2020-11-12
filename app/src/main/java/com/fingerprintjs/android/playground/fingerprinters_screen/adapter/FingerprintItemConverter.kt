@@ -53,6 +53,21 @@ class FingerprintItemConverterImpl : FingerprintItemConverter {
                 Pair("Device model", hardwareFingerprinter.rawData().modelName)
             )
         )
+
+        val memoryDescription =
+            FingerprintSectionDescription(
+                "Memory info",
+                listOf(
+                    Pair(
+                        "Total RAM in bytes",
+                        hardwareFingerprinter.rawData().totalRAM.toString()
+                    ),
+                    Pair(
+                        "Total internal storage in bytes",
+                        hardwareFingerprinter.rawData().totalInternalStorageSpace.toString()
+                    )
+                )
+            )
         val cpuInfoDescription =
             FingerprintSectionDescription(
                 "CPU info",
@@ -81,6 +96,7 @@ class FingerprintItemConverterImpl : FingerprintItemConverter {
             hardwareFingerprinter.calculate(),
             listOf(
                 deviceModelDescription,
+                memoryDescription,
                 cpuInfoDescription,
                 sensorsDescription,
                 inputDevicesDescription

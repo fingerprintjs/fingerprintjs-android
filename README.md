@@ -1,10 +1,10 @@
-# fingerprint-android
 <p align="center">
   <a href="https://fingerprintjs.com">
     <img src="resources/logo.svg" alt="FingerprintJS" width="300px" />
   </a>
 </p>
 
+# fingerprint-android
 
 Simple lightweight library for device-identifying and fingerprinting, fully written in Kotlin. Crash-free. 
 
@@ -23,7 +23,8 @@ Enjoy!
 ```gradle
 allprojects {
 	repositories{
-			maven { url "https://oss.sonatype.org/content/repositories/snapshots" }	
+			...
+			maven { url 'https://jitpack.io' }	
 		}
 }
 ```
@@ -33,7 +34,7 @@ allprojects {
 ```gradle
 dependencies {
 	implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-	implementation 'com.fingerprintjs.android:fingerprint-android:1.0.0'
+	implementation 'com.github.fingerprintjs:fingerprint-android:v1.0.0'
 }
 ```
 
