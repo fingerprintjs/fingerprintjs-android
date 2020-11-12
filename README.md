@@ -35,7 +35,7 @@ allprojects {
 ```gradle
 dependencies {
 	implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-	implementation 'com.github.fingerprintjs:fingerprint-android:v1.0.0'
+	implementation 'com.github.fingerprintjs:fingerprint-android:1.0.0'
 }
 ```
 
@@ -51,6 +51,7 @@ dependencies {
 Simply initialize the library, and get fingerprint and deviceId. 
 Consider not to mix deviceId and fingerprint in case the deviceId will not be accessible due to privacy policy changes.
 
+In Kotlin
 ```kotlin
 
 // Initialization
@@ -63,6 +64,23 @@ val deviceId = fingerprintAndroidAgent.deviceId()
 
 ```
 
+In Java
+```Java
+
+// Initialization
+FingerprintAndroidAgent fingerprintAndroidAgent =
+                FingerprintAndroidAgentFactory.getInitializedInstance(getApplicationContext());
+                
+// Simple usage
+String fingerprint = fingerprintAndroidAgent.getFingerprint(
+	FingerprintAndroidAgent.HARDWARE | 
+	FingerprintAndroidAgent.OS_BUILD |
+	FingerprintAndroidAgent.DEVICE_STATE
+);
+
+String deviceId = fingerprintAndroidAgent.deviceId();
+
+```
 #### 2. Advanced
 
 Agent has configuration class. Use it, when your preferred version of fingerprints of hash type distinct from default.
@@ -127,6 +145,9 @@ val cpuInfo = rawData.cpuInfo
 ```
 
 
+## Playground App
+
+Try all the library features in [Playground App](https://github.com/fingerprintjs/fingerprint-android/releases/download/1.0.0/Playground-release-1.0.0.apk).
 
 ## Android API support
 fingerprint-android supports API versions from 19 (Android 4.4) and higher.
