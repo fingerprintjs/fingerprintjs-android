@@ -23,4 +23,6 @@
 -keep public class com.fingerprintjs.android.fingerprint.FingerprintAndroidAgent
 -keep public class com.fingerprintjs.android.fingerprint.FingerprintAndroidConfiguration
 -keep public class com.fingerprintjs.android.fingerprint.FingerprintAndroidAgentFactory
+-keep public class com.fingerprintjs.android.fingerprint.device_id_providers.*
 -keep public class com.fingerprintjs.android.fingerprint.fingerprinters.*
+-keep public class com.fingerprintjs.android.fingerprint.tools.hashers.*
