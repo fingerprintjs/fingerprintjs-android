@@ -1,6 +1,9 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.github.dcendents.android-maven'
+
+group='com.github.fingerprintjs'
 
 android {
     compileSdkVersion 30
@@ -25,7 +28,7 @@ android {
     libraryVariants.all { variant ->
         variant.outputs.all { output ->
             if (outputFile != null && outputFileName.endsWith('.aar')) {
-                outputFileName = "${archivesBaseName}-${defaultConfig.versionName}.aar"
+                outputFileName = "fingerprint-android-${archivesBaseName}-${defaultConfig.versionName}.aar"
             }
         }
     }
