@@ -52,6 +52,7 @@ object FingerprintAndroidAgentFactory {
     private lateinit var context: Context
 
     @JvmStatic
+    @JvmOverloads
     fun getInitializedInstance(
         context: Context,
         configuration: FingerprintAndroidConfiguration = defaultConfiguration()
