@@ -50,10 +50,10 @@ The library operates with two entities.
 1. `deviceId` - it is an ID of the device, based on system-provided IDs. Currently, it is based on Google Service Framework ID, and ANDROID_ID if the first is unavailable. It's strict, which means the uniqueness of the ID for every device. Also, it keeps the same after application reinstalling.
 2. `fingerprint` - it is a digital fingerprint of a device. Basically, it is a hash, calculated from a lot of available platform signals. `fingerprint` **is not a strict ID**, so there is a probability that two different devices will have the same fingerprint. Also, there is a probability, that the same device will have a different fingerprint in different moments due to system update, settings changing, etc.
 
-#### Why do I need them both?
+#### Why do we need them both?
 It is a good question, most of use-cases can be covered with the `deviceId`. But the `GSF_ID` and `ANDROID_ID`can be spoofed much easier, than device data such as CPU info or sensors list. 
 
-Another reason for using `fingerprint` is a possible restriction of access to `deviceId` due to privacy policy.
+Another reason for using `fingerprint` is a possible restriction of access to `deviceId` due to privacy policy changes trend.
 
 
 
