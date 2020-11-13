@@ -236,7 +236,7 @@ data class Configuration @JvmOverloads constructor(
 ```
 
 
-#### Example: Backward compatibility of old fingerprint
+#### Example: Backward compatibility of an old fingerprint
 
 For example, let's look at a situation where a new version of hardwareFingerprint has appeared, but the default version has not changed, and you need to have both of them:
 
@@ -247,7 +247,7 @@ val defaultFingerprint = defaultFingerprinter.fingerprint()
 
 val newConfiguration = Configuration(hardwareFingerprintVersion = 2)
 val newFingerprinter =
-    FingerprinterFactory.getInitializedInstance(applicationContext, configuration)
+    FingerprinterFactory.getInitializedInstance(applicationContext, newConfiguration)
     
 val newFingerprint = newFingerprinter.fingerprint()
 ```
