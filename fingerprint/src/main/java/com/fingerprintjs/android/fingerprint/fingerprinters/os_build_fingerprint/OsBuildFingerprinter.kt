@@ -2,7 +2,7 @@ package com.fingerprintjs.android.fingerprint.fingerprinters.os_build_fingerprin
 
 
 import com.fingerprintjs.android.fingerprint.datasources.OsBuildInfoProvider
-import com.fingerprintjs.android.fingerprint.fingerprinters.Fingerprinter
+import com.fingerprintjs.android.fingerprint.fingerprinters.BaseFingerprinter
 import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 
 
@@ -10,7 +10,7 @@ class OsBuildFingerprinter(
     private val osBuildInfoProvider: OsBuildInfoProvider,
     private val hasher: Hasher,
     version: Int
-) : Fingerprinter<OsBuildRawData>(version) {
+) : BaseFingerprinter<OsBuildRawData>(version) {
 
     private val rawData = OsBuildRawData(
         osBuildInfoProvider.fingerprint()

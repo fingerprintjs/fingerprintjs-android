@@ -6,7 +6,7 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.fingerprintjs.android.fingerprint.FingerprintAndroidAgent
+import com.fingerprintjs.android.fingerprint.Type
 import com.fingerprintjs.android.playground.R
 import com.fingerprintjs.android.playground.fingerprinters_screen.adapter.FingerprintItemAdapter
 import com.fingerprintjs.android.playground.fingerprinters_screen.adapter.FingerprinterItem
@@ -51,25 +51,25 @@ class PlaygroundViewImpl(
 
         hardwareFingerprintCheckbox.setOnClickListener {
             checkboxChangedListener?.invoke(
-                FingerprintAndroidAgent.HARDWARE
+                Type.HARDWARE
             )
         }
 
         osBuildFingerprintCheckbox.setOnClickListener {
             checkboxChangedListener?.invoke(
-                FingerprintAndroidAgent.OS_BUILD
+                Type.OS_BUILD
             )
         }
 
         deviceStateFingerprintCheckbox.setOnClickListener {
             checkboxChangedListener?.invoke(
-                FingerprintAndroidAgent.DEVICE_STATE
+                Type.DEVICE_STATE
             )
         }
 
         installedAppsFingerprintCheckbox.setOnClickListener {
             checkboxChangedListener?.invoke(
-                FingerprintAndroidAgent.INSTALLED_APPS
+                Type.INSTALLED_APPS
             )
         }
     }
@@ -96,10 +96,10 @@ class PlaygroundViewImpl(
 
         enabledFingerprintTypes.forEach {
             when (it) {
-                FingerprintAndroidAgent.HARDWARE -> hardwareFingerprintCheckbox.isChecked = true
-                FingerprintAndroidAgent.OS_BUILD -> osBuildFingerprintCheckbox.isChecked = true
-                FingerprintAndroidAgent.DEVICE_STATE -> deviceStateFingerprintCheckbox.isChecked = true
-                FingerprintAndroidAgent.INSTALLED_APPS -> installedAppsFingerprintCheckbox.isChecked = true
+                Type.HARDWARE -> hardwareFingerprintCheckbox.isChecked = true
+                Type.OS_BUILD -> osBuildFingerprintCheckbox.isChecked = true
+                Type.DEVICE_STATE -> deviceStateFingerprintCheckbox.isChecked = true
+                Type.INSTALLED_APPS -> installedAppsFingerprintCheckbox.isChecked = true
             }
         }
 

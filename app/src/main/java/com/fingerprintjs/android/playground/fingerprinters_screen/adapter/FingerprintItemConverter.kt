@@ -1,7 +1,7 @@
 package com.fingerprintjs.android.playground.fingerprinters_screen.adapter
 
 
-import com.fingerprintjs.android.fingerprint.FingerprintAndroidAgent
+import com.fingerprintjs.android.fingerprint.Fingerprinter
 import com.fingerprintjs.android.fingerprint.device_id_providers.DeviceIdProvider
 import com.fingerprintjs.android.fingerprint.fingerprinters.device_state.DeviceStateFingerprinter
 import com.fingerprintjs.android.fingerprint.fingerprinters.hardware.HardwareFingerprinter
@@ -11,12 +11,11 @@ import java.util.LinkedList
 
 
 interface FingerprintItemConverter {
-    fun convert(fingerprintAgent: FingerprintAndroidAgent): List<FingerprinterItem>
+    fun convert(fingerprintAgent: Fingerprinter): List<FingerprinterItem>
 }
 
-
 class FingerprintItemConverterImpl : FingerprintItemConverter {
-    override fun convert(fingerprintAgent: FingerprintAndroidAgent): List<FingerprinterItem> {
+    override fun convert(fingerprintAgent: Fingerprinter): List<FingerprinterItem> {
         val list = LinkedList<FingerprinterItem>()
         list.add(prepareDeviceIdItem(fingerprintAgent.deviceIdProvider()))
         list.add(prepareHardwareFingerprinterItem(fingerprintAgent.hardwareFingerprinter()))

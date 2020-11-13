@@ -6,7 +6,7 @@ import com.fingerprintjs.android.fingerprint.datasources.InputDeviceDataSource
 import com.fingerprintjs.android.fingerprint.datasources.MemInfoProvider
 import com.fingerprintjs.android.fingerprint.datasources.OsBuildInfoProvider
 import com.fingerprintjs.android.fingerprint.datasources.SensorDataSource
-import com.fingerprintjs.android.fingerprint.fingerprinters.Fingerprinter
+import com.fingerprintjs.android.fingerprint.fingerprinters.BaseFingerprinter
 import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 
 
@@ -18,7 +18,7 @@ class HardwareFingerprinter(
     inputDeviceDataSource: InputDeviceDataSource,
     private val hasher: Hasher,
     version: Int
-) : Fingerprinter<HardwareFingerprintRawData>(
+) : BaseFingerprinter<HardwareFingerprintRawData>(
     version
 ) {
     private val rawData = HardwareFingerprintRawData(

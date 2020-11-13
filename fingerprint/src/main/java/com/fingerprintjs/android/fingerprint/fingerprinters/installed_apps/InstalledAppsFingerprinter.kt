@@ -2,7 +2,7 @@ package com.fingerprintjs.android.fingerprint.fingerprinters.installed_apps
 
 
 import com.fingerprintjs.android.fingerprint.datasources.PackageManagerDataSource
-import com.fingerprintjs.android.fingerprint.fingerprinters.Fingerprinter
+import com.fingerprintjs.android.fingerprint.fingerprinters.BaseFingerprinter
 import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 
 
@@ -10,7 +10,7 @@ class InstalledAppsFingerprinter(
     packageManagerDataSource: PackageManagerDataSource,
     private val hasher: Hasher,
     version: Int
-) : Fingerprinter<InstalledAppsRawData>(version) {
+) : BaseFingerprinter<InstalledAppsRawData>(version) {
 
     private val rawData = InstalledAppsRawData(
         packageManagerDataSource.getApplicationsList()

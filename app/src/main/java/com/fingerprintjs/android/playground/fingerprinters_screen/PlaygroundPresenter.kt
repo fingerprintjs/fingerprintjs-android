@@ -2,7 +2,8 @@ package com.fingerprintjs.android.playground.fingerprinters_screen
 
 
 import android.os.Parcelable
-import com.fingerprintjs.android.fingerprint.FingerprintAndroidAgent
+import com.fingerprintjs.android.fingerprint.Fingerprinter
+import com.fingerprintjs.android.fingerprint.Type
 import com.fingerprintjs.android.playground.fingerprinters_screen.adapter.FingerprintItemConverterImpl
 import com.fingerprintjs.android.playground.fingerprinters_screen.adapter.FingerprinterItem
 import kotlinx.android.parcel.Parcelize
@@ -15,7 +16,7 @@ interface PlaygroundPresenter {
 }
 
 class PlaygroundPresenterImpl(
-    private val fingerprintAgent: FingerprintAndroidAgent,
+    private val fingerprintAgent: Fingerprinter,
     state: Parcelable?
 ) : PlaygroundPresenter {
 
@@ -53,25 +54,25 @@ class PlaygroundPresenterImpl(
         view.setOnCustomFingerprintChangedListener {
             customFingerprintMask = customFingerprintMask xor it
             view.setCustomFingerprint(
-                fingerprintAgent.getFingerprint(
+                fingerprintAgent.fingerprint(
                     customFingerprintMask
                 )
             )
         }
 
         customFingerprintMask =
-            FingerprintAndroidAgent.HARDWARE or FingerprintAndroidAgent.OS_BUILD or
-                    FingerprintAndroidAgent.DEVICE_STATE
+            Type.HARDWARE or Type.OS_BUILD or
+                    Type.DEVICE_STATE
 
-        val customFingerprintValue = fingerprintAgent.getFingerprint(
+        val customFingerprintValue = fingerprintAgent.fingerprint(
             customFingerprintMask
         )
         view.setCustomFingerprint(
             customFingerprintValue,
             listOf(
-                FingerprintAndroidAgent.HARDWARE,
-                FingerprintAndroidAgent.OS_BUILD,
-                FingerprintAndroidAgent.DEVICE_STATE
+                Type.HARDWARE,
+                Type.OS_BUILD,
+                Type.DEVICE_STATE
             )
         )
     }
@@ -83,4 +84,4 @@ private class State(
 ) : Parcelable
 
 private val DEFAULT_FINGERPRINT_MASK =
-    (FingerprintAndroidAgent.HARDWARE or FingerprintAndroidAgent.OS_BUILD or FingerprintAndroidAgent.DEVICE_STATE)
+    (Type.HARDWARE or Type.OS_BUILD or Type.DEVICE_STATE)

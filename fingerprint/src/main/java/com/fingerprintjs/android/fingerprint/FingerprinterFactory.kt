@@ -7,7 +7,6 @@ import android.content.Context
 import android.hardware.SensorManager
 import android.hardware.input.InputManager
 import android.media.RingtoneManager
-import android.os.Build
 import android.os.Environment
 import android.os.StatFs
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
@@ -44,10 +43,11 @@ import com.fingerprintjs.android.fingerprint.tools.hashers.HasherType
 import com.fingerprintjs.android.fingerprint.tools.hashers.MurMur3x64x128Hasher
 
 
-object FingerprintAndroidAgentFactory {
+object FingerprinterFactory {
 
-    private var configuration: FingerprintAndroidConfiguration = defaultConfiguration()
-    private var instance: FingerprintAndroidAgent? = null
+    private var configuration: Configuration = defaultConfiguration()
+    private var instance: Fingerprinter? = null
+    private var hasher: Hasher = MurMur3x64x128Hasher()
 
     private lateinit var context: Context
 
@@ -55,11 +55,11 @@ object FingerprintAndroidAgentFactory {
     @JvmOverloads
     fun getInitializedInstance(
         context: Context,
-        configuration: FingerprintAndroidConfiguration = defaultConfiguration()
-    ): FingerprintAndroidAgent {
+        configuration: Configuration = Configuration()
+    ): Fingerprinter {
 
         if (instance == null) {
-            synchronized(FingerprintAndroidAgentFactory::class.java) {
+            synchronized(FingerprinterFactory::class.java) {
                 if (instance == null) {
                     instance = initializeFingerprintAndroidAgent(context, configuration)
                 }
@@ -71,22 +71,24 @@ object FingerprintAndroidAgentFactory {
 
     private fun initializeFingerprintAndroidAgent(
         context: Context,
-        configuration: FingerprintAndroidConfiguration
-    ): FingerprintAndroidAgent {
+        configuration: Configuration
+    ): Fingerprinter {
         this.configuration = configuration
         this.context = context
-        return FingerprintAndroidAgentImpl(
+        this.hasher = getHasherWithType()
+
+        return FingerprinterImpl(
             createHardwareFingerprinter(),
             createOsBuildInfoFingerprinter(),
             createDeviceIdProvider(),
             createInstalledApplicationsFingerprinter(),
             createDeviceStateFingerprinter(),
-            getHasherWithType()
+            hasher
         )
     }
 
-    private fun defaultConfiguration(): FingerprintAndroidConfiguration {
-        return FingerprintAndroidConfiguration(
+    private fun defaultConfiguration(): Configuration {
+        return Configuration(
             1,
             1,
             1,
@@ -113,7 +115,7 @@ object FingerprintAndroidAgentFactory {
             createOsBuildInfoProvider(),
             createSensorDataSource(),
             createInputDevicesDataSource(),
-            getHasherWithType(),
+            hasher,
             configuration.hardwareFingerprintVersion
         )
     }
@@ -121,7 +123,7 @@ object FingerprintAndroidAgentFactory {
     private fun createOsBuildInfoFingerprinter(): OsBuildFingerprinter {
         return OsBuildFingerprinter(
             createOsBuildInfoProvider(),
-            getHasherWithType(),
+            hasher,
             configuration.osBuildFingerprintVersion
         )
     }
@@ -129,7 +131,7 @@ object FingerprintAndroidAgentFactory {
     private fun createInstalledApplicationsFingerprinter(): InstalledAppsFingerprinter {
         return InstalledAppsFingerprinter(
             createPackageManagerDataSource(),
-            getHasherWithType(),
+            hasher,
             configuration.installedAppsFingerprintVersion
         )
     }
@@ -140,7 +142,7 @@ object FingerprintAndroidAgentFactory {
             createDevicePersonalizationDataSource(),
             createKeyGuardInfoProvider(),
             createFingerprintSensorStatusProvider(),
-            getHasherWithType(),
+            hasher,
             configuration.deviceStateFingerprintVersion
         )
     }

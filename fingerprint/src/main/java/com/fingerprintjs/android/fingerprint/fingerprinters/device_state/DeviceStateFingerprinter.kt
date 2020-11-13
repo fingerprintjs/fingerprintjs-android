@@ -5,7 +5,7 @@ import com.fingerprintjs.android.fingerprint.datasources.DevicePersonalizationDa
 import com.fingerprintjs.android.fingerprint.datasources.FingerprintSensorInfoProvider
 import com.fingerprintjs.android.fingerprint.datasources.KeyGuardInfoProvider
 import com.fingerprintjs.android.fingerprint.datasources.SettingsDataSource
-import com.fingerprintjs.android.fingerprint.fingerprinters.Fingerprinter
+import com.fingerprintjs.android.fingerprint.fingerprinters.BaseFingerprinter
 import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 
 
@@ -16,7 +16,7 @@ class DeviceStateFingerprinter(
     fingerprintSensorInfoProvider: FingerprintSensorInfoProvider,
     private val hasher: Hasher,
     version: Int
-) : Fingerprinter<DeviceStateRawData>(version) {
+) : BaseFingerprinter<DeviceStateRawData>(version) {
 
     private val rawData = DeviceStateRawData(
         settingsDataSource.adbEnabled(),
