@@ -57,6 +57,9 @@ object FingerprinterFactory {
         context: Context,
         configuration: Configuration = Configuration()
     ): Fingerprinter {
+        if (this.configuration != configuration) {
+            instance = null
+        }
 
         if (instance == null) {
             synchronized(FingerprinterFactory::class.java) {

@@ -43,93 +43,118 @@ dependencies {
 
 ## API Reference
 
+### Device ID and Fingerprint
+
+The library operates with two entities. 
+
+1. `deviceId` - it is an ID of the device, based on system-provided IDs. Currently, it is based on Google Service Framework ID, and ANDROID_ID if the first is unavailable. It's strict, which means the uniqueness of the ID for every device. Also, it keeps the same after application reinstalling.
+2. `fingerprint` - it is a digital fingerprint of a device. Basically, it is a hash, calculated from a lot of available platform signals. `fingerprint` **is not a strict ID**, so there is a probability that two different devices will have the same fingerprint. Also, there is a probability, that the same device will have a different fingerprint in different moments due to system update, settings changing, etc.
+
+#### Why do I need them both?
+It is a good question, most of use-cases can be covered with the `deviceId`. But the `GSF_ID` and `ANDROID_ID`can be spoofed much easier, than device data such as CPU info or sensors list. 
+
+Another reason for using `fingerprint` is a possible restriction of access to `deviceId` due to privacy policy.
+
+
+
 ### Initialization & usage
 
-Initialize the library and get `fingerprint` and `deviceId`. 
-Consider not to mix deviceId and fingerprint in case the deviceId will not be accessible due to privacy policy changes.
+Initialize the library and get `fingerprint` and `deviceId`.
 
 In Kotlin
+
 ```kotlin
 
 // Initialization
-val fingerprintAndroidAgent =
-            FingerprintAndroidAgentFactory.getInitializedInstance(applicationContext)
+val fingerprinter =
+            FingerprinterFactory.getInitializedInstance(applicationContext)
 
 // Simple usage
-val fingerprint = fingerprintAndroidAgent.getFingerprint()
-val deviceId = fingerprintAndroidAgent.deviceId()
+val fingerprint = fingerprinter.fingerprint()
+val deviceId = fingerprinter.deviceId()
 
 ```
 
 In Java
+
 ```java
 
 // Initialization
-FingerprintAndroidAgent fingerprintAndroidAgent =
-                FingerprintAndroidAgentFactory.getInitializedInstance(getApplicationContext());
+Fingerprinter fingerprinter =
+                FingerprinterFactory.getInitializedInstance(getApplicationContext());
                 
 // Simple usage
-String fingerprint = fingerprintAndroidAgent.getFingerprint(
-	FingerprintAndroidAgent.HARDWARE | 
-	FingerprintAndroidAgent.OS_BUILD |
-	FingerprintAndroidAgent.DEVICE_STATE
-);
-
-String deviceId = fingerprintAndroidAgent.deviceId();
+String fingerprint = fingerprinter.fingerprint();
+String deviceId = fingerprinter.deviceId();
 
 ```
-#### Advanced usage
+### Advanced usage
+The additional entities, provided by the library are `BaseFingerprinter` and `Configuration`.
 
-Agent has a configuration class. Use it when your preferred version of fingerprints or hash type are distinct from default.
+#### BaseFingerprinter
 
-```kotlin
-data class FingerprintAndroidConfiguration(
-    val hardwareFingerprintVersion: Int,
-    val osBuildFingerprintVersion: Int,
-    val deviceStateFingerprintVersion: Int,
-    val installedAppsFingerprintVersion: Int,
-    val hasherType: HasherType
-)
-```
+`fingerprint` can be calculated using different platform signals. They are combined in several groups:
 
-Add your configuration during the initializaion:
+1. Hardware fingerprint. (e.g. CPU info, sensors list etc.)
+2. Os Build fingerprint (the information about current ROM, its version etc.)
+3. Device state fingerprint (the information about basic settings of the device)
+4. Installed applications fingerprint
 
-```kotlin
-val fingerprintAndroidAgent =
-    FingerprintAndroidAgentFactory.getInitializedInstance(applicationContext, configuration)
-```
 
-Also you can set up fingerprint calculation process. 
-By default it depends on three fingerprints:
-
-1. Hardware fingerprint
-2. Os Build fingerprint
-3. Device state fingerprint
-
-One particular fingerprint that adds a lot of entropy is an "installed apps fingerprint", it adds a lot of identification accuracy but can be unstable. 
-
-To use all available fingerprinters for fingerprint calculation call the method as below.
-
-```
-fingerprintAgent.getFingerprint(
-                    FingerprintType.HARDWARE or
-                    FingerprintType.OS_BUILD or
-                    FingerprintType.INSTALLED_APPS or
-                    FingerprintType.DEVICE_STATE
-                )
-```
-
-Choose one that works for you!
-
-#### 3. Raw data access
-
-To get separate fingerprints you can directly call fingerprinter methods.
-Here is the example for hardware fingerprinter:
+Each of them has a class, which is inherited from `BaseFingerprinter` class.
 
 ```kotlin
 
-val hardwareFingerprinter = fingerprintAgent.hardwareFingerprinter()
-val hardwareFingerprint  = hardwareFingerprinter.calculate()
+abstract class BaseFingerprinter<T> (
+    val version: Int
+) {
+    abstract fun calculate(): String
+    abstract fun rawData(): T
+}
+
+```
+
+So the full public API of the library is following:
+
+```kotlin
+interface Fingerprinter {
+    fun deviceId(): String
+
+    fun fingerprint(): String
+
+    fun fingerprint(mask: Int): String
+
+    fun deviceIdProvider(): DeviceIdProvider
+
+    fun hardwareFingerprinter(): HardwareFingerprinter
+
+    fun osBuildFingerprinter(): OsBuildFingerprinter
+
+    fun installedAppsFingerprinter(): InstalledAppsFingerprinter
+
+    fun deviceStateFingerprinter(): DeviceStateFingerprinter
+}
+```
+
+`DeviceIdProvider` allows you to manually get `GSF_ID` or `ANDROID_ID`:
+```kotlin
+interface DeviceIdProvider {
+    fun getDeviceId(): String
+    fun getAndroidId(): String
+    fun getGsfId(): String?
+}
+```
+
+#### Example: BaseFingerprinter usage and raw data access
+
+To get separate fingerprints you can directly call fingerprinter methods, such as `calculate()` for fingerprint calculation and `rawData` for access to raw data.
+
+Here is the example for Hardware Fingerprinter:
+
+```kotlin
+
+val hardwareFingerprinter = fingerprinter.hardwareFingerprinter()
+val hardwareFingerprint  = fingerprinter.calculate()
 
 val rawData = hardwareFingerprinter.rawData()
 
@@ -139,6 +164,92 @@ val cpuInfo = rawData.cpuInfo
 
 ...
 
+```
+
+#### Custom fingerprint
+
+The library has a public method for custom fingerprint:
+
+```kotlin
+
+fun fingerprint(mask: Int): String
+
+```
+
+Mask is a bit mask from existing values:
+
+```kotlin
+
+object Type {
+    @JvmField
+    val HARDWARE = 1
+
+    @JvmField
+    val OS_BUILD = 1 shl 1
+
+    @JvmField
+    val INSTALLED_APPS = 1 shl 2
+
+    @JvmField
+    val DEVICE_STATE = 1 shl 3
+}
+
+```
+
+#### Example: Custom fingerprint with Installed Applications
+
+By default `Fingerprinter` calculates `fingerprint` using Hardware, Os Build and Device state fingerprints.
+
+One particular fingerprint that adds a lot of entropy is an "installed apps fingerprint", it adds a lot of identification accuracy but can be unstable. 
+
+To use all available fingerprinters for fingerprint calculation call the method as below.
+
+```
+fingerprinter.fingerprint(
+                    Type.HARDWARE or
+                    Type.OS_BUILD or
+                    Type.INSTALLED_APPS or
+                    Type.DEVICE_STATE
+                )
+```
+
+Choose one that works for you, if the default doesn't.
+
+
+#### Configuration
+
+Nothing is perfect, and the current implementation of fingerprints is not an exception. It will be improving over time.
+
+Due to the prevention of breaking changes and supporting backward compatibility the library has a versioning mechanism, which works by setting a version for each `BaseFingerprinter`.
+
+It is implemented with a configuration class which is the following:
+
+```kotlin
+data class Configuration @JvmOverloads constructor(
+    val hardwareFingerprintVersion: Int = HARDWARE_FINGERPRINTER_DEFAULT_VERSION,
+    val osBuildFingerprintVersion: Int = OS_BUILD_FINGERPRINTER_DEFAULT_VERSION,
+    val deviceStateFingerprintVersion: Int = DEVICE_STATE_FINGERPRINTER_DEFAULT_VERSION,
+    val installedAppsFingerprintVersion: Int = INSTALLED_APPS_FINGERPRINTER_DEFAULT_VERSION,
+    val hasherType: HasherType = HasherType.MurMur3
+)
+
+```
+
+
+#### Example: Backward compatibility of old fingerprint
+
+For example, let's look at a situation where a new version of hardwareFingerprint has appeared, but the default version has not changed, and you need to have both of them:
+
+```kotlin
+
+val defaultFingerprinter = FingerprinterFactory.getInitializedInstance(applicationContext)
+val defaultFingerprint = defaultFingerprinter.fingerprint()
+
+val newConfiguration = Configuration(hardwareFingerprintVersion = 2)
+val newFingerprinter =
+    FingerprinterFactory.getInitializedInstance(applicationContext, configuration)
+    
+val newFingerprint = newFingerprinter.fingerprint()
 ```
 
 

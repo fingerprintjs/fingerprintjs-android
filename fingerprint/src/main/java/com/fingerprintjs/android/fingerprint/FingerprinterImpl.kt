@@ -24,7 +24,7 @@ class FingerprinterImpl(
 
     override fun fingerprint(): String {
         return fingerprint(
-            flags = (
+            mask = (
                     Type.HARDWARE or
                             Type.OS_BUILD or
                             Type.DEVICE_STATE
@@ -32,23 +32,23 @@ class FingerprinterImpl(
         )
     }
 
-    override fun fingerprint(flags: Int): String {
+    override fun fingerprint(mask: Int): String {
         val fingerprintSb = StringBuilder()
         val fingerprinters = LinkedList<BaseFingerprinter<*>>()
 
-        if (flags and Type.HARDWARE != 0) {
+        if (mask and Type.HARDWARE != 0) {
             fingerprinters.add(hardwareFingerprinter)
         }
 
-        if (flags and Type.OS_BUILD != 0) {
+        if (mask and Type.OS_BUILD != 0) {
             fingerprinters.add(osBuildFingerprinter)
         }
 
-        if (flags and Type.DEVICE_STATE != 0) {
+        if (mask and Type.DEVICE_STATE != 0) {
             fingerprinters.add(deviceStateFingerprinter)
         }
 
-        if (flags and Type.INSTALLED_APPS != 0) {
+        if (mask and Type.INSTALLED_APPS != 0) {
             fingerprinters.add(installedAppsFingerprinter)
         }
 

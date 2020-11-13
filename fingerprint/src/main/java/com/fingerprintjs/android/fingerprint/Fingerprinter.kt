@@ -13,7 +13,7 @@ interface Fingerprinter {
 
     fun fingerprint(): String
 
-    fun fingerprint(flags: Int): String
+    fun fingerprint(mask: Int): String
 
     fun deviceIdProvider(): DeviceIdProvider
 
