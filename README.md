@@ -26,6 +26,8 @@ The identifier is fully stateless and will remain the same after reinstalling or
 
 ### Install as Gradle dependency
 
+Add these lines to `build.gradle` file of your project.
+
 
 ```gradle
 allprojects {
@@ -38,11 +40,14 @@ allprojects {
 
 ### Add the dependency to your project
 
+Add these lines to `build.gradle` file of your module.
 This library depends on `kotlin-stdlib`. If your application is written in Java, add `kotlin-stdlib` dependency first (it's lightweight and has excellent backward and forward compatibility).
 
 ```gradle
 dependencies {
 	implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+	
+	// Add for java-project
 	implementation 'com.github.fingerprintjs:fingerprint-android:1.0.0'
 }
 ```
