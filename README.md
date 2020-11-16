@@ -4,7 +4,7 @@
   </a>
 </p>
 
-[![](https://jitpack.io/v/fingerprintjs/fingerprint-android.svg)](https://jitpack.io/#fingerprintjs/fingerprint-android)
+[![](https://jitpack.io/v/fingerprintjs/fingerprint-android.svg)](https://jitpack.io/#fingerprintjs/fingerprint-android)&nbsp;&nbsp;[![API](https://img.shields.io/badge/API-19%2B-brightgreen.svg?style=plastic)](https://android-arsenal.com/api?level=19)
 # fingerprint android
 
 Lightweight library for device identification and fingerprinting.
@@ -14,6 +14,12 @@ Fully written in Kotlin. 100% Crash-free.
 Creates a user identifier from all available platform signals.
 
 The identifier is fully stateless and will remain the same after reinstalling or clearing application data.
+
+# Table of Contents
+1. [Quick start](#quick-start)
+2. [API Reference](#api-reference)
+3. [Initialization and usage](#initialization-and-usage)
+4. [Advanced usage](#advanced-usage)
 
 
 ## Quick start
@@ -57,7 +63,7 @@ Another reason for using `fingerprint` is a possible restriction of access to `d
 
 
 
-### Initialization & usage
+### Initialization and usage
 
 Initialize the library and get `fingerprint` and `deviceId`.
 
@@ -235,6 +241,7 @@ data class Configuration @JvmOverloads constructor(
 
 ```
 
+Also, there is an ability to add more hash-functions. The only supported and default at the moment hash-function is MurMur3 (64x128) - fast and light hash function. The list will be extended in the future.
 
 #### Example: Backward compatibility of an old fingerprint
 
