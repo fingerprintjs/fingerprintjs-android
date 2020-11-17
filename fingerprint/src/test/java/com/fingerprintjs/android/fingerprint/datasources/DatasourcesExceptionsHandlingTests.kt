@@ -6,6 +6,7 @@ import com.fingerprintjs.android.fingerprint.device_id_providers.DeviceIdProvide
 import com.fingerprintjs.android.fingerprint.device_id_providers.GsfIdProvider
 import com.nhaarman.mockitokotlin2.mock
 import junit.framework.Assert.assertEquals
+import junit.framework.Assert.assertNotNull
 import org.junit.Test
 
 // Check that there is no unhandled exceptions. Calling mock methods produces NPE.
@@ -13,7 +14,7 @@ class DatasourcesExceptionsHandlingTests {
     @Test
     fun `CPUInfo provider crash free`() {
         val cpuInfoProvider = CpuInfoProviderImpl()
-        assertEquals(0, cpuInfoProvider.cpuInfo().size)
+        assertNotNull(cpuInfoProvider.cpuInfo().size)
     }
 
     @Test
