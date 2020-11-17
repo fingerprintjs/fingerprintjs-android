@@ -4,7 +4,7 @@
   </a>
 </p>
 
-[![](https://jitpack.io/v/fingerprintjs/fingerprint-android.svg)](https://jitpack.io/#fingerprintjs/fingerprint-android)&nbsp;&nbsp;[![API](https://img.shields.io/badge/API-19%2B-brightgreen.svg?style=plastic)](https://android-arsenal.com/api?level=19)
+[![](https://jitpack.io/v/fingerprintjs/fingerprint-android.svg)](https://jitpack.io/#fingerprintjs/fingerprint-android)&nbsp;&nbsp;![Test](https://github.com/fingerprintjs/fingerprint-android/workflows/Test/badge.svg)&nbsp;&nbsp;[![API](https://img.shields.io/badge/API-19%2B-brightgreen.svg?style=plastic)](https://android-arsenal.com/api?level=19)
 # fingerprint android
 
 Lightweight library for device identification and fingerprinting.

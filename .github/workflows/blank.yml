@@ -4,7 +4,9 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    branches: [ main ]
+    paths-ignore:
+      - '**.md'
+      - app/**
 
 jobs:
   build:
@@ -17,7 +19,8 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Test
-        run: ./gradlew fingerprint:test
+        run: |
+          ./gradlew fingerprint:test
 
       - name: Build
         run: ./gradlew fingerprint:assemble
