@@ -1,4 +1,4 @@
-package com.fingerprintjs.android.fingerprint.fingerprinters.device_state
+package com.fingerprintjs.android.fingerprint.signal_providers.device_state
 
 
 data class DeviceStateRawData(

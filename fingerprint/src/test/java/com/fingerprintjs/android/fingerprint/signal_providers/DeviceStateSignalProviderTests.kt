@@ -1,16 +1,16 @@
-package com.fingerprintjs.android.fingerprint.fingerprinters
+package com.fingerprintjs.android.fingerprint.signal_providers
 
 import com.fingerprintjs.android.fingerprint.datasources.DevicePersonalizationDataSource
 import com.fingerprintjs.android.fingerprint.datasources.FingerprintSensorInfoProvider
 import com.fingerprintjs.android.fingerprint.datasources.FingerprintSensorStatus
 import com.fingerprintjs.android.fingerprint.datasources.KeyGuardInfoProvider
 import com.fingerprintjs.android.fingerprint.datasources.SettingsDataSource
-import com.fingerprintjs.android.fingerprint.fingerprinters.device_state.DeviceStateFingerprinter
+import com.fingerprintjs.android.fingerprint.signal_providers.device_state.DeviceStateSignalProvider
 import com.fingerprintjs.android.fingerprint.tools.hashers.EmptyHasher
 import junit.framework.Assert.assertEquals
 import org.junit.Test
 
-class DeviceStateFingerprinterTests {
+class DeviceStateSignalProviderTests {
     @Test
     fun `DeviceStateFingerprinter v1 - success`() {
         val settingsDataSource = object : SettingsDataSource {
@@ -47,14 +47,15 @@ class DeviceStateFingerprinterTests {
             override fun getStatus() = FingerprintSensorStatus.SUPPORTED
         }
 
-        val fingerprinter = DeviceStateFingerprinter(
-            settingsDataSource,
-            devicePersonalizationDataSource,
-            keyGuardInfoProvider,
-            fingerprintSensorInfoProvider,
-            EmptyHasher(),
-            1
-        )
+        val fingerprinter =
+            DeviceStateSignalProvider(
+                settingsDataSource,
+                devicePersonalizationDataSource,
+                keyGuardInfoProvider,
+                fingerprintSensorInfoProvider,
+                EmptyHasher(),
+                1
+            )
 
         assertEquals(
             "adbEnableddevelopmentSettingsEnabledhttpProxytransition" +
@@ -62,7 +63,7 @@ class DeviceStateFingerprinterTests {
                     "defaultInputMethodrttCallingModetouchExplorationEnabledalarmAlertPath" +
                     "dateFormatendButtonBehaviourfontScalescreenOffTimeouttextAutoReplaceEnable" +
                     "textAutoPunctuatetime12Or24truesupportedHotelCaliforniaEN-USRU-ru"
-            , fingerprinter.calculate()
+            , fingerprinter.fingerprint()
         )
     }
 }

@@ -1,4 +1,4 @@
-package com.fingerprintjs.android.fingerprint.fingerprinters
+package com.fingerprintjs.android.fingerprint.signal_providers
 
 
 import com.fingerprintjs.android.fingerprint.datasources.CpuInfoProvider
@@ -8,13 +8,13 @@ import com.fingerprintjs.android.fingerprint.datasources.MemInfoProvider
 import com.fingerprintjs.android.fingerprint.datasources.OsBuildInfoProvider
 import com.fingerprintjs.android.fingerprint.datasources.SensorData
 import com.fingerprintjs.android.fingerprint.datasources.SensorDataSource
-import com.fingerprintjs.android.fingerprint.fingerprinters.hardware.HardwareFingerprinter
+import com.fingerprintjs.android.fingerprint.signal_providers.hardware.HardwareSignalProvider
 import com.fingerprintjs.android.fingerprint.tools.hashers.EmptyHasher
 import junit.framework.Assert.assertEquals
 import org.junit.Test
 
 
-class HardwareFingerprinterTests {
+class HardwareSignalProviderTests {
     @Test
     fun `HardwareFingerprinter v1 test - success`() {
 
@@ -42,16 +42,17 @@ class HardwareFingerprinterTests {
             override fun getInputDeviceData() = listOf(InputDeviceData("inputDeviceName", "vendorName"))
 
         }
-        val fingerprinter = HardwareFingerprinter(
-            cpuInfoProvider = cpuInfoProvider,
-            memInfoProvider = memInfoProvider,
-            osBuildInfoProvider = osBuildInfoProvider,
-            sensorsDataSource = sensorDataSource,
-            inputDeviceDataSource = inputDeviceDataSource,
-            hasher = EmptyHasher(),
-            version = 1
-        )
+        val fingerprinter =
+            HardwareSignalProvider(
+                cpuInfoProvider = cpuInfoProvider,
+                memInfoProvider = memInfoProvider,
+                osBuildInfoProvider = osBuildInfoProvider,
+                sensorsDataSource = sensorDataSource,
+                inputDeviceDataSource = inputDeviceDataSource,
+                hasher = EmptyHasher(),
+                version = 1
+            )
 
-        assertEquals("manufacturermodel10241024cpuintelsensorNamevendorNameinputDeviceNamevendorName", fingerprinter.calculate())
+        assertEquals("manufacturermodel10241024cpuintelsensorNamevendorNameinputDeviceNamevendorName", fingerprinter.fingerprint())
     }
 }

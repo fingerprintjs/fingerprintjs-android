@@ -6,7 +6,7 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.fingerprintjs.android.fingerprint.Type
+import com.fingerprintjs.android.fingerprint.signal_providers.SignalProviderType
 import com.fingerprintjs.android.playground.R
 import com.fingerprintjs.android.playground.fingerprinters_screen.adapter.FingerprintItemAdapter
 import com.fingerprintjs.android.playground.fingerprinters_screen.adapter.FingerprinterItem
@@ -24,7 +24,7 @@ interface PlaygroundView {
 }
 
 class PlaygroundViewImpl(
-    activity: Activity
+    private val activity: Activity
 ) : PlaygroundView {
     private val container: RecyclerView = activity.findViewById(R.id.fingerprinters_container)
     private val viewManager = LinearLayoutManager(activity)
@@ -51,58 +51,64 @@ class PlaygroundViewImpl(
 
         hardwareFingerprintCheckbox.setOnClickListener {
             checkboxChangedListener?.invoke(
-                Type.HARDWARE
+                SignalProviderType.HARDWARE
             )
         }
 
         osBuildFingerprintCheckbox.setOnClickListener {
             checkboxChangedListener?.invoke(
-                Type.OS_BUILD
+                SignalProviderType.OS_BUILD
             )
         }
 
         deviceStateFingerprintCheckbox.setOnClickListener {
             checkboxChangedListener?.invoke(
-                Type.DEVICE_STATE
+                SignalProviderType.DEVICE_STATE
             )
         }
 
         installedAppsFingerprintCheckbox.setOnClickListener {
             checkboxChangedListener?.invoke(
-                Type.INSTALLED_APPS
+                SignalProviderType.INSTALLED_APPS
             )
         }
     }
 
     override fun setFingerprintItems(items: List<FingerprinterItem>) {
-        dataset.clear()
-        items.forEach {
-            dataset.add(it)
+        activity.runOnUiThread {
+            dataset.clear()
+            items.forEach {
+                dataset.add(it)
+            }
+            adapter.notifyDataSetChanged()
         }
-        adapter.notifyDataSetChanged()
     }
 
     override fun setCustomFingerprint(
         customFingerprintValue: String,
         enabledFingerprintTypes: List<Int>?
     ) {
-        customFingerprintValueText.text = customFingerprintValue
-        enabledFingerprintTypes ?: return
+        activity.runOnUiThread {
+            customFingerprintValueText.text = customFingerprintValue
+            if (enabledFingerprintTypes != null) {
 
-        hardwareFingerprintCheckbox.isChecked = false
-        osBuildFingerprintCheckbox.isChecked = false
-        deviceStateFingerprintCheckbox.isChecked = false
-        installedAppsFingerprintCheckbox.isChecked = false
+                hardwareFingerprintCheckbox.isChecked = false
+                osBuildFingerprintCheckbox.isChecked = false
+                deviceStateFingerprintCheckbox.isChecked = false
+                installedAppsFingerprintCheckbox.isChecked = false
 
-        enabledFingerprintTypes.forEach {
-            when (it) {
-                Type.HARDWARE -> hardwareFingerprintCheckbox.isChecked = true
-                Type.OS_BUILD -> osBuildFingerprintCheckbox.isChecked = true
-                Type.DEVICE_STATE -> deviceStateFingerprintCheckbox.isChecked = true
-                Type.INSTALLED_APPS -> installedAppsFingerprintCheckbox.isChecked = true
+                enabledFingerprintTypes.forEach {
+                    when (it) {
+                        SignalProviderType.HARDWARE -> hardwareFingerprintCheckbox.isChecked = true
+                        SignalProviderType.OS_BUILD -> osBuildFingerprintCheckbox.isChecked = true
+                        SignalProviderType.DEVICE_STATE -> deviceStateFingerprintCheckbox.isChecked =
+                            true
+                        SignalProviderType.INSTALLED_APPS -> installedAppsFingerprintCheckbox.isChecked =
+                            true
+                    }
+                }
             }
         }
-
     }
 
     override fun setOnCustomFingerprintChangedListener(listener: ((Int) -> (Unit))?) {

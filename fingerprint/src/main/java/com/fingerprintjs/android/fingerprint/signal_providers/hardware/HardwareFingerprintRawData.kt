@@ -1,4 +1,4 @@
-package com.fingerprintjs.android.fingerprint.fingerprinters.hardware
+package com.fingerprintjs.android.fingerprint.signal_providers.hardware
 
 import com.fingerprintjs.android.fingerprint.datasources.InputDeviceData
 import com.fingerprintjs.android.fingerprint.datasources.SensorData

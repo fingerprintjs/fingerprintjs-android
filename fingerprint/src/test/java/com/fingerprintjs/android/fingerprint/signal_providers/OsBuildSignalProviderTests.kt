@@ -1,12 +1,12 @@
-package com.fingerprintjs.android.fingerprint.fingerprinters
+package com.fingerprintjs.android.fingerprint.signal_providers
 
 import com.fingerprintjs.android.fingerprint.datasources.OsBuildInfoProvider
-import com.fingerprintjs.android.fingerprint.fingerprinters.os_build_fingerprint.OsBuildFingerprinter
+import com.fingerprintjs.android.fingerprint.signal_providers.os_build.OsBuildSignalProvider
 import com.fingerprintjs.android.fingerprint.tools.hashers.EmptyHasher
 import junit.framework.Assert.assertEquals
 import org.junit.Test
 
-class OsBuildFingerprinterTests {
+class OsBuildSignalProviderTests {
     @Test
     fun `OsBuildFingerprinter v1 - success`() {
         val osBuildInfoProvider = object : OsBuildInfoProvider {
@@ -15,12 +15,13 @@ class OsBuildFingerprinterTests {
             override fun fingerprint() = "fingerprint"
         }
 
-        val fingerprinter = OsBuildFingerprinter(
-            osBuildInfoProvider,
-            EmptyHasher(),
-            1
-        )
+        val fingerprinter =
+            OsBuildSignalProvider(
+                osBuildInfoProvider,
+                EmptyHasher(),
+                1
+            )
 
-        assertEquals("fingerprint", fingerprinter.calculate())
+        assertEquals("fingerprint", fingerprinter.fingerprint())
     }
 }

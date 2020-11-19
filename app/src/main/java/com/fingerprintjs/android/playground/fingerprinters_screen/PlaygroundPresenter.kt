@@ -3,7 +3,7 @@ package com.fingerprintjs.android.playground.fingerprinters_screen
 
 import android.os.Parcelable
 import com.fingerprintjs.android.fingerprint.Fingerprinter
-import com.fingerprintjs.android.fingerprint.Type
+import com.fingerprintjs.android.fingerprint.signal_providers.SignalProviderType
 import com.fingerprintjs.android.playground.fingerprinters_screen.adapter.FingerprintItemConverterImpl
 import com.fingerprintjs.android.playground.fingerprinters_screen.adapter.FingerprinterItem
 import kotlinx.android.parcel.Parcelize
@@ -16,7 +16,7 @@ interface PlaygroundPresenter {
 }
 
 class PlaygroundPresenterImpl(
-    private val fingerprintAgent: Fingerprinter,
+    private val fingerprinter: Fingerprinter,
     state: Parcelable?
 ) : PlaygroundPresenter {
 
@@ -24,7 +24,7 @@ class PlaygroundPresenterImpl(
     private val itemConverter = FingerprintItemConverterImpl()
 
     private var items: List<FingerprinterItem>? = null
-    private var customFingerprintMask: Int = DEFAULT_FINGERPRINT_MASK
+    private var signalProvidersMask: Int = DEFAULT_FINGERPRINT_MASK
 
     init {
         val savedState = state as? State
@@ -36,7 +36,16 @@ class PlaygroundPresenterImpl(
     override fun attachView(playgroundView: PlaygroundView) {
         view = playgroundView
         setupCustomFingerprint(playgroundView)
-        view?.setFingerprintItems(items ?: itemConverter.convert(fingerprintAgent))
+        fingerprinter.getDeviceId { deviceIdResult ->
+            fingerprinter.getFingerprint { fingerprintResult ->
+                view?.setFingerprintItems(
+                    items ?: itemConverter.convert(
+                        deviceIdResult,
+                        fingerprintResult
+                    )
+                )
+            }
+        }
     }
 
     override fun detachView() {
@@ -52,29 +61,27 @@ class PlaygroundPresenterImpl(
 
     private fun setupCustomFingerprint(view: PlaygroundView) {
         view.setOnCustomFingerprintChangedListener {
-            customFingerprintMask = customFingerprintMask xor it
+            signalProvidersMask = signalProvidersMask xor it
+
+            fingerprinter.getFingerprint(signalProvidersMask) { fingerprintResult ->
+                view.setCustomFingerprint(fingerprintResult.fingerprint)
+            }
+        }
+
+        signalProvidersMask =
+            SignalProviderType.HARDWARE or SignalProviderType.OS_BUILD or
+                    SignalProviderType.DEVICE_STATE
+
+        fingerprinter.getFingerprint(signalProvidersMask) { fingerprintResult ->
             view.setCustomFingerprint(
-                fingerprintAgent.fingerprint(
-                    customFingerprintMask
+                fingerprintResult.fingerprint,
+                listOf(
+                    SignalProviderType.HARDWARE,
+                    SignalProviderType.OS_BUILD,
+                    SignalProviderType.DEVICE_STATE
                 )
             )
         }
-
-        customFingerprintMask =
-            Type.HARDWARE or Type.OS_BUILD or
-                    Type.DEVICE_STATE
-
-        val customFingerprintValue = fingerprintAgent.fingerprint(
-            customFingerprintMask
-        )
-        view.setCustomFingerprint(
-            customFingerprintValue,
-            listOf(
-                Type.HARDWARE,
-                Type.OS_BUILD,
-                Type.DEVICE_STATE
-            )
-        )
     }
 }
 
@@ -82,6 +89,3 @@ class PlaygroundPresenterImpl(
 private class State(
     val items: List<FingerprinterItem>?
 ) : Parcelable
-
-private val DEFAULT_FINGERPRINT_MASK =
-    (Type.HARDWARE or Type.OS_BUILD or Type.DEVICE_STATE)

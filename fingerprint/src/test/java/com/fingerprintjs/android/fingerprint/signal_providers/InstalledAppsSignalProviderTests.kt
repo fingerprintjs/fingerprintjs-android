@@ -1,14 +1,14 @@
-package com.fingerprintjs.android.fingerprint.fingerprinters
+package com.fingerprintjs.android.fingerprint.signal_providers
 
 import com.fingerprintjs.android.fingerprint.datasources.PackageInfo
 import com.fingerprintjs.android.fingerprint.datasources.PackageManagerDataSource
-import com.fingerprintjs.android.fingerprint.fingerprinters.installed_apps.InstalledAppsFingerprinter
+import com.fingerprintjs.android.fingerprint.signal_providers.installed_apps.InstalledAppsSignalProvider
 import com.fingerprintjs.android.fingerprint.tools.hashers.EmptyHasher
 import junit.framework.Assert.assertEquals
 import org.junit.Test
 
 
-class InstalledAppsFingerprinterTests {
+class InstalledAppsSignalProviderTests {
 
     @Test
     fun `InstalledAppsFingerprinter v1 - success`() {
@@ -21,12 +21,13 @@ class InstalledAppsFingerprinterTests {
             )
 
         }
-        val fingerprinter = InstalledAppsFingerprinter(
-            packageManagerDataSource,
-            EmptyHasher(),
-            1
-        )
+        val fingerprinter =
+            InstalledAppsSignalProvider(
+                packageManagerDataSource,
+                EmptyHasher(),
+                1
+            )
 
-        assertEquals("app1app2app3app4", fingerprinter.calculate())
+        assertEquals("app1app2app3app4", fingerprinter.fingerprint())
     }
 }

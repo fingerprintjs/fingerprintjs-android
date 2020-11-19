@@ -17,10 +17,6 @@ class MurMur3x64x128Hasher :
         return hashSb.toString()
     }
 
-    override fun hash(data: ByteArray): ByteArray {
-        return hash(data.toString()).toByteArray(Charsets.US_ASCII)
-    }
-
     private val X64_128_C1 = -0x783c846eeebdac2bL
     private val X64_128_C2 = 0x4cf5ad432745937fL
 

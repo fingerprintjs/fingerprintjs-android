@@ -2,70 +2,93 @@ package com.fingerprintjs.android.fingerprint
 
 
 import com.fingerprintjs.android.fingerprint.device_id_providers.DeviceIdProvider
-import com.fingerprintjs.android.fingerprint.fingerprinters.BaseFingerprinter
-import com.fingerprintjs.android.fingerprint.fingerprinters.device_state.DeviceStateFingerprinter
-import com.fingerprintjs.android.fingerprint.fingerprinters.hardware.HardwareFingerprinter
-import com.fingerprintjs.android.fingerprint.fingerprinters.installed_apps.InstalledAppsFingerprinter
-import com.fingerprintjs.android.fingerprint.fingerprinters.os_build_fingerprint.OsBuildFingerprinter
-import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
-import java.util.LinkedList
+import com.fingerprintjs.android.fingerprint.signal_providers.SignalProviderType
+import com.fingerprintjs.android.fingerprint.signal_providers.device_state.DeviceStateSignalProvider
+import com.fingerprintjs.android.fingerprint.signal_providers.hardware.HardwareSignalProvider
+import com.fingerprintjs.android.fingerprint.signal_providers.installed_apps.InstalledAppsSignalProvider
+import com.fingerprintjs.android.fingerprint.signal_providers.os_build.OsBuildSignalProvider
+import java.lang.StringBuilder
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 
-class FingerprinterImpl(
-    private val hardwareFingerprinter: HardwareFingerprinter,
-    private val osBuildFingerprinter: OsBuildFingerprinter,
+internal class FingerprinterImpl(
+    private val hardwareSignalProvider: HardwareSignalProvider,
+    private val osBuildSignalProvider: OsBuildSignalProvider,
     private val deviceIdProvider: DeviceIdProvider,
-    private val installedAppsFingerprinter: InstalledAppsFingerprinter,
-    private val deviceStateFingerprinter: DeviceStateFingerprinter,
-    private val hasher: Hasher
+    private val installedAppsSignalProvider: InstalledAppsSignalProvider,
+    private val deviceStateSignalProvider: DeviceStateSignalProvider,
+    private val configuration: Configuration
 ) : Fingerprinter {
 
-    override fun deviceId() = deviceIdProvider.getDeviceId()
+    private val executor: ExecutorService = Executors.newSingleThreadExecutor()
 
-    override fun fingerprint(): String {
-        return fingerprint(
-            mask = (
-                    Type.HARDWARE or
-                            Type.OS_BUILD or
-                            Type.DEVICE_STATE
-                    )
-        )
+    private var deviceIdResult: DeviceIdResult? = null
+    private var fingerprintResult: FingerprintResult? = null
+
+    override fun getDeviceId(listener: (DeviceIdResult) -> Unit) {
+        deviceIdResult?.let {
+            listener.invoke(it)
+            return
+        }
+
+        executor.execute {
+            val deviceIdResult = DeviceIdResult(
+                deviceIdProvider.getDeviceId(),
+                deviceIdProvider.getGsfId(),
+                deviceIdProvider.getAndroidId()
+            )
+            this.deviceIdResult = deviceIdResult
+            listener.invoke(deviceIdResult)
+        }
     }
 
-    override fun fingerprint(mask: Int): String {
-        val fingerprintSb = StringBuilder()
-        val fingerprinters = LinkedList<BaseFingerprinter<*>>()
-
-        if (mask and Type.HARDWARE != 0) {
-            fingerprinters.add(hardwareFingerprinter)
-        }
-
-        if (mask and Type.OS_BUILD != 0) {
-            fingerprinters.add(osBuildFingerprinter)
-        }
-
-        if (mask and Type.DEVICE_STATE != 0) {
-            fingerprinters.add(deviceStateFingerprinter)
-        }
-
-        if (mask and Type.INSTALLED_APPS != 0) {
-            fingerprinters.add(installedAppsFingerprinter)
-        }
-
-        fingerprinters.forEach {
-            fingerprintSb.append(it.calculate())
-        }
-
-        return hasher.hash(fingerprintSb.toString())
+    override fun getFingerprint(listener: (FingerprintResult) -> Unit) {
+        getFingerprint(DEFAULT_MASK, listener)
     }
 
-    override fun deviceIdProvider() = deviceIdProvider
+    override fun getFingerprint(signalProvidersMask: Int, listener: (FingerprintResult) -> Unit) {
+        fingerprintResult?.let {
+            listener.invoke(it)
+            return
+        }
 
-    override fun hardwareFingerprinter() = hardwareFingerprinter
+        executor.execute {
+            val fingerprintSb = StringBuilder()
 
-    override fun osBuildFingerprinter() = osBuildFingerprinter
+            if (signalProvidersMask and SignalProviderType.HARDWARE != 0) {
+                fingerprintSb.append(hardwareSignalProvider.fingerprint())
+            }
+            if (signalProvidersMask and SignalProviderType.OS_BUILD != 0) {
+                fingerprintSb.append(osBuildSignalProvider.fingerprint())
+            }
+            if (signalProvidersMask and SignalProviderType.DEVICE_STATE != 0) {
+                fingerprintSb.append(deviceStateSignalProvider.fingerprint())
+            }
+            if (signalProvidersMask and SignalProviderType.INSTALLED_APPS != 0) {
+                fingerprintSb.append(installedAppsSignalProvider.fingerprint())
+            }
 
-    override fun installedAppsFingerprinter() = installedAppsFingerprinter
 
-    override fun deviceStateFingerprinter() = deviceStateFingerprinter
+            val result = object : FingerprintResult {
+                override val fingerprint = configuration.hasher.hash(fingerprintSb.toString())
+
+                @Suppress("UNCHECKED_CAST")
+                override fun <T> getSignalProvider(clazz: Class<T>): T? {
+                    return when (clazz) {
+                        HardwareSignalProvider::class.java -> hardwareSignalProvider
+                        OsBuildSignalProvider::class.java -> osBuildSignalProvider
+                        DeviceStateSignalProvider::class.java -> deviceStateSignalProvider
+                        InstalledAppsSignalProvider::class.java -> installedAppsSignalProvider
+                        else -> null
+                    } as? T
+                }
+            }
+
+            listener.invoke(result)
+        }
+    }
 }
+
+private val DEFAULT_MASK =
+    SignalProviderType.HARDWARE or SignalProviderType.OS_BUILD or SignalProviderType.DEVICE_STATE

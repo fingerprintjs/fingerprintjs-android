@@ -1,22 +1,23 @@
-package com.fingerprintjs.android.fingerprint.fingerprinters.installed_apps
+package com.fingerprintjs.android.fingerprint.signal_providers.installed_apps
 
 
 import com.fingerprintjs.android.fingerprint.datasources.PackageManagerDataSource
-import com.fingerprintjs.android.fingerprint.fingerprinters.BaseFingerprinter
+import com.fingerprintjs.android.fingerprint.signal_providers.SignalProvider
 import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 
 
-class InstalledAppsFingerprinter(
+class InstalledAppsSignalProvider(
     packageManagerDataSource: PackageManagerDataSource,
     private val hasher: Hasher,
     version: Int
-) : BaseFingerprinter<InstalledAppsRawData>(version) {
+) : SignalProvider<InstalledAppsRawData>(version) {
 
-    private val rawData = InstalledAppsRawData(
-        packageManagerDataSource.getApplicationsList()
-    )
+    private val rawData =
+        InstalledAppsRawData(
+            packageManagerDataSource.getApplicationsList()
+        )
 
-    override fun calculate(): String {
+    override fun fingerprint(): String {
         return when (version) {
             1 -> v1()
             else -> v1()

@@ -7,6 +7,7 @@ import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import com.fingerprintjs.android.fingerprint.Configuration
 import com.fingerprintjs.android.fingerprint.FingerprinterFactory
 import com.fingerprintjs.android.playground.R.layout
 import com.fingerprintjs.android.playground.fingerprinters_screen.AboutDialog
@@ -36,12 +37,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun init(state: Bundle?) {
-        val fingerprintAndroidAgent =
-            FingerprinterFactory.getInitializedInstance(applicationContext)
+        val fingerprinter =
+            FingerprinterFactory.getInstance(applicationContext, Configuration(version = 1))
         val presenterState: Parcelable? = state?.getParcelable(PLAYGROUND_PRESENTER_STATE_KEY)
         presenter =
             PlaygroundPresenterImpl(
-                fingerprintAndroidAgent, presenterState
+                fingerprinter, presenterState
             )
     }
 
