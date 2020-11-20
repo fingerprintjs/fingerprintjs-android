@@ -79,7 +79,8 @@ The library operates with two entities.
 
 
 #### Which one should I use?
-It is a good question. `deviceId` is guaranteed to be random and should be your first choice for device identification. This identifier can be spoofed though and shouldn't be used in security-focused or fraud detection scenarios.
+
+`deviceId` is guaranteed to be random and should be your first choice for device identification. This identifier can be spoofed though and shouldn't be used in security-focused or fraud detection scenarios.
 
 `fingerprint` is much harder to spoof and is a safer choice in security-focused use cases.
 
