@@ -144,7 +144,6 @@ fingerprinter.getDeviceId(new Function1<DeviceIdResult, Unit>() {
 Also the results are cached, so subsequent calls will be faster.
 
 ## Versioning
-Nothing is perfect, and the current implementation of `fingerprint` is not an exception. It will be improving over time.
 
 `fingerprint` has incremental version, and it should be set explicitly to avoid unexpected `fingerprint` changes when updating the library.
 
