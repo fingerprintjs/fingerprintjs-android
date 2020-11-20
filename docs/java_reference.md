@@ -48,13 +48,15 @@ If you need an access to raw data from signal providers, you can get it as shown
 fingerprinter.getFingerprint(new Function1<FingerprintResult, Unit>() {
         @Override
         public Unit invoke(FingerprintResult fingerprintResult) {
-        	String fingerprint = fingerprintResult.fingerprint;
-
+	        String fingerprint = fingerprintResult.fingerprint;
+	
 			HardwareSignalProvider hardwareSignalProvider = fingerprintResult
 							.getSignalProvider(HardwareSignalProvider::class.java);
+							
 			String hardwareFingerprint = hardwareSignalProvider.fingerprint();
 			Map<String, String> cpuInfo = hardwareSignalProvider.rawData.cpuInfo;
-            return null;
+			
+	        return null;
         }
     });
 ```
