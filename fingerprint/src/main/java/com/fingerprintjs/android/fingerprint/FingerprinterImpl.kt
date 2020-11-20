@@ -7,7 +7,6 @@ import com.fingerprintjs.android.fingerprint.signal_providers.device_state.Devic
 import com.fingerprintjs.android.fingerprint.signal_providers.hardware.HardwareSignalProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.installed_apps.InstalledAppsSignalProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.os_build.OsBuildSignalProvider
-import java.lang.StringBuilder
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -68,7 +67,6 @@ internal class FingerprinterImpl(
             if (signalProvidersMask and SignalProviderType.INSTALLED_APPS != 0) {
                 fingerprintSb.append(installedAppsSignalProvider.fingerprint())
             }
-
 
             val result = object : FingerprintResult {
                 override val fingerprint = configuration.hasher.hash(fingerprintSb.toString())

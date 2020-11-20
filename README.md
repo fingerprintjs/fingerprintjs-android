@@ -199,7 +199,7 @@ The library by default uses 1,2 and 3, and this gives the optimal stablility/uni
 
 But there is an ability to customize the ratio. You can choose the set of signal providers with bit mask. 
 
-Here is the example, how to use all available signal providers for fingerprint calculation. This will improve the uniqueness of the fingerprint, but also it will reduce the stability and it will change more frequently.
+Here is the example, how to use all available signal providers for fingerprint calculation. This will improve the uniqueness of the fingerprint, but also it will reduce the stability i.e. the `fingerprint` will change more frequently.
 
 ```kotlin
 

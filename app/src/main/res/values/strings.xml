@@ -12,8 +12,8 @@
     <string name="custom_fingerprint_heading">Custom fingerprint:</string>
     <string name="about_ok_button_text">Got it</string>
     <string name="about_text">
-        This is an application, which shows you all the features of Fingerprint-Android library. \nThere is a few fingerprinters, and public method, that allows you to calculate custom fingerprint from existing.
-By changing the list of fingerprinters you can make a fingerprint that works for your requirements of stability and entropy. Enjoy!
+        The application shows you all the features of Fingerprint-Android library. \nThere is a few signal providers, and public method, that allows you to calculate custom fingerprint from existing.
+By changing the list of fingerprinters you can make a fingerprint that works for your requirements of stability and uniquiness. Enjoy!
         \n\n\n
         FingerprintJS Inc. 2020
     </string>
