@@ -40,7 +40,7 @@ The identifier is fully stateless and will remain the same after reinstalling or
 Add these lines to your `build.gradle`.
 
 
-```json
+```gradle
 allprojects {	
   repositories {
   ...
