@@ -31,7 +31,7 @@ int mask = SignalProviderType.HARDWARE |
 fingerprinter.getFingerprint(mask, new Function1<FingerprintResult, Unit>() {
             @Override
             public Unit invoke(FingerprintResult fingerprintResult) {
-            	String fingerprint = fingerprintResult.fingerprint;
+            	String fingerprint = fingerprintResult.getFingerprint();
                 return null;
             }
         });
@@ -46,19 +46,20 @@ If you need an access to raw data from signal providers, you can get it as shown
 ```java
 
 fingerprinter.getFingerprint(new Function1<FingerprintResult, Unit>() {
-        @Override
-        public Unit invoke(FingerprintResult fingerprintResult) {
-	        String fingerprint = fingerprintResult.fingerprint;
-	
-			HardwareSignalProvider hardwareSignalProvider = fingerprintResult
-							.getSignalProvider(HardwareSignalProvider::class.java);
-							
-			String hardwareFingerprint = hardwareSignalProvider.fingerprint();
-			Map<String, String> cpuInfo = hardwareSignalProvider.rawData.cpuInfo;
-			
-	        return null;
-        }
-    });
+            @Override
+            public Unit invoke(FingerprintResult fingerprintResult) {
+                String fingerprint = fingerprintResult.getFingerprint();
+
+                HardwareSignalProvider hardwareSignalProvider = fingerprintResult
+                        .getSignalProvider(HardwareSignalProvider::class.java);
+
+                String hardwareFingerprint = hardwareSignalProvider.fingerprint();
+                Map<String, String> cpuInfo = hardwareSignalProvider.rawData.getCpuInfo();
+
+                return null;
+            }
+        });
+
 ```
 
 Also you can get fingerprint for every signal provider.
@@ -112,7 +113,7 @@ Fingerprinter newFingerprinter = FingerprinterFactory
 oldFingerprinter.getFingerprint(mask, new Function1<FingerprintResult, Unit>() {
             @Override
             public Unit invoke(FingerprintResult fingerprintResult) {
-            		String oldFingerprint = fingerprintResult.fingerprint;
+            		String oldFingerprint = fingerprintResult.getFingerprint();
                 	return null;
             }
         });
@@ -121,7 +122,7 @@ oldFingerprinter.getFingerprint(mask, new Function1<FingerprintResult, Unit>() {
 newFingerprinter.getFingerprint(mask, new Function1<FingerprintResult, Unit>() {
             @Override
             public Unit invoke(FingerprintResult fingerprintResult) {
-            		String newFingerprint = fingerprintResult.fingerprint;
+            		String newFingerprint = fingerprintResult.getFingerprint();
                 	return null;
             }
         });
