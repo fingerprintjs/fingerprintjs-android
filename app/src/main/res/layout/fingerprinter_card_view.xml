@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.fingerprintjs.android.playground.fingerprinters_screen.adapter.FingerprinterItemViewImpl xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="4dp"
+    android:layout_marginVertical="4dp"
+    card_view:cardCornerRadius="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginVertical="8dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/fingerprinter_title"
+            style="@style/TextAppearance.AppCompat.Headline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|start" />
+
+        <TextView
+            android:id="@+id/fingerprinter_value"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|start" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/fingerprinter_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/expand_less_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_expand_less_24px"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/expand_more_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_expand_more_24px" />
+
+</com.fingerprintjs.android.playground.fingerprinters_screen.adapter.FingerprinterItemViewImpl>

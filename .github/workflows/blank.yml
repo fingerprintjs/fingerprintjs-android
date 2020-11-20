@@ -1,0 +1,26 @@
+name: Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    paths-ignore:
+      - '**.md'
+      - app/**
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Test
+        run: |
+          ./gradlew fingerprint:test
+
+      - name: Build
+        run: ./gradlew fingerprint:assemble

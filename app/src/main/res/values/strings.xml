@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Playground</string>
+    <string name="playground_deviceid_text">DeviceId</string>
+    <string name="playground_hardware_fingerprint_text">Hardware fingerprint</string>
+    <string name="playground_osbuild_fingerprint_text">OsBuild fingerprint</string>
+    <string name="playground_installed_applications_fingerprint_text">Installed applications fingerprint</string>
+    <string name="playground_device_state_fingerprint_text">Device state fingerprint</string>
+    <string name="checkbox_hardware_fingerprint_text">Hardware fingerprint</string>
+    <string name="checkbox_osbuild_fingerprint_text">OsBuild fingerprint</string>
+    <string name="checkbox_device_state_fingerprint_text">Device state fingerprint</string>
+    <string name="checkbox_installed_applications_fingerprint_text">Installed applications fingerprint</string>
+    <string name="custom_fingerprint_heading">Custom fingerprint:</string>
+    <string name="about_ok_button_text">Got it</string>
+    <string name="about_text">
+        The application shows you all the features of Fingerprint-Android library. \nThere is a few signal providers, and public method, that allows you to calculate custom fingerprint from existing.
+By changing the list of fingerprinters you can make a fingerprint that works for your requirements of stability and uniquiness. Enjoy!
+        \n\n\n
+        FingerprintJS Inc. 2020
+    </string>
+    <string name="about_dialog_title">About</string>
+</resources>
