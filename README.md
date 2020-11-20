@@ -28,7 +28,7 @@ The identifier is fully stateless and will remain the same after reinstalling or
 
 ## Table of Contents
 1. [Quick start](#quick-start)
-2. [Usage](#initialization-and-usage)
+2. [Usage](#usage)
 3. [Advanced usage](#advanced-usage)
 4. [Playground App](#playground-app)
 5. [Contributing](#contributing)
@@ -301,7 +301,7 @@ fingerprint-android supports API versions from 19 (Android 4.4) and higher.
 
 ## Contributing
 
-Please respect the versioning of fingerprint. If the fingerprint has version in main branch - all changes to existing version are not welcome. Some people can rely on these fingerprints in their security solutions. Create a new version of a fingerprint instead. 
+Please respect the versioning of fingerprints. If the fingerprint has version in main branch - all changes to existing version are not welcome. Some people can rely on it in their security solutions. Create a new version of fingerprint instead. 
 
 Use ```feature-*``` branches for contributing.
 
