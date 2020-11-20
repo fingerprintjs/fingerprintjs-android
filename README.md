@@ -227,7 +227,7 @@ fingerprinter.getFingerprint { fingerprintResult ->
 
 	val hardwareFingerprint = hardwareSignalProvider.fingerprint()
 
-	val cpuInfo = hardwareSignalProvider.rawData.cpuInfo
+	val cpuInfo = hardwareSignalProvider.rawData.procCpuInfo
 }
 
 ```

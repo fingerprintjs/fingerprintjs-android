@@ -54,7 +54,7 @@ fingerprinter.getFingerprint(new Function1<FingerprintResult, Unit>() {
                         .getSignalProvider(HardwareSignalProvider::class.java);
 
                 String hardwareFingerprint = hardwareSignalProvider.fingerprint();
-                Map<String, String> cpuInfo = hardwareSignalProvider.rawData.getCpuInfo();
+                Map<String, String> cpuInfo = hardwareSignalProvider.rawData.getProcCpuInfo();
 
                 return null;
             }
