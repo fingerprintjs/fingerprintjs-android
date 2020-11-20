@@ -123,7 +123,7 @@ String fingerprint = fingerprinter.fingerprint();
 fingerprinter.getFingerprint(new Function1<FingerprintResult, Unit>() {
         @Override
         public Unit invoke(FingerprintResult fingerprintResult) {
-        	String fingerprint = fingerprintResult.fingerprint;
+        	String fingerprint = fingerprintResult.getFingerprint();
         	    return null;
             }
         });
@@ -131,7 +131,7 @@ fingerprinter.getFingerprint(new Function1<FingerprintResult, Unit>() {
 fingerprinter.getDeviceId(new Function1<DeviceIdResult, Unit>() {
             @Override
             public Unit invoke(DeviceIdResult deviceIdResult) {
-            	String deviceId = deviceIdResult.deviceId;
+            	String deviceId = deviceIdResult.getDeviceId();
                 return null;
             }
         });
