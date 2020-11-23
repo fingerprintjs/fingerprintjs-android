@@ -16,6 +16,11 @@
   </a>
 </p>
 
+
+<p align="center">
+    <img src="resources/playground.jpg" alt="FingerprintJS" width="250px" />
+</p>			
+
 # fingerprint android
 
 Lightweight library for device identification and fingerprinting.
@@ -93,7 +98,8 @@ Kotlin
 ```kotlin
 
 // Initialization
-val fingerprinter = FingerprinterFactory.getInstance(applicationContext, Configuration(version = 1))
+ val fingerprinter = FingerprinterFactory
+		.getInstance(applicationContext, Configuration(version = 1))
 
 
 // Usage
@@ -148,7 +154,8 @@ The `version` is set while the initialization of the library with `Configuration
 
 ```kotlin
 
-val fingerprinter = FingerprinterFactory.getInstance(applicationContext, Configuration(version = 1))
+val fingerprinter = FingerprinterFactory
+		.getInstance(applicationContext, Configuration(version = 1))
 
 ```
 
@@ -220,7 +227,8 @@ If you need access to raw data from signal providers, you can get it as shown be
 
 fingerprinter.getFingerprint { fingerprintResult ->
 
-  val hardwareSignalProvider = fingerprintResult.getSignalProvider(HardwareSignalProvider::class.java)
+  val hardwareSignalProvider = fingerprintResult
+  			.getSignalProvider(HardwareSignalProvider::class.java)
 
   val hardwareFingerprint = hardwareSignalProvider.fingerprint()
 
@@ -258,9 +266,11 @@ If you want to get a newer version of fingerprint, but also get an older one for
 
 ```kotlin
 
-val oldFingerprinter = FingerprinterFactory.getInstance(applicationContext, Configuration(version = 1))
+val oldFingerprinter = FingerprinterFactory
+		.getInstance(applicationContext, Configuration(version = 1))
 
-val newFingerprinter = FingerprinterFactory.getInstance(applicationContext, Configuration(version = 2))
+val newFingerprinter = FingerprinterFactory
+		.getInstance(applicationContext, Configuration(version = 2))
 
 
 oldFingerprinter.getFingerprint { fingerprintResult ->
