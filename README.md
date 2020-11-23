@@ -277,7 +277,10 @@ newFingerprinter.getFingerprint { fingerprintResult ->
 
 Try all the library features in the [Playground App](https://github.com/fingerprintjs/fingerprint-android/releases/download/1.0/Playground-release-1.0.0.apk).
 
-![](docs/playground.png)
+<p align="center">
+    <img src="resources/playground.png" alt="FingerprintJS" width="300px" />
+</p>
+
 ## Android API support
 
 fingerprint-android supports API versions from 19 (Android 4.4) and higher.
