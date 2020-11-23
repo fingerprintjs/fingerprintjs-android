@@ -16,6 +16,11 @@
   </a>
 </p>
 
+
+<p align="center">
+    <img src="resources/playground.jpg" alt="FingerprintJS" width="250px" />
+</p>			
+
 # fingerprint android
 
 Lightweight library for device identification and fingerprinting.
@@ -276,10 +281,6 @@ newFingerprinter.getFingerprint { fingerprintResult ->
 ## Playground App
 
 Try all the library features in the [Playground App](https://github.com/fingerprintjs/fingerprint-android/releases/download/1.0/Playground-release-1.0.0.apk).
-
-<p align="center">
-    <img src="resources/playground.png" alt="FingerprintJS" width="300px" />
-</p>
 
 ## Android API support
 
