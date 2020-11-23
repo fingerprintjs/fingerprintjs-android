@@ -239,9 +239,9 @@ fingerprinter.getFingerprint { fingerprintResult ->
 
 ### Change hash function
 
-The library uses MurMur3 hash (64x128) which is fast and optimal for the most of the cases.
+The library uses [MurMur3 hash](https://en.wikipedia.org/wiki/MurmurHash) (64x128) which is fast and optimal for most of the cases.
 
-If it doesn't work for you, you can change the hash function.
+If this hash function does not work for you, you can change it to a different one.
 
 To do it, implement your own hasher, and pass it to `Configuration` class as shown below:
 
@@ -249,20 +249,20 @@ To do it, implement your own hasher, and pass it to `Configuration` class as sho
 
 val hasher = object : Hasher {
   override fun hash(data: String): String {
-    // Implement
+    // Implement your own hashing logic, e.g. call SHA256 here
   }
 }
 
 val fingerprinter = FingerprinterFactory.getInstance(
   applicationContext,
-  Configuration(version = 1,hasher = hasher)
+  Configuration(version = 1, hasher = hasher)
 )
 
 ```
 
 ### Backward compatibility
 
-If you want to get a newer version of fingerprint, but also get an older one for backward compatibility, you can get them as shown below:
+If you want to get a newer version of fingerprint, but also keep the old lone for backward compatibility, you can get them both as shown below:
 
 ```kotlin
 
@@ -303,5 +303,5 @@ Code style - default for Kotlin.
 ## License
 
 This library is MIT licensed.
-Copyright FingerprintJS, Inc, 2020.
+Copyright FingerprintJS, Inc. 2020.
 
