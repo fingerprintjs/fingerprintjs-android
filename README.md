@@ -239,7 +239,7 @@ fingerprinter.getFingerprint { fingerprintResult ->
 
 ### Change hash function
 
-The library uses [MurMur3 hash](https://en.wikipedia.org/wiki/MurmurHash) (64x128) which is fast and optimal for most of the cases.
+The library uses [MurMur3 hash](https://en.wikipedia.org/wiki/MurmurHash) (64x128) which is fast and optimal for most cases.
 
 If this hash function does not work for you, you can change it to a different one.
 
