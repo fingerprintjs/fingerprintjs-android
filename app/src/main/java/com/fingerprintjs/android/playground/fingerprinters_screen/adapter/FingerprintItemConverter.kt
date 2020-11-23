@@ -130,7 +130,7 @@ class FingerprintItemConverterImpl : FingerprintItemConverter {
         )
         return FingerprinterItem(
             "apps",
-            "Installed applications fingerprint",
+            "Installed apps fingerprint",
             installedAppsSignalProvider.fingerprint(),
             listOf(
                 installedAppsFingerprintDescription
