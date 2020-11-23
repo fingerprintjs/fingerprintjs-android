@@ -262,7 +262,7 @@ val fingerprinter = FingerprinterFactory.getInstance(
 
 ### Backward compatibility
 
-If you want to get a newer version of fingerprint, but also keep the old lone for backward compatibility, you can get them both as shown below:
+If you want to get a newer version of fingerprint, but also want to keep the old one for backward compatibility, you can get them both as shown below:
 
 ```kotlin
 
