@@ -266,19 +266,19 @@ If you want to get a newer version of fingerprint, but also want to keep the old
 
 ```kotlin
 
-val oldFingerprinter = FingerprinterFactory
+val v1Fingerprinter = FingerprinterFactory
 		.getInstance(applicationContext, Configuration(version = 1))
 
-val newFingerprinter = FingerprinterFactory
+val v2Fingerprinter = FingerprinterFactory
 		.getInstance(applicationContext, Configuration(version = 2))
 
 
-oldFingerprinter.getFingerprint { fingerprintResult ->
-  val oldFingerprint = fingerprintResult.fingerprint
+v1Fingerprinter.getFingerprint { fingerprintResult ->
+  val v1Fingerprint = fingerprintResult.fingerprint
 }
 
-newFingerprinter.getFingerprint { fingerprintResult ->
-  val newFingerprint = fingerprintResult.fingerprint
+v2Fingerprinter.getFingerprint { fingerprintResult ->
+  val v2Fingerprint = fingerprintResult.fingerprint
 }
 
 ```
