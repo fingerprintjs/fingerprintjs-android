@@ -98,7 +98,8 @@ Kotlin
 ```kotlin
 
 // Initialization
-val fingerprinter = FingerprinterFactory.getInstance(applicationContext, Configuration(version = 1))
+ val fingerprinter = FingerprinterFactory
+		.getInstance(applicationContext, Configuration(version = 1))
 
 
 // Usage
@@ -226,7 +227,8 @@ If you need access to raw data from signal providers, you can get it as shown be
 
 fingerprinter.getFingerprint { fingerprintResult ->
 
-  val hardwareSignalProvider = fingerprintResult.getSignalProvider(HardwareSignalProvider::class.java)
+  val hardwareSignalProvider = fingerprintResult
+  			.getSignalProvider(HardwareSignalProvider::class.java)
 
   val hardwareFingerprint = hardwareSignalProvider.fingerprint()
 
