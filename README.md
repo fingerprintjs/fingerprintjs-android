@@ -153,7 +153,8 @@ The `version` is set while the initialization of the library with `Configuration
 
 ```kotlin
 
-val fingerprinter = FingerprinterFactory.getInstance(applicationContext, Configuration(version = 1))
+val fingerprinter = FingerprinterFactory
+		.getInstance(applicationContext, Configuration(version = 1))
 
 ```
 
@@ -263,9 +264,11 @@ If you want to get a newer version of fingerprint, but also get an older one for
 
 ```kotlin
 
-val oldFingerprinter = FingerprinterFactory.getInstance(applicationContext, Configuration(version = 1))
+val oldFingerprinter = FingerprinterFactory
+		.getInstance(applicationContext, Configuration(version = 1))
 
-val newFingerprinter = FingerprinterFactory.getInstance(applicationContext, Configuration(version = 2))
+val newFingerprinter = FingerprinterFactory
+		.getInstance(applicationContext, Configuration(version = 2))
 
 
 oldFingerprinter.getFingerprint { fingerprintResult ->
