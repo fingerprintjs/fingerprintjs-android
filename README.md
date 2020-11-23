@@ -122,8 +122,8 @@ Java
 Fingerprinter fingerprinter = FingerprinterFactory
 				.getInstance(getApplicationContext(), new Configuration(1));
 
-                
 
+// Usage
 fingerprinter.getFingerprint(new Function1<FingerprintResult, Unit>() {
         @Override
         public Unit invoke(FingerprintResult fingerprintResult) {
