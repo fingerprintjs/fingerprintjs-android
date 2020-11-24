@@ -25,9 +25,9 @@
 
 Lightweight library for device identification and fingerprinting.
 
-Fully written in Kotlin. 100% Crash-free. 
+Fully written in Kotlin. **100% Crash-free**. 
 
-Creates a user identifier from all available platform signals.
+Creates a device identifier from all available platform signals.
 
 The identifier is fully stateless and will remain the same after reinstalling or clearing application data.
 
