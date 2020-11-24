@@ -21,7 +21,12 @@ class GsfIdProvider(
         val params = arrayOf(ID_KEY)
         return try {
             val cursor = contentResolver
-                .query(URI, null, null, params, null) ?: return null
+                .query(URI, null, null, params, null)
+
+            if (cursor == null) {
+                return null
+            }
+
             if (!cursor.moveToFirst() || cursor.columnCount < 2) {
                 cursor.close()
                 return null
