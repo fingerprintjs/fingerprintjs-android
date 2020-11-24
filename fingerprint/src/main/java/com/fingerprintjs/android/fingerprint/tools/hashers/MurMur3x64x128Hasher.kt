@@ -12,7 +12,7 @@ class MurMur3x64x128Hasher :
         val hashResult = hash_x64_128(data.toByteArray(Charsets.US_ASCII), data.length)
         val hashSb = StringBuilder()
         hashResult.forEach {
-            hashSb.append(it.toULong().toString(16))
+            hashSb.append(it.toString(16))
         }
         return hashSb.toString()
     }
@@ -20,7 +20,7 @@ class MurMur3x64x128Hasher :
     private val X64_128_C1 = -0x783c846eeebdac2bL
     private val X64_128_C2 = 0x4cf5ad432745937fL
 
-    private fun hash_x64_128(data: ByteArray?, length: Int, seed: Long = 0L): LongArray {
+    private fun hash_x64_128(data: ByteArray, length: Int, seed: Long = 0L): LongArray {
         var h1 = seed
         var h2 = seed
         val buffer = ByteBuffer.wrap(data)
@@ -46,95 +46,95 @@ class MurMur3x64x128Hasher :
             var k2: Long = 0
             when (buffer.remaining()) {
                 15 -> {
-                    k2 = k2 xor ((buffer[14].toLong() and UNSIGNED_MASK) as Long shl 48)
-                    k2 = k2 xor ((buffer[13].toLong() and UNSIGNED_MASK) as Long shl 40)
-                    k2 = k2 xor ((buffer[12].toLong() and UNSIGNED_MASK) as Long shl 32)
-                    k2 = k2 xor ((buffer[11].toLong() and UNSIGNED_MASK) as Long shl 24)
-                    k2 = k2 xor ((buffer[10].toLong() and UNSIGNED_MASK) as Long shl 16)
-                    k2 = k2 xor ((buffer[9].toLong() and UNSIGNED_MASK) as Long shl 8)
-                    k2 = k2 xor (buffer[8].toLong() and UNSIGNED_MASK) as Long
+                    k2 = k2 xor ((buffer[14].toLong() and UNSIGNED_MASK) shl 48)
+                    k2 = k2 xor ((buffer[13].toLong() and UNSIGNED_MASK) shl 40)
+                    k2 = k2 xor ((buffer[12].toLong() and UNSIGNED_MASK) shl 32)
+                    k2 = k2 xor ((buffer[11].toLong() and UNSIGNED_MASK) shl 24)
+                    k2 = k2 xor ((buffer[10].toLong() and UNSIGNED_MASK) shl 16)
+                    k2 = k2 xor ((buffer[9].toLong() and UNSIGNED_MASK) shl 8)
+                    k2 = k2 xor (buffer[8].toLong() and UNSIGNED_MASK)
                     k1 = k1 xor buffer.long
                 }
                 14 -> {
-                    k2 = k2 xor ((buffer[13].toLong() and UNSIGNED_MASK) as Long shl 40)
-                    k2 = k2 xor ((buffer[12].toLong() and UNSIGNED_MASK) as Long shl 32)
-                    k2 = k2 xor ((buffer[11].toLong() and UNSIGNED_MASK) as Long shl 24)
-                    k2 = k2 xor ((buffer[10].toLong() and UNSIGNED_MASK) as Long shl 16)
-                    k2 = k2 xor ((buffer[9].toLong() and UNSIGNED_MASK) as Long shl 8)
-                    k2 = k2 xor (buffer[8].toLong() and UNSIGNED_MASK) as Long
+                    k2 = k2 xor ((buffer[13].toLong() and UNSIGNED_MASK) shl 40)
+                    k2 = k2 xor ((buffer[12].toLong() and UNSIGNED_MASK) shl 32)
+                    k2 = k2 xor ((buffer[11].toLong() and UNSIGNED_MASK) shl 24)
+                    k2 = k2 xor ((buffer[10].toLong() and UNSIGNED_MASK) shl 16)
+                    k2 = k2 xor ((buffer[9].toLong() and UNSIGNED_MASK) shl 8)
+                    k2 = k2 xor (buffer[8].toLong() and UNSIGNED_MASK)
                     k1 = k1 xor buffer.long
                 }
                 13 -> {
-                    k2 = k2 xor ((buffer[12].toLong() and UNSIGNED_MASK) as Long shl 32)
-                    k2 = k2 xor ((buffer[11].toLong() and UNSIGNED_MASK) as Long shl 24)
-                    k2 = k2 xor ((buffer[10].toLong() and UNSIGNED_MASK) as Long shl 16)
-                    k2 = k2 xor ((buffer[9].toLong() and UNSIGNED_MASK) as Long shl 8)
-                    k2 = k2 xor (buffer[8].toLong() and UNSIGNED_MASK) as Long
+                    k2 = k2 xor ((buffer[12].toLong() and UNSIGNED_MASK) shl 32)
+                    k2 = k2 xor ((buffer[11].toLong() and UNSIGNED_MASK) shl 24)
+                    k2 = k2 xor ((buffer[10].toLong() and UNSIGNED_MASK) shl 16)
+                    k2 = k2 xor ((buffer[9].toLong() and UNSIGNED_MASK) shl 8)
+                    k2 = k2 xor (buffer[8].toLong() and UNSIGNED_MASK)
                     k1 = k1 xor buffer.long
                 }
                 12 -> {
-                    k2 = k2 xor ((buffer[11].toLong() and UNSIGNED_MASK) as Long shl 24)
-                    k2 = k2 xor ((buffer[10].toLong() and UNSIGNED_MASK) as Long shl 16)
-                    k2 = k2 xor ((buffer[9].toLong() and UNSIGNED_MASK) as Long shl 8)
-                    k2 = k2 xor (buffer[8].toLong() and UNSIGNED_MASK) as Long
+                    k2 = k2 xor ((buffer[11].toLong() and UNSIGNED_MASK) shl 24)
+                    k2 = k2 xor ((buffer[10].toLong() and UNSIGNED_MASK) shl 16)
+                    k2 = k2 xor ((buffer[9].toLong() and UNSIGNED_MASK) shl 8)
+                    k2 = k2 xor (buffer[8].toLong() and UNSIGNED_MASK)
                     k1 = k1 xor buffer.long
                 }
                 11 -> {
-                    k2 = k2 xor ((buffer[10].toLong() and UNSIGNED_MASK) as Long shl 16)
-                    k2 = k2 xor ((buffer[9].toLong() and UNSIGNED_MASK) as Long shl 8)
-                    k2 = k2 xor (buffer[8].toLong() and UNSIGNED_MASK) as Long
+                    k2 = k2 xor ((buffer[10].toLong() and UNSIGNED_MASK) shl 16)
+                    k2 = k2 xor ((buffer[9].toLong() and UNSIGNED_MASK) shl 8)
+                    k2 = k2 xor (buffer[8].toLong() and UNSIGNED_MASK)
                     k1 = k1 xor buffer.long
                 }
                 10 -> {
-                    k2 = k2 xor ((buffer[9].toLong() and UNSIGNED_MASK) as Long shl 8)
-                    k2 = k2 xor (buffer[8].toLong() and UNSIGNED_MASK) as Long
+                    k2 = k2 xor ((buffer[9].toLong() and UNSIGNED_MASK) shl 8)
+                    k2 = k2 xor (buffer[8].toLong() and UNSIGNED_MASK)
                     k1 = k1 xor buffer.long
                 }
                 9 -> {
-                    k2 = k2 xor (buffer[8].toLong() and UNSIGNED_MASK) as Long
+                    k2 = k2 xor (buffer[8].toLong() and UNSIGNED_MASK)
                     k1 = k1 xor buffer.long
                 }
                 8 -> k1 = k1 xor buffer.long
                 7 -> {
-                    k1 = k1 xor ((buffer[6].toLong() and UNSIGNED_MASK) as Long shl 48)
-                    k1 = k1 xor ((buffer[5].toLong() and UNSIGNED_MASK) as Long shl 40)
-                    k1 = k1 xor ((buffer[4].toLong() and UNSIGNED_MASK) as Long shl 32)
-                    k1 = k1 xor ((buffer[3].toLong() and UNSIGNED_MASK) as Long shl 24)
-                    k1 = k1 xor ((buffer[2].toLong() and UNSIGNED_MASK) as Long shl 16)
-                    k1 = k1 xor ((buffer[1].toLong() and UNSIGNED_MASK) as Long shl 8)
-                    k1 = k1 xor (buffer[0].toLong() and UNSIGNED_MASK) as Long
+                    k1 = k1 xor ((buffer[6].toLong() and UNSIGNED_MASK) shl 48)
+                    k1 = k1 xor ((buffer[5].toLong() and UNSIGNED_MASK) shl 40)
+                    k1 = k1 xor ((buffer[4].toLong() and UNSIGNED_MASK) shl 32)
+                    k1 = k1 xor ((buffer[3].toLong() and UNSIGNED_MASK) shl 24)
+                    k1 = k1 xor ((buffer[2].toLong() and UNSIGNED_MASK) shl 16)
+                    k1 = k1 xor ((buffer[1].toLong() and UNSIGNED_MASK) shl 8)
+                    k1 = k1 xor (buffer[0].toLong() and UNSIGNED_MASK)
                 }
                 6 -> {
-                    k1 = k1 xor ((buffer[5].toLong() and UNSIGNED_MASK) as Long shl 40)
-                    k1 = k1 xor ((buffer[4].toLong() and UNSIGNED_MASK) as Long shl 32)
-                    k1 = k1 xor ((buffer[3].toLong() and UNSIGNED_MASK) as Long shl 24)
-                    k1 = k1 xor ((buffer[2].toLong() and UNSIGNED_MASK) as Long shl 16)
-                    k1 = k1 xor ((buffer[1].toLong() and UNSIGNED_MASK) as Long shl 8)
-                    k1 = k1 xor (buffer[0].toLong() and UNSIGNED_MASK) as Long
+                    k1 = k1 xor ((buffer[5].toLong() and UNSIGNED_MASK) shl 40)
+                    k1 = k1 xor ((buffer[4].toLong() and UNSIGNED_MASK) shl 32)
+                    k1 = k1 xor ((buffer[3].toLong() and UNSIGNED_MASK) shl 24)
+                    k1 = k1 xor ((buffer[2].toLong() and UNSIGNED_MASK) shl 16)
+                    k1 = k1 xor ((buffer[1].toLong() and UNSIGNED_MASK) shl 8)
+                    k1 = k1 xor (buffer[0].toLong() and UNSIGNED_MASK)
                 }
                 5 -> {
-                    k1 = k1 xor ((buffer[4].toLong() and UNSIGNED_MASK) as Long shl 32)
-                    k1 = k1 xor ((buffer[3].toLong() and UNSIGNED_MASK) as Long shl 24)
-                    k1 = k1 xor ((buffer[2].toLong() and UNSIGNED_MASK) as Long shl 16)
-                    k1 = k1 xor ((buffer[1].toLong() and UNSIGNED_MASK) as Long shl 8)
-                    k1 = k1 xor (buffer[0].toLong() and UNSIGNED_MASK) as Long
+                    k1 = k1 xor ((buffer[4].toLong() and UNSIGNED_MASK) shl 32)
+                    k1 = k1 xor ((buffer[3].toLong() and UNSIGNED_MASK) shl 24)
+                    k1 = k1 xor ((buffer[2].toLong() and UNSIGNED_MASK) shl 16)
+                    k1 = k1 xor ((buffer[1].toLong() and UNSIGNED_MASK) shl 8)
+                    k1 = k1 xor (buffer[0].toLong() and UNSIGNED_MASK)
                 }
                 4 -> {
-                    k1 = k1 xor ((buffer[3].toLong() and UNSIGNED_MASK) as Long shl 24)
-                    k1 = k1 xor ((buffer[2].toLong() and UNSIGNED_MASK) as Long shl 16)
-                    k1 = k1 xor ((buffer[1].toLong() and UNSIGNED_MASK) as Long shl 8)
-                    k1 = k1 xor (buffer[0].toLong() and UNSIGNED_MASK) as Long
+                    k1 = k1 xor ((buffer[3].toLong() and UNSIGNED_MASK) shl 24)
+                    k1 = k1 xor ((buffer[2].toLong() and UNSIGNED_MASK) shl 16)
+                    k1 = k1 xor ((buffer[1].toLong() and UNSIGNED_MASK) shl 8)
+                    k1 = k1 xor (buffer[0].toLong() and UNSIGNED_MASK)
                 }
                 3 -> {
-                    k1 = k1 xor ((buffer[2].toLong() and UNSIGNED_MASK) as Long shl 16)
-                    k1 = k1 xor ((buffer[1].toLong() and UNSIGNED_MASK) as Long shl 8)
-                    k1 = k1 xor (buffer[0].toLong() and UNSIGNED_MASK) as Long
+                    k1 = k1 xor ((buffer[2].toLong() and UNSIGNED_MASK) shl 16)
+                    k1 = k1 xor ((buffer[1].toLong() and UNSIGNED_MASK) shl 8)
+                    k1 = k1 xor (buffer[0].toLong() and UNSIGNED_MASK)
                 }
                 2 -> {
-                    k1 = k1 xor ((buffer[1].toLong() and UNSIGNED_MASK) as Long shl 8)
-                    k1 = k1 xor (buffer[0].toLong() and UNSIGNED_MASK) as Long
+                    k1 = k1 xor ((buffer[1].toLong() and UNSIGNED_MASK) shl 8)
+                    k1 = k1 xor (buffer[0].toLong() and UNSIGNED_MASK)
                 }
-                1 -> k1 = k1 xor (buffer[0].toLong() and UNSIGNED_MASK) as Long
+                1 -> k1 = k1 xor (buffer[0].toLong() and UNSIGNED_MASK)
                 else -> throw AssertionError("Code should not reach here!")
             }
 
@@ -154,24 +154,24 @@ class MurMur3x64x128Hasher :
         return longArrayOf(h1, h2)
     }
 
-    private fun mixK1(k1: Long): Long {
-        var k1 = k1
+    private fun mixK1(k1Prev: Long): Long {
+        var k1 = k1Prev
         k1 *= X64_128_C1
         k1 = java.lang.Long.rotateLeft(k1, 31)
         k1 *= X64_128_C2
         return k1
     }
 
-    private fun mixK2(k2: Long): Long {
-        var k2 = k2
+    private fun mixK2(k2Prev: Long): Long {
+        var k2 = k2Prev
         k2 *= X64_128_C2
         k2 = java.lang.Long.rotateLeft(k2, 33)
         k2 *= X64_128_C1
         return k2
     }
 
-    private fun fmix64(k: Long): Long {
-        var k = k
+    private fun fmix64(kPrev: Long): Long {
+        var k = kPrev
         k = k xor (k ushr 33)
         k *= -0xae502812aa7333L
         k = k xor (k ushr 33)

@@ -18,6 +18,10 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
+      - name: Lint
+          run: |
+            ./gradlew fingerprint:lint
+
       - name: Test
         run: |
           ./gradlew fingerprint:test

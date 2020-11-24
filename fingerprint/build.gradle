@@ -10,6 +10,7 @@ android {
 
     defaultConfig {
         minSdkVersion 19
+        //noinspection OldTargetApi
         targetSdkVersion 29
         versionCode Integer.parseInt(project.VERSION_CODE)
         versionName project.VERSION_NAME
@@ -17,6 +18,13 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
+
+
+    lintOptions {
+        abortOnError true
+        warningsAsErrors true
+    }
+
 
     buildTypes {
         release {
@@ -39,6 +47,6 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.1'
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
 }
