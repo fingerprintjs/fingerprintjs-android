@@ -86,9 +86,13 @@ class SettingsDataSourceImpl(
     }
 
     override fun rttCallingMode(): String {
-        return extractSecureSettingsParam(
-            Settings.Secure.RTT_CALLING_MODE
-        )
+        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+            extractSecureSettingsParam(
+                Settings.Secure.RTT_CALLING_MODE
+            )
+        } else {
+            ""
+        }
     }
 
     override fun touchExplorationEnabled(): String {
