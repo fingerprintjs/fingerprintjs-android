@@ -12,7 +12,7 @@ class MurMur3x64x128Hasher :
         val hashResult = hash_x64_128(data.toByteArray(Charsets.US_ASCII), data.length)
         val hashSb = StringBuilder()
         hashResult.forEach {
-            hashSb.append(it.toString(16))
+            hashSb.append(java.lang.Long.toHexString(it))
         }
         return hashSb.toString()
     }
