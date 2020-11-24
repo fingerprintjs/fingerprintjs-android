@@ -57,7 +57,7 @@ allprojects {
 
 Add these lines to `build.gradle` of a module.
 
-This library depends on (kotlin-stdlib)[https://kotlinlang.org/api/latest/jvm/stdlib/]. 
+This library depends on [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/).
 
 If your application is written in Java, add `kotlin-stdlib` dependency first (it's lightweight and has excellent backward and forward compatibility).
 
