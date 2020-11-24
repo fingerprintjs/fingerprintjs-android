@@ -61,10 +61,11 @@ This library depends on `kotlin-stdlib`. If your application is written in Java,
 
 ```gradle
 dependencies {
+
+  // Add this line for only if you use this library with Java
+  implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
   implementation "com.github.fingerprintjs:fingerprint-android:1.0"
-	
-  // Add this line for only if you use Java
-  implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"	
 }
 ```
 
