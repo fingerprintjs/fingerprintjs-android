@@ -57,12 +57,13 @@ allprojects {
 
 Add these lines to `build.gradle` of a module.
 
-This library depends on `kotlin-stdlib`. If your application is written in Java, add `kotlin-stdlib` dependency first (it's lightweight and has excellent backward and forward compatibility).
+This library depends on (kotlin-stdlib)[https://kotlinlang.org/api/latest/jvm/stdlib/]. 
+
+If your application is written in Java, add `kotlin-stdlib` dependency first (it's lightweight and has excellent backward and forward compatibility).
 
 ```gradle
 dependencies {
-
-  // Add this line for only if you use this library with Java
+  // Add this line only if you use this library with Java
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
   implementation "com.github.fingerprintjs:fingerprint-android:1.0"
