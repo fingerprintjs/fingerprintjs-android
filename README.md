@@ -8,7 +8,7 @@
   <a href="https://jitpack.io/#fingerprintjs/fingerprint-android">
     <img src="https://jitpack.io/v/fingerprintjs/fingerprint-android.svg" alt="Latest release">
   </a>
-  <a href="https://github.com/fingerprintjs/fingerprint-android/workflows/Test/badge.svg">
+  <a href="https://github.com/fingerprintjs/fingerprint-android/actions?workflow=Test">
     <img src="https://github.com/fingerprintjs/fingerprint-android/workflows/Test/badge.svg" alt="Build status">
   </a>
   <a href="https://android-arsenal.com/api?level=19">
