@@ -18,7 +18,7 @@
 
 
 <p align="center">
-    <img src="resources/playground.jpg" alt="FingerprintJS" width="250px" />
+    <img src="resources/playground-app.png" alt="PlaygroundApp" width="750px" />
 </p>			
 
 # fingerprint android
@@ -288,6 +288,11 @@ v2Fingerprinter.getFingerprint { fingerprintResult ->
 ## Playground App
 
 Try all the library features in the [Playground App](https://github.com/fingerprintjs/fingerprint-android/releases/download/1.0/Playground-release-1.0.0.apk).
+
+
+<p align="center">
+    <img src="resources/playground-1.0.0-QR.png" alt="PlaygroundApp" width="300px" />
+</p>			
 
 ## Android API support
 
