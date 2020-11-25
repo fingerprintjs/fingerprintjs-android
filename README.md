@@ -291,7 +291,9 @@ Try all the library features in the [Playground App](https://github.com/fingerpr
 
 
 <p align="center">
+  <a href="https://github.com/fingerprintjs/fingerprint-android/releases/download/1.0/Playground-release-1.0.0.apk">
     <img src="resources/playground-1.0.0-QR.png" alt="PlaygroundApp" width="300px" />
+   </a>
 </p>			
 
 ## Android API support
