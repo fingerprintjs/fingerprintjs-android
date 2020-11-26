@@ -130,7 +130,7 @@ class SettingsDataSourceImpl(
 
     override fun screenOffTimeout(): String {
         return extractSystemSettingsParam(
-            Settings.System.FONT_SCALE
+            Settings.System.SCREEN_OFF_TIMEOUT
         )
     }
 
