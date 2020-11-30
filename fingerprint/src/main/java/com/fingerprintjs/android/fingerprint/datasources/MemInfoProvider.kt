@@ -29,21 +29,20 @@ class MemInfoProviderImpl(
     }
 
     override fun totalInternalStorageSpace(): Long {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-            return (internalStorageStats.blockSize * internalStorageStats.blockCount).toLong()
-        }
-        return executeSafe(
-            { internalStorageStats.totalBytes },
-            0
-        )
+        return executeSafe({
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+                (internalStorageStats.blockSize * internalStorageStats.blockCount).toLong()
+            } else internalStorageStats.totalBytes
+        }, 0)
     }
 
     override fun totalExternalStorageSpace(): Long {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-            return (externalStorageStats.blockSize * externalStorageStats.blockCount).toLong()
-        }
         return executeSafe(
-            { externalStorageStats.totalBytes },
+            {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+                    (externalStorageStats.blockSize * externalStorageStats.blockCount).toLong()
+                } else externalStorageStats.totalBytes
+            },
             0
         )
     }
