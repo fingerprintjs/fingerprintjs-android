@@ -2,6 +2,7 @@ package com.fingerprintjs.android.fingerprint.datasources
 
 
 import android.app.ActivityManager
+import android.os.Build
 import android.os.StatFs
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
 
@@ -28,6 +29,9 @@ class MemInfoProviderImpl(
     }
 
     override fun totalInternalStorageSpace(): Long {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            return (internalStorageStats.blockSize * internalStorageStats.blockCount).toLong()
+        }
         return executeSafe(
             { internalStorageStats.totalBytes },
             0
@@ -35,6 +39,9 @@ class MemInfoProviderImpl(
     }
 
     override fun totalExternalStorageSpace(): Long {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            return (externalStorageStats.blockSize * externalStorageStats.blockCount).toLong()
+        }
         return executeSafe(
             { externalStorageStats.totalBytes },
             0
