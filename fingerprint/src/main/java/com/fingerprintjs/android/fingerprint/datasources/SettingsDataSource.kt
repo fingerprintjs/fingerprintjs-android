@@ -1,6 +1,7 @@
 package com.fingerprintjs.android.fingerprint.datasources
 
 import android.content.ContentResolver
+import android.os.Build
 import android.provider.Settings
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
 
@@ -35,36 +36,54 @@ class SettingsDataSourceImpl(
 ) : SettingsDataSource {
     //region: Global settings
     override fun adbEnabled(): String {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            return ""
+        }
         return extractGlobalSettingsParam(
             Settings.Global.ADB_ENABLED
         )
     }
 
     override fun developmentSettingsEnabled(): String {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            return ""
+        }
         return extractGlobalSettingsParam(
             Settings.Global.DEVELOPMENT_SETTINGS_ENABLED
         )
     }
 
     override fun httpProxy(): String {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            return ""
+        }
         return extractGlobalSettingsParam(
             Settings.Global.HTTP_PROXY
         )
     }
 
     override fun transitionAnimationScale(): String {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            return ""
+        }
         return extractGlobalSettingsParam(
             Settings.Global.TRANSITION_ANIMATION_SCALE
         )
     }
 
     override fun windowAnimationScale(): String {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            return ""
+        }
         return extractGlobalSettingsParam(
             Settings.Global.WINDOW_ANIMATION_SCALE
         )
     }
 
     override fun dataRoamingEnabled(): String {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            return ""
+        }
         return extractGlobalSettingsParam(
             Settings.Global.DATA_ROAMING
         )
@@ -86,7 +105,7 @@ class SettingsDataSourceImpl(
     }
 
     override fun rttCallingMode(): String {
-        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             extractSecureSettingsParam(
                 Settings.Secure.RTT_CALLING_MODE
             )
@@ -154,6 +173,9 @@ class SettingsDataSourceImpl(
     //endregion
 
     private fun extractGlobalSettingsParam(key: String): String {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            return ""
+        }
         return executeSafe({
             Settings.Global.getString(contentResolver, key)
         }, "")
