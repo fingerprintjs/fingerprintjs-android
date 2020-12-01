@@ -21,16 +21,9 @@ interface FingerprinterItemView {
     fun setDescription(description: List<FingerprintSectionDescription>)
 }
 
-class FingerprinterItemViewImpl : CardView, FingerprinterItemView {
-
-    @JvmOverloads
-    constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyle: Int = 0
-    ) : super(context, attrs, defStyle) {
-        setOnClickListener { toggleExpanding() }
-    }
+class FingerprinterItemViewImpl @JvmOverloads constructor(
+        context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
+) : CardView(context, attrs, defStyle), FingerprinterItemView {
 
     private val container: RecyclerView by lazy {
         val container = findViewById<RecyclerView>(R.id.fingerprinter_description)
@@ -41,27 +34,34 @@ class FingerprinterItemViewImpl : CardView, FingerprinterItemView {
     private val viewManager = LinearLayoutManager(context)
     private val dataset = LinkedList<DescriptionItem>()
     private val adapter =
-        DescriptionItemAdapter(
-            dataset
-        )
+            DescriptionItemAdapter(
+                    dataset
+            )
 
     private val titleView: TextView by lazy {
-        findViewById<TextView>(R.id.fingerprinter_title)
+        findViewById(R.id.fingerprinter_title)
     }
     private val fingerprintValueView: TextView by lazy {
-        findViewById<TextView>(R.id.fingerprinter_value)
+        findViewById(R.id.fingerprinter_value)
     }
 
     private val expandMoreIcon: ImageView by lazy {
-        findViewById<ImageView>(R.id.expand_more_icon)
+        findViewById(R.id.expand_more_icon)
     }
 
     private val expandLessIcon: ImageView by lazy {
-        findViewById<ImageView>(R.id.expand_less_icon)
+        findViewById(R.id.expand_less_icon)
     }
 
 
     private var isExpanded: Boolean = false
+
+    private val CORNER_RADIUS_PX = context.resources.getDimension(R.dimen.card_view_corner_radius)
+
+    init {
+        setOnClickListener { toggleExpanding() }
+        radius = CORNER_RADIUS_PX
+    }
 
     override fun setTitle(title: String) {
         titleView.text = title
@@ -75,19 +75,19 @@ class FingerprinterItemViewImpl : CardView, FingerprinterItemView {
         dataset.clear()
         description.forEach {
             dataset.add(
-                DescriptionItem(
-                    it.name,
-                    "",
-                    true
-                )
+                    DescriptionItem(
+                            it.name,
+                            "",
+                            true
+                    )
             )
             it.fields.forEach { field ->
                 dataset.add(
-                    DescriptionItem(
-                        field.first,
-                        field.second,
-                        false
-                    )
+                        DescriptionItem(
+                                field.first,
+                                field.second,
+                                false
+                        )
                 )
             }
         }
@@ -105,5 +105,4 @@ class FingerprinterItemViewImpl : CardView, FingerprinterItemView {
         }
         isExpanded = !isExpanded
     }
-
 }
