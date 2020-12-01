@@ -1,19 +1,21 @@
 package com.fingerprintjs.android.playground
 
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import com.fingerprintjs.android.fingerprint.Configuration
 import com.fingerprintjs.android.fingerprint.FingerprinterFactory
 import com.fingerprintjs.android.playground.R.layout
-import com.fingerprintjs.android.playground.fingerprinters_screen.AboutDialog
-import com.fingerprintjs.android.playground.fingerprinters_screen.PlaygroundPresenter
-import com.fingerprintjs.android.playground.fingerprinters_screen.PlaygroundPresenterImpl
-import com.fingerprintjs.android.playground.fingerprinters_screen.PlaygroundViewImpl
+import com.fingerprintjs.android.playground.fingerprinters_screen.*
+import java.io.File
+import java.net.URLConnection
 
 
 class MainActivity : AppCompatActivity() {
@@ -38,11 +40,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun init(state: Bundle?) {
         val fingerprinter =
-            FingerprinterFactory.getInstance(applicationContext, Configuration(version = 1))
+            FingerprinterFactory.getInstance(applicationContext, Configuration(version = DEFAULT_FINGERPRINTER_VERSION))
         val presenterState: Parcelable? = state?.getParcelable(PLAYGROUND_PRESENTER_STATE_KEY)
+        val externalStorageDir = applicationContext.getExternalFilesDir(null)!!.absolutePath
         presenter =
             PlaygroundPresenterImpl(
-                fingerprinter, presenterState
+                fingerprinter, externalStorageDir, presenterState
             )
     }
 
@@ -56,7 +59,22 @@ class MainActivity : AppCompatActivity() {
         if (item.itemId == R.id.menu_about) {
             AboutDialog().show(this)
         }
+        if (item.itemId == R.id.menu_share) {
+            presenter.shareActionClicked { shareFile(it) }
+        }
         return true
+    }
+
+    private fun shareFile(path: String) {
+        val uri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider",File(path))
+        val shareIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_STREAM, uri)
+            type = "text/plain"
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+
+        startActivity(shareIntent)
     }
 }
 

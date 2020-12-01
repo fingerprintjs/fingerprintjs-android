@@ -36,7 +36,7 @@ android {
     libraryVariants.all { variant ->
         variant.outputs.all { output ->
             if (outputFile != null && outputFileName.endsWith('.aar')) {
-                outputFileName = "fingerprint-android-${archivesBaseName}-${defaultConfig.versionName}.aar"
+                outputFileName = "fingerprint-android-${defaultConfig.versionName}-${variant.name}.aar"
             }
         }
     }
