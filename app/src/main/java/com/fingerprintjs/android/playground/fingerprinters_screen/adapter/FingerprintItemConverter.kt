@@ -17,11 +17,11 @@ interface FingerprintItemConverter {
             fingerprintResult: FingerprintResult
     ): List<FingerprinterItem>
 
-    fun prepareCsvFile(filePath: String, items: List<FingerprinterItem>)
+    fun convertToCsvFile(filePath: String, items: List<FingerprinterItem>)
 }
 
 class FingerprintItemConverterImpl : FingerprintItemConverter {
-    override fun prepareCsvFile(filePath: String, items: List<FingerprinterItem>) {
+    override fun convertToCsvFile(filePath: String, items: List<FingerprinterItem>) {
         val csvSb = StringBuilder()
         csvSb.append(CSV_FILE_HEADER)
 
@@ -40,9 +40,11 @@ class FingerprintItemConverterImpl : FingerprintItemConverter {
         }
 
         val file = File(filePath)
+
         if (file.exists()) {
             file.delete()
         }
+
         file.writeText(csvSb.toString())
     }
 
