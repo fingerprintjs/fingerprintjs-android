@@ -11,8 +11,8 @@
   <a href="https://github.com/fingerprintjs/fingerprint-android/actions?workflow=Test">
     <img src="https://github.com/fingerprintjs/fingerprint-android/workflows/Test/badge.svg" alt="Build status">
   </a>
-  <a href="https://android-arsenal.com/api?level=19">
-    <img src="https://img.shields.io/badge/API-19%2B-brightgreen.svg" alt="Android minAPI status">
+  <a href="https://android-arsenal.com/api?level=16">
+    <img src="https://img.shields.io/badge/API-16%2B-brightgreen.svg" alt="Android minAPI status">
   </a>
 </p>
 
@@ -66,7 +66,7 @@ dependencies {
   // Add this line only if you use this library with Java
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-  implementation "com.github.fingerprintjs:fingerprint-android:1.0"
+  implementation "com.github.fingerprintjs:fingerprint-android:1.0.1"
 }
 ```
 
@@ -287,12 +287,12 @@ v2Fingerprinter.getFingerprint { fingerprintResult ->
 
 ## Playground App
 
-Try all the library features in the [Playground App](https://github.com/fingerprintjs/fingerprint-android/releases/download/1.0/Playground-release-1.0.0.apk).
+Try all the library features in the [Playground App](https://github.com/fingerprintjs/fingerprint-android/releases/download/1.0/Playground-release-1.0.1.apk).
 
 
 <p align="center">
-  <a href="https://github.com/fingerprintjs/fingerprint-android/releases/download/1.0/Playground-release-1.0.0.apk">
-    <img src="resources/playground-1.0.0-QR.png" alt="PlaygroundApp" width="300px" />
+  <a href="https://github.com/fingerprintjs/fingerprint-android/releases/download/1.0/Playground-release-1.0.1.apk">
+    <img src="resources/playground-1.0.1-QR.png" alt="PlaygroundApp" width="300px" />
    </a>
 </p>			
 
