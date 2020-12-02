@@ -298,7 +298,7 @@ Try all the library features in the [Playground App](https://github.com/fingerpr
 
 ## Android API support
 
-fingerprint-android supports API versions from 19 (Android 4.4) and higher.
+fingerprint-android supports API versions from 16 (Android 4.1) and higher.
 
 
 ## Contributing
