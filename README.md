@@ -18,7 +18,7 @@
 
 
 <p align="center">
-    <img src="resources/playground-app.png" alt="PlaygroundApp" width="750px" />
+    <img src="resources/playground-app.png" alt="PlaygroundApp" width="800px" />
 </p>			
 
 # fingerprint android
