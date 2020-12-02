@@ -2,24 +2,25 @@
 
 ## Advanced usage
 
-### Change stablility/uniquiness ratio
+### Increasing the uniqueness of fingerprints
 
-`fingerprint` **is not a strict ID**, so there is a probability that two different devices will have the same fingerprint. Also, there is a probability, that the same device will have a different fingerprint in different moments due to system update, settings changing, etc.
+There is a probability that two different devices will have the same `fingerprint` value. There is also a probability that the same device will have different `fingerprint` values in different moments of time due to system upgrades or updated settings (although this should be infrequent).
 
-A device fingerprint can be calculated using various platform signals.
+A device fingerprint can be calculated using various signals.
 These signals are grouped into several categories:
 
-1. Hardware signals...
-2. OS build signals & attributes ..
-3. Device state information ..
-4. Installed apps information .. (unstable signal source as apps get reinstalled all the time).
+1. Hardware signals (e.g. CPU info, sensors list etc.)
+2. OS build signals & attributes (the information about current ROM, its version etc.)
+3. Device state information (the information about some settings of the device)
+4. Installed apps information (unstable signal source as apps get reinstalled all the time).
+
+By default we only use signals from sources #1, #2, and #3, because this combination provides the best balance between fingerprint uniqueness and  stability.
+
+You can increase the uniqueness by adding the installed apps signal source, but this will decrease the stability of fingerprints.
 
 
-The library by default uses 1,2 and 3, and this gives the optimal stablility/uniquiness ratio.
-
-But there is an ability to customize the ratio. You can choose the set of signal providers with bit mask. 
-
-Here is the example, how to use all available signal providers for fingerprint calculation. This will improve the uniqueness of the fingerprint, but also it will reduce the stability. It will change more frequently.
+Example of how to use all available signal providers for fingerprint calculation. 
+This will improve the uniqueness of the fingerprint, but also it will reduce the stability i.e. the `fingerprint` will change more frequently.
 
 ```java
 
@@ -73,9 +74,12 @@ Available signal providers classes are:
 
 ### Change hash function
 
-Hash function can be changed. By default the library uses MurMur hash (64x128) which is fast and optimal for most of the cases.
 
-If it doesn't work for you, implement your own hasher, and pass it to `Configuration` class.
+The library uses [MurMur3 hash](https://en.wikipedia.org/wiki/MurmurHash) (64x128) which is fast and optimal for most cases.
+
+If this hash function does not work for you, you can change it to a different one.
+
+To do it, implement your own hasher, and pass it to `Configuration` class as shown below:
 
 ``` java
 
@@ -99,7 +103,8 @@ Fingerprinter fingerprinter = FingerprinterFactory.getInstance(
  
 ### Backward compatibility
 
-If you want to get a newer version of fingerprint, but also get an older one for backward compatibility, you can get them as shown below:
+If you want to get a newer version of fingerprint, but also want to keep the old one for backward compatibility, you can get them both as shown below:
+
 
 ```kotlin
 
