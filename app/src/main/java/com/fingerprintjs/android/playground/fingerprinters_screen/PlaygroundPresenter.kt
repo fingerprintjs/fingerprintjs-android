@@ -2,6 +2,8 @@ package com.fingerprintjs.android.playground.fingerprinters_screen
 
 
 import android.os.Parcelable
+import com.fingerprintjs.android.fingerprint.DeviceIdResult
+import com.fingerprintjs.android.fingerprint.FingerprintResult
 import com.fingerprintjs.android.fingerprint.Fingerprinter
 import com.fingerprintjs.android.fingerprint.signal_providers.SignalProviderType
 import com.fingerprintjs.android.fingerprint.signal_providers.hardware.HardwareSignalProvider
@@ -18,9 +20,9 @@ interface PlaygroundPresenter {
 }
 
 class PlaygroundPresenterImpl(
-    private val fingerprinter: Fingerprinter,
-    private val externalStorageDir: String,
-    state: Parcelable?
+        private val fingerprinter: Fingerprinter,
+        private val externalStorageDir: String,
+        state: Parcelable?
 ) : PlaygroundPresenter {
 
     private var view: PlaygroundView? = null
@@ -44,25 +46,15 @@ class PlaygroundPresenterImpl(
         fingerprinter.getDeviceId { deviceIdResult ->
             fingerprinter.getFingerprint { fingerprintResult ->
                 val adapterItems = items ?: itemConverter.convert(
-                    deviceIdResult,
-                    fingerprintResult
+                        deviceIdResult,
+                        fingerprintResult
                 )
 
                 view?.setFingerprintItems(
                         adapterItems
                 )
 
-                if (csvFilePath == null) {
-                    val hardwareSignalProvider =
-                        fingerprintResult.getSignalProvider(HardwareSignalProvider::class.java)
-                    hardwareSignalProvider?.let {
-                        csvFilePath =
-                            "$externalStorageDir/${it.rawData().manufacturerName}-${it.rawData().modelName}-${deviceIdResult.deviceId}.csv"
-                        csvFilePath?.let { filePath ->
-                            itemConverter.prepareCsvFile(filePath, adapterItems)
-                        }
-                    }
-                }
+                prepareCsvFile(fingerprintResult, deviceIdResult, adapterItems)
             }
         }
     }
@@ -74,14 +66,32 @@ class PlaygroundPresenterImpl(
 
     override fun onSaveState(): Parcelable {
         return State(
-            items,
-            csvFilePath
+                items,
+                csvFilePath
         )
     }
 
     override fun shareActionClicked(listener: (String) -> (Unit)) {
         csvFilePath?.let {
             listener.invoke(it)
+        }
+    }
+
+    private fun prepareCsvFile(
+            fingerprintResult: FingerprintResult,
+            deviceIdResult: DeviceIdResult,
+            items: List<FingerprinterItem>
+    ) {
+        if (csvFilePath != null) {
+            return
+        }
+
+        fingerprintResult.getSignalProvider(HardwareSignalProvider::class.java)?.let {
+            val filePath =
+                    "$externalStorageDir/${it.rawData().manufacturerName}-${it.rawData().modelName}-${deviceIdResult.deviceId}.csv"
+            csvFilePath = filePath
+
+            itemConverter.convertToCsvFile(filePath, items)
         }
     }
 
@@ -95,17 +105,17 @@ class PlaygroundPresenterImpl(
         }
 
         signalProvidersMask =
-            SignalProviderType.HARDWARE or SignalProviderType.OS_BUILD or
-                    SignalProviderType.DEVICE_STATE
+                SignalProviderType.HARDWARE or SignalProviderType.OS_BUILD or
+                        SignalProviderType.DEVICE_STATE
 
         fingerprinter.getFingerprint(signalProvidersMask) { fingerprintResult ->
             view.setCustomFingerprint(
-                fingerprintResult.fingerprint,
-                listOf(
-                    SignalProviderType.HARDWARE,
-                    SignalProviderType.OS_BUILD,
-                    SignalProviderType.DEVICE_STATE
-                )
+                    fingerprintResult.fingerprint,
+                    listOf(
+                            SignalProviderType.HARDWARE,
+                            SignalProviderType.OS_BUILD,
+                            SignalProviderType.DEVICE_STATE
+                    )
             )
         }
     }
@@ -113,6 +123,6 @@ class PlaygroundPresenterImpl(
 
 @Parcelize
 private class State(
-    val items: List<FingerprinterItem>?,
-    val csvFilePath: String?
+        val items: List<FingerprinterItem>?,
+        val csvFilePath: String?
 ) : Parcelable

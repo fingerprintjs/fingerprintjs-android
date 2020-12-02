@@ -2,7 +2,6 @@ package com.fingerprintjs.android.playground
 
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.os.PersistableBundle
@@ -15,7 +14,6 @@ import com.fingerprintjs.android.fingerprint.FingerprinterFactory
 import com.fingerprintjs.android.playground.R.layout
 import com.fingerprintjs.android.playground.fingerprinters_screen.*
 import java.io.File
-import java.net.URLConnection
 
 
 class MainActivity : AppCompatActivity() {
@@ -28,9 +26,9 @@ class MainActivity : AppCompatActivity() {
 
         init(savedInstanceState)
         presenter.attachView(
-            PlaygroundViewImpl(
-                this
-            )
+                PlaygroundViewImpl(
+                        this
+                )
         )
     }
 
@@ -40,13 +38,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun init(state: Bundle?) {
         val fingerprinter =
-            FingerprinterFactory.getInstance(applicationContext, Configuration(version = DEFAULT_FINGERPRINTER_VERSION))
+                FingerprinterFactory.getInstance(applicationContext, Configuration(version = DEFAULT_FINGERPRINTER_VERSION))
         val presenterState: Parcelable? = state?.getParcelable(PLAYGROUND_PRESENTER_STATE_KEY)
         val externalStorageDir = applicationContext.getExternalFilesDir(null)!!.absolutePath
         presenter =
-            PlaygroundPresenterImpl(
-                fingerprinter, externalStorageDir, presenterState
-            )
+                PlaygroundPresenterImpl(
+                        fingerprinter, externalStorageDir, presenterState
+                )
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -66,7 +64,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun shareFile(path: String) {
-        val uri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider",File(path))
+        val uri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", File(path))
         val shareIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
             putExtra(Intent.EXTRA_STREAM, uri)
