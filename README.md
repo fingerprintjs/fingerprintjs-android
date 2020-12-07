@@ -303,11 +303,7 @@ fingerprint-android supports API versions from 16 (Android 4.1) and higher.
 
 ## Contributing
 
-Please respect the versioning of fingerprints. If the fingerprint has version in main branch - all changes to existing version are not welcome. Some people can rely on it in their security solutions. Create a new version of fingerprint instead. 
-
-Use ```feature-*``` branches for contributing.
-
-Code style - default for Kotlin.
+See the [contributing guidelines](docs/contributing.md).
 
 ## License
 
