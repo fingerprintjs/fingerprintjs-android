@@ -1,10 +1,5 @@
 # Contributing to fingerprint-android
 
-
-Feel free to ask questions and feature-requesting. Just create an issue with the explanation.
-
-For the direct contributing take a look on sections below.
-
 ## Working with the code
 
 To get started with a project, just open it using Android Studio after cloning.
@@ -130,4 +125,4 @@ private fun v2(): String {
 }
 ```
 
-2. Write unit-tests for every signal providers and the new version. See the examples in [test packages](fingerprint/src/test/java/com/fingerprintjs/android/fingerprint/signal_providers)  . 
+2. Write unit-tests for every signal providers and the new version. See the examples in [test packages](../fingerprint/src/test/java/com/fingerprintjs/android/fingerprint/signal_providers)  . 

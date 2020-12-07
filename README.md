@@ -302,8 +302,9 @@ fingerprint-android supports API versions from 16 (Android 4.1) and higher.
 
 
 ## Contributing
+Feel free to ask questions and feature-requesting. Just create an issue with the explanation.
 
-See the [contributing guidelines](docs/contributing.md).
+For the direct contributing see the [contributing guideline](docs/contributing.md).
 
 ## License
 
