@@ -10,6 +10,11 @@
 \n\nBy changing the list of fingerprinters, you can make a fingerprint that works for your requirements of stability and uniqueness.
     </string>
     <string name="about_dialog_title">About</string>
+    <string name="share_via_email_title">Send data to developers?</string>
+    <string name="share_via_email_text">Would you like to share the data with developers to improve quality of the library?</string>
+    <string name="share_via_email_positive_button_text">Yes</string>
+    <string name="share_via_email_negative_button_text">No, I\'d like to send it to myself</string>
+
     <string name="menu_about">About</string>
     <string name="menu_share">Share</string>
 </resources>

@@ -1,7 +1,9 @@
 package com.fingerprintjs.android.playground
 
 
+import android.content.DialogInterface
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.os.PersistableBundle
@@ -40,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         val fingerprinter =
                 FingerprinterFactory.getInstance(applicationContext, Configuration(version = DEFAULT_FINGERPRINTER_VERSION))
         val presenterState: Parcelable? = state?.getParcelable(PLAYGROUND_PRESENTER_STATE_KEY)
-        val externalStorageDir = applicationContext.getExternalFilesDir(null)?.absolutePath
+        val externalStorageDir = applicationContext.getExternalFilesDir(null)!!.absolutePath
         presenter =
                 PlaygroundPresenterImpl(
                         fingerprinter, externalStorageDir, presenterState
@@ -58,22 +60,55 @@ class MainActivity : AppCompatActivity() {
             AboutDialog().show(this)
         }
         if (item.itemId == R.id.menu_share) {
-            presenter.shareActionClicked { shareFile(it) }
+            presenter.shareActionClicked { shareActionClicked(it) }
         }
         return true
     }
 
-    private fun shareFile(path: String) {
+    private fun shareActionClicked(path: String) {
         val uri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", File(path))
-        val shareIntent: Intent = Intent().apply {
-            action = Intent.ACTION_SEND
+        android.app.AlertDialog
+                .Builder(this)
+                .setTitle(R.string.about_dialog_title)
+                .setMessage(R.string.share_via_email_text)
+                .setPositiveButton(R.string.share_via_email_positive_button_text) { _: DialogInterface, _: Int ->
+                    sendEmailToDevelopers(uri)
+                }
+                .setNegativeButton(R.string.share_via_email_negative_button_text) { _: DialogInterface, _: Int ->
+                    shareFile(uri)
+                }
+                .create()
+                .show()
+
+
+    }
+
+    private fun shareFile(uri: Uri) {
+
+        val shareIntent: Intent = Intent(Intent.ACTION_SEND).apply {
             putExtra(Intent.EXTRA_STREAM, uri)
             type = "text/plain"
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
 
-        startActivity(shareIntent)
+        if (shareIntent.resolveActivity(packageManager) != null) {
+            startActivity(shareIntent)
+        }
+    }
+
+    private fun sendEmailToDevelopers(uri: Uri) {
+        val sendEmailIntent = Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse("mailto:$DEVELOPERS_EMAIL")
+            putExtra(Intent.EXTRA_STREAM, uri)
+            type = "text/plain"
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+
+        if (sendEmailIntent.resolveActivity(packageManager) != null) {
+            startActivity(sendEmailIntent)
+        }
     }
 }
 
 private const val PLAYGROUND_PRESENTER_STATE_KEY = "PlaygroundPresenterState"
+private const val DEVELOPERS_EMAIL = "android@fingerprintjs.com"

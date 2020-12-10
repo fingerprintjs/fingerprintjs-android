@@ -8,6 +8,7 @@ import com.fingerprintjs.android.fingerprint.signal_providers.hardware.HardwareS
 import com.fingerprintjs.android.fingerprint.signal_providers.installed_apps.InstalledAppsSignalProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.os_build.OsBuildSignalProvider
 import java.io.File
+import java.lang.Exception
 import java.util.LinkedList
 
 
@@ -45,7 +46,11 @@ class FingerprintItemConverterImpl : FingerprintItemConverter {
             file.delete()
         }
 
-        file.writeText(csvSb.toString())
+        try {
+            file.writeText(csvSb.toString())
+        } catch(e: Exception) {
+
+        }
     }
 
     override fun convert(
