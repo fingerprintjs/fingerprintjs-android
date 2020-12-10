@@ -21,7 +21,7 @@ interface PlaygroundPresenter {
 
 class PlaygroundPresenterImpl(
         private val fingerprinter: Fingerprinter,
-        private val externalStorageDir: String,
+        private val externalStorageDir: String?,
         state: Parcelable?
 ) : PlaygroundPresenter {
 
@@ -87,11 +87,11 @@ class PlaygroundPresenterImpl(
         }
 
         fingerprintResult.getSignalProvider(HardwareSignalProvider::class.java)?.let {
-            val filePath =
-                    "$externalStorageDir/${it.rawData().manufacturerName}-${it.rawData().modelName}-${deviceIdResult.deviceId}.csv"
-            csvFilePath = filePath
-
-            itemConverter.convertToCsvFile(filePath, items)
+            externalStorageDir?.let { externalStorageDir ->
+                "$externalStorageDir/${it.rawData().manufacturerName}-${it.rawData().modelName}-${deviceIdResult.deviceId}.csv"
+                csvFilePath = externalStorageDir
+                itemConverter.convertToCsvFile(externalStorageDir, items)
+            }
         }
     }
 

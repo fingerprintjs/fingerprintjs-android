@@ -16,7 +16,7 @@ interface MemInfoProvider {
 class MemInfoProviderImpl(
     private val activityManager: ActivityManager,
     private val internalStorageStats: StatFs,
-    private val externalStorageStats: StatFs
+    private val externalStorageStats: StatFs?
 ) : MemInfoProvider {
     override fun totalRAM(): Long {
         return executeSafe(
@@ -39,9 +39,12 @@ class MemInfoProviderImpl(
     override fun totalExternalStorageSpace(): Long {
         return executeSafe(
             {
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-                    (externalStorageStats.blockSize * externalStorageStats.blockCount).toLong()
-                } else externalStorageStats.totalBytes
+                externalStorageStats?.let {
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+                        (it.blockSize * it.blockCount).toLong()
+                    } else it.totalBytes
+                } ?: 0
+
             },
             0
         )

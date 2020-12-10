@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "com.fingerprintjs.android.playground"
-        minSdkVersion 19
+        minSdkVersion 16
         //noinspection OldTargetApi
         targetSdkVersion 29
         versionCode Integer.parseInt(project.VERSION_CODE)
