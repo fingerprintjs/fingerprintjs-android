@@ -144,8 +144,9 @@ object FingerprinterFactory {
 
     private fun createMemoryInfoProvider(context: Context): MemInfoProvider {
         val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        val internalStorageStatFs = StatFs(Environment.getRootDirectory().absolutePath)
-        val externalStorageStatFs = StatFs(context.getExternalFilesDir(null)?.absolutePath!!)
+        val internalStorageDir = Environment.getRootDirectory().absolutePath
+        val internalStorageStatFs = StatFs(internalStorageDir)
+        val externalStorageStatFs = StatFs(context.getExternalFilesDir(null)?.absolutePath ?: internalStorageDir)
         return MemInfoProviderImpl(activityManager, internalStorageStatFs, externalStorageStatFs)
     }
 
