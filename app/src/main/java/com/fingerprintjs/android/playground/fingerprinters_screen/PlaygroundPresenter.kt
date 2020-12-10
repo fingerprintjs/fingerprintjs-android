@@ -88,9 +88,9 @@ class PlaygroundPresenterImpl(
 
         fingerprintResult.getSignalProvider(HardwareSignalProvider::class.java)?.let {
             externalStorageDir?.let { externalStorageDir ->
-                "$externalStorageDir/${it.rawData().manufacturerName}-${it.rawData().modelName}-${deviceIdResult.deviceId}.csv"
-                csvFilePath = externalStorageDir
-                itemConverter.convertToCsvFile(externalStorageDir, items)
+                val csvFilePath = "$externalStorageDir/${it.rawData().manufacturerName}-${it.rawData().modelName}-${deviceIdResult.deviceId}.csv"
+                this.csvFilePath = csvFilePath
+                itemConverter.convertToCsvFile(csvFilePath, items)
             }
         }
     }
