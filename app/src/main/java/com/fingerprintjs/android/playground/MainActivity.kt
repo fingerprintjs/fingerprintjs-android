@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         val fingerprinter =
                 FingerprinterFactory.getInstance(applicationContext, Configuration(version = DEFAULT_FINGERPRINTER_VERSION))
         val presenterState: Parcelable? = state?.getParcelable(PLAYGROUND_PRESENTER_STATE_KEY)
-        val externalStorageDir = applicationContext.getExternalFilesDir(null)!!.absolutePath
+        val externalStorageDir = applicationContext.getExternalFilesDir(null)?.absolutePath
         presenter =
                 PlaygroundPresenterImpl(
                         fingerprinter, externalStorageDir, presenterState
