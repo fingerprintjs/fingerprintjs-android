@@ -6,9 +6,7 @@
     <string name="checkbox_installed_applications_fingerprint_text">Installed applications fingerprint</string>
     <string name="custom_fingerprint_heading">Device fingerprint:</string>
     <string name="about_ok_button_text">Got it</string>
-    <string name="about_text">The application shows you all the features of the Fingerprint-Android library.\n\nThere is a few signal providers, and public method, that allows you to calculate custom fingerprint from existing.
-\n\nBy changing the list of fingerprinters, you can make a fingerprint that works for your requirements of stability and uniqueness.
-    </string>
+    <string name="about_text">The application shows you all the features of the Fingerprint-Android library. There are a few signal providers and deviceId providers with all their underlying data, and public method, that allows you to calculate a custom fingerprint.\n\nBy changing the list of signal-providers, you can make a fingerprint that works for your requirements of stability and uniqueness.\n\nWhen you share raw data via mailing apps, the address of developers substitutes automatically. This is for developers\' convenience in the testing process. If you would like to share your results with developers - you are welcome. It will help improve the quality of the library.</string>
     <string name="about_dialog_title">About</string>
     <string name="share_via_email_title">Send data to developers?</string>
     <string name="share_via_email_text">Would you like to share the data with developers to improve quality of the library?</string>
