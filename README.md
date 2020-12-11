@@ -287,12 +287,12 @@ v2Fingerprinter.getFingerprint { fingerprintResult ->
 
 ## Playground App
 
-Try all the library features in the [Playground App](https://github.com/fingerprintjs/fingerprint-android/releases/download/1.0.1/Playground-release-1.0.1.apk).
+Try all the library features in the [Playground App](https://github.com/fingerprintjs/fingerprint-android/releases/download/1.0.2/Playground-release-1.0.2.apk).
 
 
 <p align="center">
-  <a href="https://github.com/fingerprintjs/fingerprint-android/releases/download/1.0.1/Playground-release-1.0.1.apk">
-    <img src="resources/playground-1.0.1-QR.png" alt="PlaygroundApp" width="300px" />
+  <a href="https://github.com/fingerprintjs/fingerprint-android/releases/download/1.0.2/Playground-release-1.0.2.apk">
+    <img src="resources/playground-1.0.2-QR.png" alt="PlaygroundApp" width="300px" />
    </a>
 </p>			
 
