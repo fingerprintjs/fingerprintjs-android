@@ -4,7 +4,6 @@ package com.fingerprintjs.android.playground
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.os.Parcelable
 import android.os.PersistableBundle
 import android.view.Menu
@@ -28,9 +27,9 @@ class MainActivity : AppCompatActivity() {
 
         init(savedInstanceState)
         presenter.attachView(
-            PlaygroundViewImpl(
-                this
-            )
+                PlaygroundViewImpl(
+                        this
+                )
         )
         supportActionBar?.apply {
             title = "${this.title}-${BuildConfig.VERSION_NAME}"
@@ -43,16 +42,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun init(state: Bundle?) {
         val fingerprinter =
-            FingerprinterFactory.getInstance(
-                applicationContext,
-                Configuration(version = DEFAULT_FINGERPRINTER_VERSION)
-            )
+                FingerprinterFactory.getInstance(
+                        applicationContext,
+                        Configuration(version = DEFAULT_FINGERPRINTER_VERSION)
+                )
         val presenterState: Parcelable? = state?.getParcelable(PLAYGROUND_PRESENTER_STATE_KEY)
         val externalStorageDir = applicationContext.getExternalFilesDir(null)?.absolutePath
         presenter =
-            PlaygroundPresenterImpl(
-                fingerprinter, DEFAULT_FINGERPRINTER_VERSION,  externalStorageDir, presenterState
-            )
+                PlaygroundPresenterImpl(
+                        fingerprinter, DEFAULT_FINGERPRINTER_VERSION, externalStorageDir, presenterState
+                )
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -74,9 +73,9 @@ class MainActivity : AppCompatActivity() {
     private fun shareActionClicked(path: String) {
         val uri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", File(path))
         val sendEmailIntent = Intent(
-            Intent.ACTION_SEND, Uri.fromParts(
+                Intent.ACTION_SEND, Uri.fromParts(
                 "mailto", "", null
-            )
+        )
         ).apply {
             type = "message/rfc822"
             putExtra(Intent.EXTRA_EMAIL, arrayOf(DEVELOPERS_EMAIL))
@@ -92,4 +91,3 @@ class MainActivity : AppCompatActivity() {
 
 private const val PLAYGROUND_PRESENTER_STATE_KEY = "PlaygroundPresenterState"
 private const val DEVELOPERS_EMAIL = "android@fingerprintjs.com"
-private const val DELAY_IN_MILLIS = 500L
