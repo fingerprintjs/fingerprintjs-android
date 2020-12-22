@@ -1,5 +1,6 @@
 package com.fingerprintjs.android.fingerprint.datasources
 
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
 
@@ -15,6 +16,7 @@ data class PackageInfo(
 class PackageManagerDataSourceImpl(
     private val packageManager: PackageManager
 ) : PackageManagerDataSource {
+    @SuppressLint("QueryPermissionsNeeded")
     override fun getApplicationsList(): List<PackageInfo> {
         return executeSafe(
             {
