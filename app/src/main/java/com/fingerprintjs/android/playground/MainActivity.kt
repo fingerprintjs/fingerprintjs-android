@@ -4,6 +4,7 @@ package com.fingerprintjs.android.playground
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.os.Parcelable
 import android.os.PersistableBundle
 import android.view.Menu
@@ -31,6 +32,9 @@ class MainActivity : AppCompatActivity() {
                 this
             )
         )
+        supportActionBar?.apply {
+            title = "${this.title}-${BuildConfig.VERSION_NAME}"
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
@@ -47,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         val externalStorageDir = applicationContext.getExternalFilesDir(null)?.absolutePath
         presenter =
             PlaygroundPresenterImpl(
-                fingerprinter, externalStorageDir, presenterState
+                fingerprinter, DEFAULT_FINGERPRINTER_VERSION,  externalStorageDir, presenterState
             )
     }
 
@@ -83,10 +87,9 @@ class MainActivity : AppCompatActivity() {
         if (sendEmailIntent.resolveActivity(packageManager) != null) {
             startActivity(sendEmailIntent)
         }
-
-
     }
 }
 
 private const val PLAYGROUND_PRESENTER_STATE_KEY = "PlaygroundPresenterState"
 private const val DEVELOPERS_EMAIL = "android@fingerprintjs.com"
+private const val DELAY_IN_MILLIS = 500L

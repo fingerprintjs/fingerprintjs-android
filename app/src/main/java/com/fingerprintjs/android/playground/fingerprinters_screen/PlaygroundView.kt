@@ -20,6 +20,8 @@ interface PlaygroundView {
         enabledFingerprintTypes: List<Int>? = null
     )
 
+    fun setFingerprinterVersion(version: Int)
+
     fun setOnCustomFingerprintChangedListener(listener: ((Int) -> (Unit))?)
 }
 
@@ -31,6 +33,8 @@ class PlaygroundViewImpl(
     private val dataset = LinkedList<FingerprinterItem>()
     private val adapter = FingerprintItemAdapter(dataset)
 
+    private val customFingerprintHeadingText: TextView =
+        activity.findViewById(R.id.custom_fingerprinter_heading)
     private val customFingerprintValueText: TextView =
         activity.findViewById(R.id.custom_fingerprinter_value)
     private val hardwareFingerprintCheckbox: CheckBox =
@@ -41,6 +45,7 @@ class PlaygroundViewImpl(
         activity.findViewById(R.id.checkbox_device_state_fingerprint)
     private val installedAppsFingerprintCheckbox: CheckBox =
         activity.findViewById(R.id.checkbox_installed_applications_fingerprint)
+
 
     private var checkboxChangedListener: ((Int) -> (Unit))? = null
 
@@ -73,6 +78,12 @@ class PlaygroundViewImpl(
             )
         }
     }
+
+    override fun setFingerprinterVersion(version: Int) {
+        customFingerprintHeadingText.text =
+            activity.resources.getString(R.string.custom_fingerprint_heading, version.toString())
+    }
+
 
     override fun setFingerprintItems(items: List<FingerprinterItem>) {
         activity.runOnUiThread {

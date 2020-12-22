@@ -21,6 +21,7 @@ interface PlaygroundPresenter {
 
 class PlaygroundPresenterImpl(
         private val fingerprinter: Fingerprinter,
+        private val fingerprinterVersion: Int,
         private val externalStorageDir: String?,
         state: Parcelable?
 ) : PlaygroundPresenter {
@@ -43,6 +44,7 @@ class PlaygroundPresenterImpl(
     override fun attachView(playgroundView: PlaygroundView) {
         view = playgroundView
         setupCustomFingerprint(playgroundView)
+        view?.setFingerprinterVersion(fingerprinterVersion)
         fingerprinter.getDeviceId { deviceIdResult ->
             fingerprinter.getFingerprint { fingerprintResult ->
                 val adapterItems = items ?: itemConverter.convert(

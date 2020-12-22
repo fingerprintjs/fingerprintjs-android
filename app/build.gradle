@@ -52,8 +52,8 @@ android {
 }
 
 dependencies {
-    debugImplementation fileTree(dir: "../fingerprint/build/outputs/aar/", include: ["*debug.aar"])
-    releaseImplementation fileTree(dir: "../fingerprint/build/outputs/aar/", include: ["*release.aar"])
+    debugImplementation fileTree(dir: "../fingerprint/build/outputs/aar/", include: ["*$project.VERSION_NAME-debug.aar"])
+    releaseImplementation fileTree(dir: "../fingerprint/build/outputs/aar/", include: ["*$project.VERSION_NAME-release.aar"])
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
