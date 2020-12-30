@@ -1,6 +1,9 @@
 package com.fingerprintjs.android.fingerprint.signal_providers.hardware
 
 
+import com.fingerprintjs.android.fingerprint.datasources.BatteryInfoDataSource
+import com.fingerprintjs.android.fingerprint.datasources.CameraInfoProvider
+import com.fingerprintjs.android.fingerprint.datasources.CodecInfoProvider
 import com.fingerprintjs.android.fingerprint.datasources.CpuInfoProvider
 import com.fingerprintjs.android.fingerprint.datasources.InputDeviceDataSource
 import com.fingerprintjs.android.fingerprint.datasources.MemInfoProvider
@@ -11,32 +14,40 @@ import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 
 
 class HardwareSignalProvider(
-    cpuInfoProvider: CpuInfoProvider,
-    memInfoProvider: MemInfoProvider,
-    osBuildInfoProvider: OsBuildInfoProvider,
-    sensorsDataSource: SensorDataSource,
-    inputDeviceDataSource: InputDeviceDataSource,
-    private val hasher: Hasher,
-    version: Int
+        cpuInfoProvider: CpuInfoProvider,
+        memInfoProvider: MemInfoProvider,
+        osBuildInfoProvider: OsBuildInfoProvider,
+        sensorsDataSource: SensorDataSource,
+        inputDeviceDataSource: InputDeviceDataSource,
+        batteryInfoDataSource: BatteryInfoDataSource,
+        cameraInfoProvider: CameraInfoProvider,
+        codecInfoProvider: CodecInfoProvider?,
+        private val hasher: Hasher,
+        version: Int
 ) : SignalProvider<HardwareFingerprintRawData>(
-    version
+        version
 ) {
     private val rawData =
-        HardwareFingerprintRawData(
-            osBuildInfoProvider.manufacturerName(),
-            osBuildInfoProvider.modelName(),
-            memInfoProvider.totalRAM(),
-            memInfoProvider.totalInternalStorageSpace(),
-            cpuInfoProvider.cpuInfo(),
-            sensorsDataSource.sensors(),
-            inputDeviceDataSource.getInputDeviceData()
-        )
+            HardwareFingerprintRawData(
+                    osBuildInfoProvider.manufacturerName(),
+                    osBuildInfoProvider.modelName(),
+                    memInfoProvider.totalRAM(),
+                    memInfoProvider.totalInternalStorageSpace(),
+                    cpuInfoProvider.cpuInfo(),
+                    sensorsDataSource.sensors(),
+                    inputDeviceDataSource.getInputDeviceData(),
+                    batteryInfoDataSource.batteryHealth(),
+                    batteryInfoDataSource.batteryTotalCapacity(),
+                    cameraInfoProvider.getCameraInfo(),
+                    codecInfoProvider?.codecsList() ?: emptyList()
+            )
 
     override fun fingerprint(): String {
-        return when (version) {
+        return hasher.hash(when (version) {
             1 -> v1()
-            else -> v1()
-        }
+            2 -> v2()
+            else -> v2()
+        })
     }
 
     private fun v1(): String {
@@ -57,7 +68,28 @@ class HardwareSignalProvider(
             sb.append(it.name).append(it.vendor)
         }
 
-        return hasher.hash(sb.toString())
+        return sb.toString()
+    }
+
+    private fun v2(): String {
+        val sb = StringBuilder()
+        sb.append(v1())
+
+        sb.append(rawData.batteryFullCapacity)
+        sb.append(rawData.batteryHealth)
+
+        rawData.cameraList.forEach {
+            sb.append(it.cameraName).append(it.cameraType).append(it.cameraOrientation)
+        }
+
+        rawData.codecList.forEach {
+            sb.append(it.name)
+            it.capabilities.forEach { capability ->
+                sb.append(capability)
+            }
+        }
+
+        return sb.toString()
     }
 
     override fun rawData() = rawData
