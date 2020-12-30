@@ -17,6 +17,5 @@ data class HardwareFingerprintRawData(
         val inputDevices: List<InputDeviceData>,
         val batteryHealth: String,
         val batteryFullCapacity: String,
-        val cameraList: List<CameraInfo>,
-        val codecList: List<MediaCodecInfo>
+        val cameraList: List<CameraInfo>
 )

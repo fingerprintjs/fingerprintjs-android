@@ -60,8 +60,8 @@ object FingerprinterFactory {
 
     @JvmStatic
     fun getInstance(
-            context: Context,
-            configuration: Configuration
+        context: Context,
+        configuration: Configuration
     ): Fingerprinter {
         if (this.configuration != configuration) {
             instance = null
@@ -79,19 +79,19 @@ object FingerprinterFactory {
     }
 
     private fun initializeFingerprinter(
-            context: Context,
-            configuration: Configuration
+        context: Context,
+        configuration: Configuration
     ): Fingerprinter {
         this.configuration = configuration
         this.hasher = configuration.hasher
 
         return FingerprinterImpl(
-                createHardwareFingerprinter(context),
-                createOsBuildInfoFingerprinter(),
-                createDeviceIdProvider(context),
-                createInstalledApplicationsFingerprinter(context),
-                createDeviceStateFingerprinter(context),
-                configuration
+            createHardwareFingerprinter(context),
+            createOsBuildInfoFingerprinter(),
+            createDeviceIdProvider(context),
+            createInstalledApplicationsFingerprinter(context),
+            createDeviceStateFingerprinter(context),
+            configuration
         )
     }
 
@@ -99,50 +99,50 @@ object FingerprinterFactory {
 
     private fun createHardwareFingerprinter(context: Context): HardwareSignalProvider {
         return HardwareSignalProvider(
-                createCpuInfoProvider(),
-                createMemoryInfoProvider(context),
-                createOsBuildInfoProvider(),
-                createSensorDataSource(context),
-                createInputDevicesDataSource(context),
-                createBatteryInfoDataSource(context),
-                createCameraInfoProvider(context),
-                createCodecInfoProvider(),
-                hasher,
-                configuration.version
+            createCpuInfoProvider(),
+            createMemoryInfoProvider(context),
+            createOsBuildInfoProvider(),
+            createSensorDataSource(context),
+            createInputDevicesDataSource(context),
+            createBatteryInfoDataSource(context),
+            createCameraInfoProvider(context),
+            hasher,
+            configuration.version
         )
     }
 
     private fun createOsBuildInfoFingerprinter(): OsBuildSignalProvider {
         return OsBuildSignalProvider(
-                createOsBuildInfoProvider(),
-                hasher,
-                configuration.version
+            createOsBuildInfoProvider(),
+            createCodecInfoProvider(),
+            hasher,
+            configuration.version
         )
     }
 
     private fun createInstalledApplicationsFingerprinter(context: Context): InstalledAppsSignalProvider {
         return InstalledAppsSignalProvider(
-                createPackageManagerDataSource(context),
-                hasher,
-                configuration.version
+            createPackageManagerDataSource(context),
+            hasher,
+            configuration.version
         )
     }
 
     private fun createDeviceStateFingerprinter(context: Context): DeviceStateSignalProvider {
         return DeviceStateSignalProvider(
-                createSettingsDataSource(context),
-                createDevicePersonalizationDataSource(context),
-                createKeyGuardInfoProvider(context),
-                createFingerprintSensorStatusProvider(context),
-                hasher,
-                configuration.version
+            createSettingsDataSource(context),
+            createDevicePersonalizationDataSource(context),
+            createKeyGuardInfoProvider(context),
+            createFingerprintSensorStatusProvider(context),
+            hasher,
+            configuration.version
         )
     }
 
     private fun createDeviceIdProvider(context: Context): DeviceIdProvider {
         return DeviceIdProviderImpl(
-                createGsfIdProvider(context),
-                createAndroidIdProvider(context)
+            createGsfIdProvider(context),
+            createAndroidIdProvider(context)
         )
     }
 
@@ -159,7 +159,8 @@ object FingerprinterFactory {
         val internalStorageStatFs = StatFs(internalStorageDir)
 
         val externalStorageDir = context.getExternalFilesDir(null)?.absolutePath
-        val externalStorageStatFs = if (externalStorageDir != null) StatFs(externalStorageDir) else null
+        val externalStorageStatFs =
+            if (externalStorageDir != null) StatFs(externalStorageDir) else null
 
         return MemInfoProviderImpl(activityManager, internalStorageStatFs, externalStorageStatFs)
     }
@@ -178,19 +179,19 @@ object FingerprinterFactory {
 
     private fun createSensorDataSource(context: Context): SensorDataSource {
         return SensorDataSourceImpl(
-                context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+            context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         )
     }
 
     private fun createInputDevicesDataSource(context: Context): InputDeviceDataSource {
         return InputDevicesDataSourceImpl(
-                context.getSystemService(Context.INPUT_SERVICE) as InputManager
+            context.getSystemService(Context.INPUT_SERVICE) as InputManager
         )
     }
 
     private fun createPackageManagerDataSource(context: Context): PackageManagerDataSource {
         return PackageManagerDataSourceImpl(
-                context.packageManager
+            context.packageManager
         )
     }
 
@@ -201,27 +202,27 @@ object FingerprinterFactory {
 
     private fun createDevicePersonalizationDataSource(context: Context): DevicePersonalizationDataSource {
         return DevicePersonalizationDataSourceImpl(
-                RingtoneManager(context),
-                context.assets
+            RingtoneManager(context),
+            context.assets
         )
     }
 
     private fun createFingerprintSensorStatusProvider(context: Context): FingerprintSensorInfoProvider {
         return FingerprintSensorInfoProviderImpl(
-                FingerprintManagerCompat.from(context)
+            FingerprintManagerCompat.from(context)
         )
     }
 
     private fun createKeyGuardInfoProvider(context: Context): KeyGuardInfoProvider {
         return KeyGuardInfoProviderImpl(
-                context.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+            context.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
         )
     }
 
     private fun createCodecInfoProvider(): CodecInfoProvider? {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             CodecInfoProviderImpl(
-                    MediaCodecList(MediaCodecList.ALL_CODECS)
+                MediaCodecList(MediaCodecList.ALL_CODECS)
             )
         } else {
             null
