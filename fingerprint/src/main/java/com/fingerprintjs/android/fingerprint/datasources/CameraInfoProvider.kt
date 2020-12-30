@@ -17,7 +17,6 @@ interface CameraInfoProvider {
 }
 
 class CameraInfoProviderImpl(
-        private val camera: Camera
 ) : CameraInfoProvider {
     override fun getCameraInfo(): List<CameraInfo> {
         return executeSafe({ extractInfo() }, emptyList())
