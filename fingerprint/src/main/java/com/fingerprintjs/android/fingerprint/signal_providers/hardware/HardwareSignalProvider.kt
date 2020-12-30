@@ -21,7 +21,6 @@ class HardwareSignalProvider(
         inputDeviceDataSource: InputDeviceDataSource,
         batteryInfoDataSource: BatteryInfoDataSource,
         cameraInfoProvider: CameraInfoProvider,
-        codecInfoProvider: CodecInfoProvider?,
         private val hasher: Hasher,
         version: Int
 ) : SignalProvider<HardwareFingerprintRawData>(
@@ -38,8 +37,7 @@ class HardwareSignalProvider(
                     inputDeviceDataSource.getInputDeviceData(),
                     batteryInfoDataSource.batteryHealth(),
                     batteryInfoDataSource.batteryTotalCapacity(),
-                    cameraInfoProvider.getCameraInfo(),
-                    codecInfoProvider?.codecsList() ?: emptyList()
+                    cameraInfoProvider.getCameraInfo()
             )
 
     override fun fingerprint(): String {
@@ -80,13 +78,6 @@ class HardwareSignalProvider(
 
         rawData.cameraList.forEach {
             sb.append(it.cameraName).append(it.cameraType).append(it.cameraOrientation)
-        }
-
-        rawData.codecList.forEach {
-            sb.append(it.name)
-            it.capabilities.forEach { capability ->
-                sb.append(capability)
-            }
         }
 
         return sb.toString()
