@@ -1,4 +1,4 @@
-package com.fingerprintjs.android.fingerprint.datasources
+package com.fingerprintjs.android.fingerprint.info_providers
 
 
 import android.hardware.Sensor
@@ -22,7 +22,10 @@ class SensorDataSourceImpl(
         return executeSafe(
             {
                 sensorManager.getSensorList(Sensor.TYPE_ALL).map {
-                    SensorData(it.name, it.vendor)
+                    SensorData(
+                        it.name,
+                        it.vendor
+                    )
                 }
             }, emptyList()
         )

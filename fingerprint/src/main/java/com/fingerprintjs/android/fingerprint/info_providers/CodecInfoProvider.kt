@@ -1,4 +1,4 @@
-package com.fingerprintjs.android.fingerprint.datasources
+package com.fingerprintjs.android.fingerprint.info_providers
 
 
 import android.media.MediaCodecList
@@ -29,8 +29,8 @@ class CodecInfoProviderImpl(
 
         return codecList.codecInfos.map {
             MediaCodecInfo(
-                    it.name,
-                    it.supportedTypes.toList()
+                it.name,
+                it.supportedTypes.toList()
             )
         }
     }

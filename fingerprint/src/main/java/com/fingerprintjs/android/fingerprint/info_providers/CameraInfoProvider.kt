@@ -1,4 +1,4 @@
-package com.fingerprintjs.android.fingerprint.datasources
+package com.fingerprintjs.android.fingerprint.info_providers
 
 
 import android.hardware.Camera
@@ -32,7 +32,13 @@ class CameraInfoProviderImpl(
             Camera.getCameraInfo(i, info)
             val type = info.facing.toString()
             val orientation = info.orientation.toString()
-            result.add(CameraInfo(i.toString(), type, orientation))
+            result.add(
+                CameraInfo(
+                    i.toString(),
+                    type,
+                    orientation
+                )
+            )
         }
 
         return result

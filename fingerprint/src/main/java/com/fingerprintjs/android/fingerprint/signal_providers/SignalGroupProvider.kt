@@ -1,14 +1,14 @@
 package com.fingerprintjs.android.fingerprint.signal_providers
 
 
-abstract class SignalProvider<T> (
+abstract class SignalGroupProvider<T>(
     val version: Int
 ) {
     abstract fun fingerprint(): String
     abstract fun rawData(): T
 }
 
-object SignalProviderType {
+object SignalGroupProviderType {
     @JvmField
     val HARDWARE = 1
 

@@ -2,21 +2,21 @@ package com.fingerprintjs.android.fingerprint
 
 
 import com.fingerprintjs.android.fingerprint.device_id_providers.DeviceIdProvider
-import com.fingerprintjs.android.fingerprint.signal_providers.SignalProviderType
-import com.fingerprintjs.android.fingerprint.signal_providers.device_state.DeviceStateSignalProvider
-import com.fingerprintjs.android.fingerprint.signal_providers.hardware.HardwareSignalProvider
-import com.fingerprintjs.android.fingerprint.signal_providers.installed_apps.InstalledAppsSignalProvider
-import com.fingerprintjs.android.fingerprint.signal_providers.os_build.OsBuildSignalProvider
+import com.fingerprintjs.android.fingerprint.signal_providers.SignalGroupProviderType
+import com.fingerprintjs.android.fingerprint.signal_providers.device_state.DeviceStateSignalGroupProvider
+import com.fingerprintjs.android.fingerprint.signal_providers.hardware.HardwareSignalGroupProvider
+import com.fingerprintjs.android.fingerprint.signal_providers.installed_apps.InstalledAppsSignalGroupProvider
+import com.fingerprintjs.android.fingerprint.signal_providers.os_build.OsBuildSignalGroupProvider
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 
 internal class FingerprinterImpl(
-    private val hardwareSignalProvider: HardwareSignalProvider,
-    private val osBuildSignalProvider: OsBuildSignalProvider,
+    private val hardwareSignalProvider: HardwareSignalGroupProvider,
+    private val osBuildSignalProvider: OsBuildSignalGroupProvider,
     private val deviceIdProvider: DeviceIdProvider,
-    private val installedAppsSignalProvider: InstalledAppsSignalProvider,
-    private val deviceStateSignalProvider: DeviceStateSignalProvider,
+    private val installedAppsSignalProvider: InstalledAppsSignalGroupProvider,
+    private val deviceStateSignalProvider: DeviceStateSignalGroupProvider,
     private val configuration: Configuration
 ) : Fingerprinter {
 
@@ -55,16 +55,16 @@ internal class FingerprinterImpl(
         executor.execute {
             val fingerprintSb = StringBuilder()
 
-            if (signalProvidersMask and SignalProviderType.HARDWARE != 0) {
+            if (signalProvidersMask and SignalGroupProviderType.HARDWARE != 0) {
                 fingerprintSb.append(hardwareSignalProvider.fingerprint())
             }
-            if (signalProvidersMask and SignalProviderType.OS_BUILD != 0) {
+            if (signalProvidersMask and SignalGroupProviderType.OS_BUILD != 0) {
                 fingerprintSb.append(osBuildSignalProvider.fingerprint())
             }
-            if (signalProvidersMask and SignalProviderType.DEVICE_STATE != 0) {
+            if (signalProvidersMask and SignalGroupProviderType.DEVICE_STATE != 0) {
                 fingerprintSb.append(deviceStateSignalProvider.fingerprint())
             }
-            if (signalProvidersMask and SignalProviderType.INSTALLED_APPS != 0) {
+            if (signalProvidersMask and SignalGroupProviderType.INSTALLED_APPS != 0) {
                 fingerprintSb.append(installedAppsSignalProvider.fingerprint())
             }
 
@@ -74,10 +74,10 @@ internal class FingerprinterImpl(
                 @Suppress("UNCHECKED_CAST")
                 override fun <T> getSignalProvider(clazz: Class<T>): T? {
                     return when (clazz) {
-                        HardwareSignalProvider::class.java -> hardwareSignalProvider
-                        OsBuildSignalProvider::class.java -> osBuildSignalProvider
-                        DeviceStateSignalProvider::class.java -> deviceStateSignalProvider
-                        InstalledAppsSignalProvider::class.java -> installedAppsSignalProvider
+                        HardwareSignalGroupProvider::class.java -> hardwareSignalProvider
+                        OsBuildSignalGroupProvider::class.java -> osBuildSignalProvider
+                        DeviceStateSignalGroupProvider::class.java -> deviceStateSignalProvider
+                        InstalledAppsSignalGroupProvider::class.java -> installedAppsSignalProvider
                         else -> null
                     } as? T
                 }
@@ -89,4 +89,4 @@ internal class FingerprinterImpl(
 }
 
 private val DEFAULT_MASK =
-    SignalProviderType.HARDWARE or SignalProviderType.OS_BUILD or SignalProviderType.DEVICE_STATE
+    SignalGroupProviderType.HARDWARE or SignalGroupProviderType.OS_BUILD or SignalGroupProviderType.DEVICE_STATE
