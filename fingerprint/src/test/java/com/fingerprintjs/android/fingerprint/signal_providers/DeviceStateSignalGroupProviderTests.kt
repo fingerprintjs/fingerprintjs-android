@@ -1,19 +1,20 @@
 package com.fingerprintjs.android.fingerprint.signal_providers
 
-import com.fingerprintjs.android.fingerprint.datasources.DevicePersonalizationDataSource
-import com.fingerprintjs.android.fingerprint.datasources.FingerprintSensorInfoProvider
-import com.fingerprintjs.android.fingerprint.datasources.FingerprintSensorStatus
-import com.fingerprintjs.android.fingerprint.datasources.KeyGuardInfoProvider
-import com.fingerprintjs.android.fingerprint.datasources.SettingsDataSource
-import com.fingerprintjs.android.fingerprint.signal_providers.device_state.DeviceStateSignalProvider
+import com.fingerprintjs.android.fingerprint.info_providers.DevicePersonalizationDataSource
+import com.fingerprintjs.android.fingerprint.info_providers.FingerprintSensorInfoProvider
+import com.fingerprintjs.android.fingerprint.info_providers.FingerprintSensorStatus
+import com.fingerprintjs.android.fingerprint.info_providers.KeyGuardInfoProvider
+import com.fingerprintjs.android.fingerprint.info_providers.SettingsDataSource
+import com.fingerprintjs.android.fingerprint.signal_providers.device_state.DeviceStateSignalGroupProvider
 import com.fingerprintjs.android.fingerprint.tools.hashers.EmptyHasher
 import junit.framework.Assert.assertEquals
 import org.junit.Test
 
-class DeviceStateSignalProviderTests {
+class DeviceStateSignalGroupProviderTests {
     @Test
     fun `DeviceStateFingerprinter v1 - success`() {
-        val settingsDataSource = object : SettingsDataSource {
+        val settingsDataSource = object :
+            SettingsDataSource {
             override fun adbEnabled() = "adbEnabled"
             override fun developmentSettingsEnabled() = "developmentSettingsEnabled"
             override fun httpProxy() = "httpProxy"
@@ -34,21 +35,24 @@ class DeviceStateSignalProviderTests {
             override fun time12Or24() = "time12Or24"
         }
 
-        val devicePersonalizationDataSource = object : DevicePersonalizationDataSource {
+        val devicePersonalizationDataSource = object :
+            DevicePersonalizationDataSource {
             override fun ringtoneSource() = "HotelCalifornia"
             override fun availableLocales() = arrayOf("EN-US", "RU-ru")
         }
 
-        val keyGuardInfoProvider = object : KeyGuardInfoProvider {
+        val keyGuardInfoProvider = object :
+            KeyGuardInfoProvider {
             override fun isPinSecurityEnabled() = true
         }
 
-        val fingerprintSensorInfoProvider = object : FingerprintSensorInfoProvider {
+        val fingerprintSensorInfoProvider = object :
+            FingerprintSensorInfoProvider {
             override fun getStatus() = FingerprintSensorStatus.SUPPORTED
         }
 
         val fingerprinter =
-            DeviceStateSignalProvider(
+            DeviceStateSignalGroupProvider(
                 settingsDataSource,
                 devicePersonalizationDataSource,
                 keyGuardInfoProvider,

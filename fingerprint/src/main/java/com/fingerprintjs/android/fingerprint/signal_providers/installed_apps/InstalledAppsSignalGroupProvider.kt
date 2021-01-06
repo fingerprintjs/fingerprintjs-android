@@ -1,16 +1,16 @@
 package com.fingerprintjs.android.fingerprint.signal_providers.installed_apps
 
 
-import com.fingerprintjs.android.fingerprint.datasources.PackageManagerDataSource
-import com.fingerprintjs.android.fingerprint.signal_providers.SignalProvider
+import com.fingerprintjs.android.fingerprint.info_providers.PackageManagerDataSource
+import com.fingerprintjs.android.fingerprint.signal_providers.SignalGroupProvider
 import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 
 
-class InstalledAppsSignalProvider(
+class InstalledAppsSignalGroupProvider(
     packageManagerDataSource: PackageManagerDataSource,
     private val hasher: Hasher,
     version: Int
-) : SignalProvider<InstalledAppsRawData>(version) {
+) : SignalGroupProvider<InstalledAppsRawData>(version) {
 
     private val rawData =
         InstalledAppsRawData(

@@ -1,4 +1,4 @@
-package com.fingerprintjs.android.fingerprint.datasources
+package com.fingerprintjs.android.fingerprint.info_providers
 
 
 import android.os.Build
@@ -14,7 +14,8 @@ interface OsBuildInfoProvider {
     fun fingerprint(): String
 }
 
-class OsBuildInfoProviderImpl : OsBuildInfoProvider {
+class OsBuildInfoProviderImpl :
+    OsBuildInfoProvider {
     override fun modelName(): String {
         return executeSafe({ Build.MODEL }, "")
     }

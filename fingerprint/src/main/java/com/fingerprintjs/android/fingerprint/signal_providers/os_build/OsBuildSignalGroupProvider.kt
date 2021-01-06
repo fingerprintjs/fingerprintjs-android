@@ -1,18 +1,18 @@
 package com.fingerprintjs.android.fingerprint.signal_providers.os_build
 
 
-import com.fingerprintjs.android.fingerprint.datasources.CodecInfoProvider
-import com.fingerprintjs.android.fingerprint.datasources.OsBuildInfoProvider
-import com.fingerprintjs.android.fingerprint.signal_providers.SignalProvider
+import com.fingerprintjs.android.fingerprint.info_providers.CodecInfoProvider
+import com.fingerprintjs.android.fingerprint.info_providers.OsBuildInfoProvider
+import com.fingerprintjs.android.fingerprint.signal_providers.SignalGroupProvider
 import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 
 
-class OsBuildSignalProvider(
+class OsBuildSignalGroupProvider(
     osBuildInfoProvider: OsBuildInfoProvider,
     codecInfoProvider: CodecInfoProvider?,
     private val hasher: Hasher,
     version: Int
-) : SignalProvider<OsBuildRawData>(version) {
+) : SignalGroupProvider<OsBuildRawData>(version) {
 
     private val rawData =
         OsBuildRawData(

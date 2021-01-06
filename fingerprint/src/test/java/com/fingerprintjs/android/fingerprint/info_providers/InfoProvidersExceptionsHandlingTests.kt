@@ -1,4 +1,4 @@
-package com.fingerprintjs.android.fingerprint.datasources
+package com.fingerprintjs.android.fingerprint.info_providers
 
 
 import com.fingerprintjs.android.fingerprint.device_id_providers.AndroidIdProvider
@@ -10,20 +10,22 @@ import junit.framework.Assert.assertNotNull
 import org.junit.Test
 
 // Check that there is no unhandled exceptions. Calling mock methods produces NPE.
-class DatasourcesExceptionsHandlingTests {
+class InfoProvidersExceptionsHandlingTests {
     @Test
     fun `CPUInfo provider crash free`() {
-        val cpuInfoProvider = CpuInfoProviderImpl()
+        val cpuInfoProvider =
+            CpuInfoProviderImpl()
         assertNotNull(cpuInfoProvider.cpuInfo().size)
     }
 
     @Test
     fun `Memory Info provider crash free`() {
-        val memInfoProvider = MemInfoProviderImpl(
-            mock(),
-            mock(),
-            mock()
-        )
+        val memInfoProvider =
+            MemInfoProviderImpl(
+                mock(),
+                mock(),
+                mock()
+            )
 
         assertEquals(0, memInfoProvider.totalRAM())
         assertEquals(0, memInfoProvider.totalExternalStorageSpace())
@@ -32,49 +34,57 @@ class DatasourcesExceptionsHandlingTests {
 
     @Test
     fun `DevicePersonalizationDataSource crash free`() {
-        val devicePersonalizationDataSource = DevicePersonalizationDataSourceImpl(
-            mock(),
-            mock()
-        )
+        val devicePersonalizationDataSource =
+            DevicePersonalizationDataSourceImpl(
+                mock(),
+                mock()
+            )
         assertEquals("", devicePersonalizationDataSource.ringtoneSource())
         assertEquals(0, devicePersonalizationDataSource.availableLocales().size)
     }
 
     @Test
     fun `InputDeviceDataSource crash free`() {
-        val inputDeviceDatasource = InputDevicesDataSourceImpl(
-            mock()
-        )
+        val inputDeviceDatasource =
+            InputDevicesDataSourceImpl(
+                mock()
+            )
         assertEquals(0, inputDeviceDatasource.getInputDeviceData().size)
     }
 
     @Test
     fun `SensorsDataSource crash free`() {
-        val sensorsDataSource = SensorDataSourceImpl(
-            mock()
-        )
+        val sensorsDataSource =
+            SensorDataSourceImpl(
+                mock()
+            )
         assertEquals(0, sensorsDataSource.sensors().size)
     }
 
     @Test
     fun `PackageManager datasource crash free`() {
-        val packageManagerDataSource = PackageManagerDataSourceImpl(
-            mock()
-        )
+        val packageManagerDataSource =
+            PackageManagerDataSourceImpl(
+                mock()
+            )
         assertEquals(0, packageManagerDataSource.getApplicationsList().size)
     }
 
     @Test
     fun `KeyGuardInfoProvider datasource crash free`() {
-        val keyGuardInfoProvider = KeyGuardInfoProviderImpl(
-            mock()
-        )
+        val keyGuardInfoProvider =
+            KeyGuardInfoProviderImpl(
+                mock()
+            )
         assertEquals(false, keyGuardInfoProvider.isPinSecurityEnabled())
     }
 
     @Test
     fun `SettingsDataSource crash free`() {
-        val settingsDataSource = SettingsDataSourceImpl(mock())
+        val settingsDataSource =
+            SettingsDataSourceImpl(
+                mock()
+            )
         assertEquals("", settingsDataSource.accessibilityEnabled())
         assertEquals("", settingsDataSource.adbEnabled())
         assertEquals("", settingsDataSource.alarmAlertPath())

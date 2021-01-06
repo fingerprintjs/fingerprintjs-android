@@ -1,4 +1,4 @@
-package com.fingerprintjs.android.fingerprint.datasources
+package com.fingerprintjs.android.fingerprint.info_providers
 
 
 import android.os.Build
@@ -25,7 +25,8 @@ class FingerprintSensorInfoProviderImpl(
                 } else {
                     FingerprintSensorStatus.ENABLED
                 }
-            }, FingerprintSensorStatus.UNKNOWN
+            },
+            FingerprintSensorStatus.UNKNOWN
         )
     }
 }

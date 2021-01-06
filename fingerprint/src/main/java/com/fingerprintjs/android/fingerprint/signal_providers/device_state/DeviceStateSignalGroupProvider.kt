@@ -1,22 +1,22 @@
 package com.fingerprintjs.android.fingerprint.signal_providers.device_state
 
 
-import com.fingerprintjs.android.fingerprint.datasources.DevicePersonalizationDataSource
-import com.fingerprintjs.android.fingerprint.datasources.FingerprintSensorInfoProvider
-import com.fingerprintjs.android.fingerprint.datasources.KeyGuardInfoProvider
-import com.fingerprintjs.android.fingerprint.datasources.SettingsDataSource
-import com.fingerprintjs.android.fingerprint.signal_providers.SignalProvider
+import com.fingerprintjs.android.fingerprint.info_providers.DevicePersonalizationDataSource
+import com.fingerprintjs.android.fingerprint.info_providers.FingerprintSensorInfoProvider
+import com.fingerprintjs.android.fingerprint.info_providers.KeyGuardInfoProvider
+import com.fingerprintjs.android.fingerprint.info_providers.SettingsDataSource
+import com.fingerprintjs.android.fingerprint.signal_providers.SignalGroupProvider
 import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 
 
-class DeviceStateSignalProvider(
+class DeviceStateSignalGroupProvider(
     settingsDataSource: SettingsDataSource,
     devicePersonalizationDataSource: DevicePersonalizationDataSource,
     keyGuardInfoProvider: KeyGuardInfoProvider,
     fingerprintSensorInfoProvider: FingerprintSensorInfoProvider,
     private val hasher: Hasher,
     version: Int
-) : SignalProvider<DeviceStateRawData>(version) {
+) : SignalGroupProvider<DeviceStateRawData>(version) {
 
     private val rawData =
         DeviceStateRawData(

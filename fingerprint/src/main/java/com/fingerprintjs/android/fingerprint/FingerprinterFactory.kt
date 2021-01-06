@@ -14,40 +14,40 @@ import android.os.Build
 import android.os.Environment
 import android.os.StatFs
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
-import com.fingerprintjs.android.fingerprint.datasources.BatteryInfoDataSource
-import com.fingerprintjs.android.fingerprint.datasources.BatteryInfoDataSourceImpl
-import com.fingerprintjs.android.fingerprint.datasources.CameraInfoProvider
-import com.fingerprintjs.android.fingerprint.datasources.CameraInfoProviderImpl
-import com.fingerprintjs.android.fingerprint.datasources.CodecInfoProvider
-import com.fingerprintjs.android.fingerprint.datasources.CodecInfoProviderImpl
-import com.fingerprintjs.android.fingerprint.datasources.CpuInfoProvider
-import com.fingerprintjs.android.fingerprint.datasources.CpuInfoProviderImpl
-import com.fingerprintjs.android.fingerprint.datasources.DevicePersonalizationDataSource
-import com.fingerprintjs.android.fingerprint.datasources.DevicePersonalizationDataSourceImpl
-import com.fingerprintjs.android.fingerprint.datasources.FingerprintSensorInfoProvider
-import com.fingerprintjs.android.fingerprint.datasources.FingerprintSensorInfoProviderImpl
-import com.fingerprintjs.android.fingerprint.datasources.InputDeviceDataSource
-import com.fingerprintjs.android.fingerprint.datasources.InputDevicesDataSourceImpl
-import com.fingerprintjs.android.fingerprint.datasources.KeyGuardInfoProvider
-import com.fingerprintjs.android.fingerprint.datasources.KeyGuardInfoProviderImpl
-import com.fingerprintjs.android.fingerprint.datasources.MemInfoProvider
-import com.fingerprintjs.android.fingerprint.datasources.MemInfoProviderImpl
-import com.fingerprintjs.android.fingerprint.datasources.OsBuildInfoProvider
-import com.fingerprintjs.android.fingerprint.datasources.OsBuildInfoProviderImpl
-import com.fingerprintjs.android.fingerprint.datasources.PackageManagerDataSource
-import com.fingerprintjs.android.fingerprint.datasources.PackageManagerDataSourceImpl
-import com.fingerprintjs.android.fingerprint.datasources.SensorDataSource
-import com.fingerprintjs.android.fingerprint.datasources.SensorDataSourceImpl
-import com.fingerprintjs.android.fingerprint.datasources.SettingsDataSource
-import com.fingerprintjs.android.fingerprint.datasources.SettingsDataSourceImpl
+import com.fingerprintjs.android.fingerprint.info_providers.BatteryInfoDataSource
+import com.fingerprintjs.android.fingerprint.info_providers.BatteryInfoDataSourceImpl
+import com.fingerprintjs.android.fingerprint.info_providers.CameraInfoProvider
+import com.fingerprintjs.android.fingerprint.info_providers.CameraInfoProviderImpl
+import com.fingerprintjs.android.fingerprint.info_providers.CodecInfoProvider
+import com.fingerprintjs.android.fingerprint.info_providers.CodecInfoProviderImpl
+import com.fingerprintjs.android.fingerprint.info_providers.CpuInfoProvider
+import com.fingerprintjs.android.fingerprint.info_providers.CpuInfoProviderImpl
+import com.fingerprintjs.android.fingerprint.info_providers.DevicePersonalizationDataSource
+import com.fingerprintjs.android.fingerprint.info_providers.DevicePersonalizationDataSourceImpl
+import com.fingerprintjs.android.fingerprint.info_providers.FingerprintSensorInfoProvider
+import com.fingerprintjs.android.fingerprint.info_providers.FingerprintSensorInfoProviderImpl
+import com.fingerprintjs.android.fingerprint.info_providers.InputDeviceDataSource
+import com.fingerprintjs.android.fingerprint.info_providers.InputDevicesDataSourceImpl
+import com.fingerprintjs.android.fingerprint.info_providers.KeyGuardInfoProvider
+import com.fingerprintjs.android.fingerprint.info_providers.KeyGuardInfoProviderImpl
+import com.fingerprintjs.android.fingerprint.info_providers.MemInfoProvider
+import com.fingerprintjs.android.fingerprint.info_providers.MemInfoProviderImpl
+import com.fingerprintjs.android.fingerprint.info_providers.OsBuildInfoProvider
+import com.fingerprintjs.android.fingerprint.info_providers.OsBuildInfoProviderImpl
+import com.fingerprintjs.android.fingerprint.info_providers.PackageManagerDataSource
+import com.fingerprintjs.android.fingerprint.info_providers.PackageManagerDataSourceImpl
+import com.fingerprintjs.android.fingerprint.info_providers.SensorDataSource
+import com.fingerprintjs.android.fingerprint.info_providers.SensorDataSourceImpl
+import com.fingerprintjs.android.fingerprint.info_providers.SettingsDataSource
+import com.fingerprintjs.android.fingerprint.info_providers.SettingsDataSourceImpl
 import com.fingerprintjs.android.fingerprint.device_id_providers.AndroidIdProvider
 import com.fingerprintjs.android.fingerprint.device_id_providers.DeviceIdProvider
 import com.fingerprintjs.android.fingerprint.device_id_providers.DeviceIdProviderImpl
 import com.fingerprintjs.android.fingerprint.device_id_providers.GsfIdProvider
-import com.fingerprintjs.android.fingerprint.signal_providers.device_state.DeviceStateSignalProvider
-import com.fingerprintjs.android.fingerprint.signal_providers.hardware.HardwareSignalProvider
-import com.fingerprintjs.android.fingerprint.signal_providers.installed_apps.InstalledAppsSignalProvider
-import com.fingerprintjs.android.fingerprint.signal_providers.os_build.OsBuildSignalProvider
+import com.fingerprintjs.android.fingerprint.signal_providers.device_state.DeviceStateSignalGroupProvider
+import com.fingerprintjs.android.fingerprint.signal_providers.hardware.HardwareSignalGroupProvider
+import com.fingerprintjs.android.fingerprint.signal_providers.installed_apps.InstalledAppsSignalGroupProvider
+import com.fingerprintjs.android.fingerprint.signal_providers.os_build.OsBuildSignalGroupProvider
 import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 import com.fingerprintjs.android.fingerprint.tools.hashers.MurMur3x64x128Hasher
 
@@ -97,8 +97,8 @@ object FingerprinterFactory {
 
     //region:Fingerprinters
 
-    private fun createHardwareFingerprinter(context: Context): HardwareSignalProvider {
-        return HardwareSignalProvider(
+    private fun createHardwareFingerprinter(context: Context): HardwareSignalGroupProvider {
+        return HardwareSignalGroupProvider(
             createCpuInfoProvider(),
             createMemoryInfoProvider(context),
             createOsBuildInfoProvider(),
@@ -111,8 +111,8 @@ object FingerprinterFactory {
         )
     }
 
-    private fun createOsBuildInfoFingerprinter(): OsBuildSignalProvider {
-        return OsBuildSignalProvider(
+    private fun createOsBuildInfoFingerprinter(): OsBuildSignalGroupProvider {
+        return OsBuildSignalGroupProvider(
             createOsBuildInfoProvider(),
             createCodecInfoProvider(),
             hasher,
@@ -120,16 +120,16 @@ object FingerprinterFactory {
         )
     }
 
-    private fun createInstalledApplicationsFingerprinter(context: Context): InstalledAppsSignalProvider {
-        return InstalledAppsSignalProvider(
+    private fun createInstalledApplicationsFingerprinter(context: Context): InstalledAppsSignalGroupProvider {
+        return InstalledAppsSignalGroupProvider(
             createPackageManagerDataSource(context),
             hasher,
             configuration.version
         )
     }
 
-    private fun createDeviceStateFingerprinter(context: Context): DeviceStateSignalProvider {
-        return DeviceStateSignalProvider(
+    private fun createDeviceStateFingerprinter(context: Context): DeviceStateSignalGroupProvider {
+        return DeviceStateSignalGroupProvider(
             createSettingsDataSource(context),
             createDevicePersonalizationDataSource(context),
             createKeyGuardInfoProvider(context),
@@ -162,7 +162,11 @@ object FingerprinterFactory {
         val externalStorageStatFs =
             if (externalStorageDir != null) StatFs(externalStorageDir) else null
 
-        return MemInfoProviderImpl(activityManager, internalStorageStatFs, externalStorageStatFs)
+        return MemInfoProviderImpl(
+            activityManager,
+            internalStorageStatFs,
+            externalStorageStatFs
+        )
     }
 
     private fun createOsBuildInfoProvider(): OsBuildInfoProvider {
@@ -196,7 +200,9 @@ object FingerprinterFactory {
     }
 
     private fun createSettingsDataSource(context: Context): SettingsDataSource {
-        return SettingsDataSourceImpl(context.contentResolver)
+        return SettingsDataSourceImpl(
+            context.contentResolver
+        )
     }
 
 
@@ -230,7 +236,9 @@ object FingerprinterFactory {
     }
 
     private fun createBatteryInfoDataSource(context: Context): BatteryInfoDataSource {
-        return BatteryInfoDataSourceImpl(context)
+        return BatteryInfoDataSourceImpl(
+            context
+        )
     }
 
     private fun createCameraInfoProvider(context: Context): CameraInfoProvider {

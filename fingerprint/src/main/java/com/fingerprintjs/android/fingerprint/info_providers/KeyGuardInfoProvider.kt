@@ -1,4 +1,4 @@
-package com.fingerprintjs.android.fingerprint.datasources
+package com.fingerprintjs.android.fingerprint.info_providers
 
 import android.app.KeyguardManager
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
