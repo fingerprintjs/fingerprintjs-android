@@ -31,6 +31,7 @@ class PackageManagerDataSourceImpl(
         }, emptyList()
     )
 
+    @SuppressLint("QueryPermissionsNeeded")
     override fun getSystemApplicationsList() = executeSafe(
         {
             packageManager
