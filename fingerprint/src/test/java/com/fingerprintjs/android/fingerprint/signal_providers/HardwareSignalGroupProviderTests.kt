@@ -1,7 +1,7 @@
 package com.fingerprintjs.android.fingerprint.signal_providers
 
 
-import com.fingerprintjs.android.fingerprint.info_providers.BatteryInfoDataSource
+import com.fingerprintjs.android.fingerprint.info_providers.BatteryInfoProvider
 import com.fingerprintjs.android.fingerprint.info_providers.CameraInfo
 import com.fingerprintjs.android.fingerprint.info_providers.CameraInfoProvider
 import com.fingerprintjs.android.fingerprint.info_providers.CpuInfoProvider
@@ -88,7 +88,7 @@ class HardwareSignalGroupProviderTests {
             )
         }
 
-        val batteryInfoDataSource = object : BatteryInfoDataSource {
+        val batteryInfoDataSource = object : BatteryInfoProvider {
             override fun batteryHealth() = "good"
 
             override fun batteryTotalCapacity() = "3700"
@@ -113,7 +113,7 @@ class HardwareSignalGroupProviderTests {
             osBuildInfoProvider = osBuildInfoProvider,
             sensorsDataSource = sensorDataSource,
             inputDeviceDataSource = inputDeviceDataSource,
-            batteryInfoDataSource = batteryInfoDataSource,
+            batteryInfoProvider = batteryInfoDataSource,
             cameraInfoProvider = cameraInfoProvider,
             gpuInfoProvider = gpuInfoProvider,
             hasher = EmptyHasher(),

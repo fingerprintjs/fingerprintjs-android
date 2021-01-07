@@ -12,11 +12,6 @@ interface GpuInfoProvider {
 class GpuInfoProviderImpl(
     private val activityManager: ActivityManager
 ) : GpuInfoProvider {
-
-    private var vendor: String? = null
-    private val renderer: String? = null
-    private val extensions: List<String>? = null
-
     override fun glesVersion(): String {
         return executeSafe({ activityManager.deviceConfigurationInfo.glEsVersion }, "")
     }

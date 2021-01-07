@@ -9,14 +9,14 @@ import android.os.BatteryManager
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
 
 
-interface BatteryInfoDataSource {
+interface BatteryInfoProvider {
     fun batteryHealth(): String
     fun batteryTotalCapacity(): String
 }
 
-class BatteryInfoDataSourceImpl(
+class BatteryInfoProviderImpl(
         private val applicationContext: Context
-) : BatteryInfoDataSource {
+) : BatteryInfoProvider {
     override fun batteryHealth(): String {
         val intent = applicationContext
                 .registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED)) ?: return ""

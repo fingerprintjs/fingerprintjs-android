@@ -1,5 +1,6 @@
 package com.fingerprintjs.android.fingerprint.info_providers
 
+
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import com.fingerprintjs.android.fingerprint.tools.executeSafe

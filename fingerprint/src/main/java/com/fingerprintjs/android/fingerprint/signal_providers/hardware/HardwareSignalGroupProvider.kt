@@ -1,7 +1,7 @@
 package com.fingerprintjs.android.fingerprint.signal_providers.hardware
 
 
-import com.fingerprintjs.android.fingerprint.info_providers.BatteryInfoDataSource
+import com.fingerprintjs.android.fingerprint.info_providers.BatteryInfoProvider
 import com.fingerprintjs.android.fingerprint.info_providers.CameraInfoProvider
 import com.fingerprintjs.android.fingerprint.info_providers.CpuInfoProvider
 import com.fingerprintjs.android.fingerprint.info_providers.GpuInfoProvider
@@ -19,7 +19,7 @@ class HardwareSignalGroupProvider(
     osBuildInfoProvider: OsBuildInfoProvider,
     sensorsDataSource: SensorDataSource,
     inputDeviceDataSource: InputDeviceDataSource,
-    batteryInfoDataSource: BatteryInfoDataSource,
+    batteryInfoProvider: BatteryInfoProvider,
     cameraInfoProvider: CameraInfoProvider,
     gpuInfoProvider: GpuInfoProvider,
     private val hasher: Hasher,
@@ -36,8 +36,8 @@ class HardwareSignalGroupProvider(
             cpuInfoProvider.cpuInfo(),
             sensorsDataSource.sensors(),
             inputDeviceDataSource.getInputDeviceData(),
-            batteryInfoDataSource.batteryHealth(),
-            batteryInfoDataSource.batteryTotalCapacity(),
+            batteryInfoProvider.batteryHealth(),
+            batteryInfoProvider.batteryTotalCapacity(),
             cameraInfoProvider.getCameraInfo(),
             gpuInfoProvider.glesVersion(),
             cpuInfoProvider.abiType(),

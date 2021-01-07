@@ -9,7 +9,7 @@ import java.util.Locale
 import java.util.TimeZone
 
 
-interface DevicePersonalizationDataSource {
+interface DevicePersonalizationInfoProvider {
     fun ringtoneSource(): String
     fun availableLocales(): Array<String>
     fun regionCountry(): String
@@ -17,11 +17,11 @@ interface DevicePersonalizationDataSource {
     fun timezone(): String
 }
 
-class DevicePersonalizationDataSourceImpl(
+class DevicePersonalizationInfoProviderImpl(
     private val ringtoneManager: RingtoneManager,
     private val assetManager: AssetManager,
     private val configuration: Configuration
-) : DevicePersonalizationDataSource {
+) : DevicePersonalizationInfoProvider {
 
     override fun ringtoneSource(): String {
         return executeSafe({ ringtoneManager.getRingtoneUri(0).toString() }, "")

@@ -1,5 +1,6 @@
 package com.fingerprintjs.android.fingerprint.info_providers
 
+
 import android.hardware.input.InputManager
 import android.os.Build
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
