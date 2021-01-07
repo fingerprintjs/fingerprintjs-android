@@ -3,12 +3,11 @@ package com.fingerprintjs.android.playground.fingerprinters_screen.adapter
 
 import com.fingerprintjs.android.fingerprint.DeviceIdResult
 import com.fingerprintjs.android.fingerprint.FingerprintResult
-import com.fingerprintjs.android.fingerprint.signal_providers.device_state.DeviceStateSignalProvider
-import com.fingerprintjs.android.fingerprint.signal_providers.hardware.HardwareSignalProvider
-import com.fingerprintjs.android.fingerprint.signal_providers.installed_apps.InstalledAppsSignalProvider
-import com.fingerprintjs.android.fingerprint.signal_providers.os_build.OsBuildSignalProvider
+import com.fingerprintjs.android.fingerprint.signal_providers.device_state.DeviceStateSignalGroupProvider
+import com.fingerprintjs.android.fingerprint.signal_providers.hardware.HardwareSignalGroupProvider
+import com.fingerprintjs.android.fingerprint.signal_providers.installed_apps.InstalledAppsSignalGroupProvider
+import com.fingerprintjs.android.fingerprint.signal_providers.os_build.OsBuildSignalGroupProvider
 import java.io.File
-import java.lang.Exception
 import java.util.LinkedList
 
 
@@ -59,19 +58,19 @@ class FingerprintItemConverterImpl : FingerprintItemConverter {
     ): List<FingerprinterItem> {
         val list = LinkedList<FingerprinterItem>()
         list.add(prepareDeviceIdItem(deviceIdResult))
-        fingerprintResult.getSignalProvider(HardwareSignalProvider::class.java)?.let {
+        fingerprintResult.getSignalProvider(HardwareSignalGroupProvider::class.java)?.let {
             list.add(prepareHardwareFingerprinterItem(it))
         }
 
-        fingerprintResult.getSignalProvider(OsBuildSignalProvider::class.java)?.let {
+        fingerprintResult.getSignalProvider(OsBuildSignalGroupProvider::class.java)?.let {
             list.add(prepareOsBuildFingerprint(it))
         }
 
-        fingerprintResult.getSignalProvider(InstalledAppsSignalProvider::class.java)?.let {
+        fingerprintResult.getSignalProvider(InstalledAppsSignalGroupProvider::class.java)?.let {
             list.add(prepareInstalledAppsFingerprinter(it))
         }
 
-        fingerprintResult.getSignalProvider(DeviceStateSignalProvider::class.java)?.let {
+        fingerprintResult.getSignalProvider(DeviceStateSignalGroupProvider::class.java)?.let {
             list.add(prepareDeviceStateFingerprint(it))
         }
         return list
@@ -96,7 +95,7 @@ class FingerprintItemConverterImpl : FingerprintItemConverter {
         )
     }
 
-    private fun prepareHardwareFingerprinterItem(hardwareSignalProvider: HardwareSignalProvider): FingerprinterItem {
+    private fun prepareHardwareFingerprinterItem(hardwareSignalProvider: HardwareSignalGroupProvider): FingerprinterItem {
         val deviceModelDescription = FingerprintSectionDescription(
             "Device name",
             listOf(
@@ -119,12 +118,27 @@ class FingerprintItemConverterImpl : FingerprintItemConverter {
                     )
                 )
             )
+
+        val cpuInfoList = LinkedList<Pair<String, String>>()
+
+        cpuInfoList.addAll(
+            listOf(
+                Pair("Cores count", hardwareSignalProvider.rawData().coresCount.toString()),
+                Pair("ABI type", hardwareSignalProvider.rawData().abiType),
+                Pair("GL ES version", hardwareSignalProvider.rawData().glesVersion),
+            )
+        )
+
+        cpuInfoList.addAll(hardwareSignalProvider.rawData().procCpuInfo.entries.map {
+            Pair(it.key, it.value)
+        })
+
+
         val cpuInfoDescription =
             FingerprintSectionDescription(
                 "CPU info",
-                hardwareSignalProvider.rawData().procCpuInfo.entries.map {
-                    Pair(it.key, it.value)
-                })
+                cpuInfoList
+            )
 
         val sensorsDescription = FingerprintSectionDescription(
             "Sensors",
@@ -171,25 +185,32 @@ class FingerprintItemConverterImpl : FingerprintItemConverter {
         )
     }
 
-    private fun prepareInstalledAppsFingerprinter(installedAppsSignalProvider: InstalledAppsSignalProvider): FingerprinterItem {
+    private fun prepareInstalledAppsFingerprinter(installedAppsSignalProvider: InstalledAppsSignalGroupProvider): FingerprinterItem {
         val installedAppsFingerprintDescription = FingerprintSectionDescription(
             "Installed apps",
             installedAppsSignalProvider.rawData().applicationsNamesList.mapIndexed { index, app ->
                 Pair(index.toString(), app.packageName)
             }
+        )
 
+        val systemAppsFingerprintDescription = FingerprintSectionDescription(
+            "System apps",
+            installedAppsSignalProvider.rawData().systemApplicationsList.mapIndexed { index, app ->
+                Pair(index.toString(), app.packageName)
+            }
         )
         return FingerprinterItem(
             "apps",
             "Installed apps fingerprint",
             installedAppsSignalProvider.fingerprint(),
             listOf(
-                installedAppsFingerprintDescription
+                installedAppsFingerprintDescription,
+                systemAppsFingerprintDescription
             )
         )
     }
 
-    private fun prepareOsBuildFingerprint(osBuildSignalProvider: OsBuildSignalProvider): FingerprinterItem {
+    private fun prepareOsBuildFingerprint(osBuildSignalProvider: OsBuildSignalGroupProvider): FingerprinterItem {
         val osBuildDescription = FingerprintSectionDescription(
             "OS Build fingerprint",
             listOf(
@@ -197,6 +218,7 @@ class FingerprintItemConverterImpl : FingerprintItemConverter {
                 Pair("Android version", osBuildSignalProvider.rawData().androidVersion),
                 Pair("SDK version", osBuildSignalProvider.rawData().sdkVersion),
                 Pair("Kernel version", osBuildSignalProvider.rawData().kernelVersion),
+                Pair("Encryption status", osBuildSignalProvider.rawData().encryptionStatus)
             )
         )
 
@@ -211,19 +233,26 @@ class FingerprintItemConverterImpl : FingerprintItemConverter {
                 Pair(it.name, sb.toString())
             }
         )
+
+        val securityProviders = FingerprintSectionDescription(
+            "Security providers",
+            osBuildSignalProvider.rawData().securityProvidersData
+        )
+
         return FingerprinterItem(
             "osBuild",
             "OS Build fingerprint",
             osBuildSignalProvider.fingerprint(),
             listOf(
                 osBuildDescription,
-                codecListInfo
+                codecListInfo,
+                securityProviders
             )
         )
     }
 
     private fun prepareDeviceStateFingerprint(
-        deviceStateSignalProvider: DeviceStateSignalProvider
+        deviceStateSignalProvider: DeviceStateSignalGroupProvider
     ): FingerprinterItem {
         val deviceStateDescription = FingerprintSectionDescription(
             "Device state fingerprint params",
@@ -281,7 +310,13 @@ class FingerprintItemConverterImpl : FingerprintItemConverter {
                     "Fingerprint sensor status",
                     deviceStateSignalProvider.rawData().fingerprintSensorStatus
                 ),
-                Pair("Ringtone source", deviceStateSignalProvider.rawData().ringtoneSource)
+                Pair("Ringtone source", deviceStateSignalProvider.rawData().ringtoneSource),
+                Pair("Region country", deviceStateSignalProvider.rawData().regionCountry),
+                Pair("Timezone", deviceStateSignalProvider.rawData().timezone),
+                Pair(
+                    "Available locales",
+                    deviceStateSignalProvider.rawData().availableLocales.toString()
+                )
             )
         )
         return FingerprinterItem(

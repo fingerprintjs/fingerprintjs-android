@@ -1,9 +1,9 @@
 package com.fingerprintjs.android.fingerprint.signal_providers
 
 import com.fingerprintjs.android.fingerprint.info_providers.DevicePersonalizationDataSource
+import com.fingerprintjs.android.fingerprint.info_providers.DeviceSecurityInfoProvider
 import com.fingerprintjs.android.fingerprint.info_providers.FingerprintSensorInfoProvider
 import com.fingerprintjs.android.fingerprint.info_providers.FingerprintSensorStatus
-import com.fingerprintjs.android.fingerprint.info_providers.KeyGuardInfoProvider
 import com.fingerprintjs.android.fingerprint.info_providers.SettingsDataSource
 import com.fingerprintjs.android.fingerprint.signal_providers.device_state.DeviceStateSignalGroupProvider
 import com.fingerprintjs.android.fingerprint.tools.hashers.EmptyHasher
@@ -39,10 +39,29 @@ class DeviceStateSignalGroupProviderTests {
             DevicePersonalizationDataSource {
             override fun ringtoneSource() = "HotelCalifornia"
             override fun availableLocales() = arrayOf("EN-US", "RU-ru")
+            override fun regionCountry(): String {
+                TODO("Not yet implemented")
+            }
+
+            override fun defaultLanguage(): String {
+                TODO("Not yet implemented")
+            }
+
+            override fun timezone(): String {
+                TODO("Not yet implemented")
+            }
         }
 
-        val keyGuardInfoProvider = object :
-            KeyGuardInfoProvider {
+        val deviceSecurityInfoProvider = object :
+            DeviceSecurityInfoProvider {
+            override fun encryptionStatus(): String {
+                TODO("Not yet implemented")
+            }
+
+            override fun securityProvidersData(): List<Pair<String, String>> {
+                TODO("Not yet implemented")
+            }
+
             override fun isPinSecurityEnabled() = true
         }
 
@@ -55,7 +74,7 @@ class DeviceStateSignalGroupProviderTests {
             DeviceStateSignalGroupProvider(
                 settingsDataSource,
                 devicePersonalizationDataSource,
-                keyGuardInfoProvider,
+                deviceSecurityInfoProvider,
                 fingerprintSensorInfoProvider,
                 EmptyHasher(),
                 1

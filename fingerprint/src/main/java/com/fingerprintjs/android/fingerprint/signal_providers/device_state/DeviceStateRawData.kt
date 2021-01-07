@@ -27,5 +27,9 @@ data class DeviceStateRawData(
     val fingerprintSensorStatus: String,
 
     val ringtoneSource: String,
-    val availableLocales: List<String>
+    val availableLocales: List<String>,
+
+    val regionCountry: String,
+    val defaultLanguage: String,
+    val timezone: String
 )

@@ -16,6 +16,8 @@ class InfoProvidersExceptionsHandlingTests {
         val cpuInfoProvider =
             CpuInfoProviderImpl()
         assertNotNull(cpuInfoProvider.cpuInfo().size)
+        assertNotNull(cpuInfoProvider.abiType())
+        assertNotNull(cpuInfoProvider.coresCount())
     }
 
     @Test
@@ -37,10 +39,14 @@ class InfoProvidersExceptionsHandlingTests {
         val devicePersonalizationDataSource =
             DevicePersonalizationDataSourceImpl(
                 mock(),
+                mock(),
                 mock()
             )
-        assertEquals("", devicePersonalizationDataSource.ringtoneSource())
-        assertEquals(0, devicePersonalizationDataSource.availableLocales().size)
+
+        assertNotNull(devicePersonalizationDataSource.ringtoneSource())
+        assertNotNull(devicePersonalizationDataSource.availableLocales().size)
+        assertNotNull(devicePersonalizationDataSource.defaultLanguage())
+
     }
 
     @Test
@@ -67,16 +73,20 @@ class InfoProvidersExceptionsHandlingTests {
             PackageManagerDataSourceImpl(
                 mock()
             )
-        assertEquals(0, packageManagerDataSource.getApplicationsList().size)
+        assertEquals(0, packageManagerDataSource.getApplicationsList())
+        assertEquals(0, packageManagerDataSource.getSystemApplicationsList())
     }
 
     @Test
     fun `KeyGuardInfoProvider datasource crash free`() {
-        val keyGuardInfoProvider =
-            KeyGuardInfoProviderImpl(
+        val deviceSecurityInfoProvider =
+            DeviceSecurityInfoProviderImpl(
+                mock(),
                 mock()
             )
-        assertEquals(false, keyGuardInfoProvider.isPinSecurityEnabled())
+        assertEquals(false, deviceSecurityInfoProvider.isPinSecurityEnabled())
+        assertEquals(false, deviceSecurityInfoProvider.encryptionStatus())
+        assertEquals(false, deviceSecurityInfoProvider.securityProvidersData())
     }
 
     @Test
@@ -103,6 +113,7 @@ class InfoProvidersExceptionsHandlingTests {
         assertEquals("", settingsDataSource.touchExplorationEnabled())
         assertEquals("", settingsDataSource.transitionAnimationScale())
         assertEquals("", settingsDataSource.windowAnimationScale())
+
     }
 
     @Test

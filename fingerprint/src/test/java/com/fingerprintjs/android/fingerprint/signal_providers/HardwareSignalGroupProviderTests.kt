@@ -5,6 +5,7 @@ import com.fingerprintjs.android.fingerprint.info_providers.BatteryInfoDataSourc
 import com.fingerprintjs.android.fingerprint.info_providers.CameraInfo
 import com.fingerprintjs.android.fingerprint.info_providers.CameraInfoProvider
 import com.fingerprintjs.android.fingerprint.info_providers.CpuInfoProvider
+import com.fingerprintjs.android.fingerprint.info_providers.GpuInfoProvider
 import com.fingerprintjs.android.fingerprint.info_providers.InputDeviceData
 import com.fingerprintjs.android.fingerprint.info_providers.InputDeviceDataSource
 import com.fingerprintjs.android.fingerprint.info_providers.MemInfoProvider
@@ -20,17 +21,31 @@ import org.junit.Test
 class HardwareSignalGroupProviderTests {
     @Test
     fun `HardwareFingerprinter v1 test - success`() {
+        val signalGroupProvider = prepareHardwareSignalGroupProvider(1)
+        assertEquals(
+            "manufacturermodel10241024cpuintelsensorNamevendorNameinputDeviceNamevendorName",
+            signalGroupProvider.fingerprint()
+        )
+    }
+
+    @Test
+    fun `HardwareFingerprinter v2 test - success`() {
+        val signalGroupProvider = prepareHardwareSignalGroupProvider(2)
+        assertEquals(
+            "manufacturermodel10241024cpuintelsensorNamevendorNameinputDeviceNamevendorName3700good1.00armV780frontalvertical1backhorizontal",
+            signalGroupProvider.fingerprint()
+        )
+    }
+}
+
+    private fun prepareHardwareSignalGroupProvider(version: Int): HardwareSignalGroupProvider {
 
         val cpuInfoProvider = object :
             CpuInfoProvider {
             override fun cpuInfo() = mapOf("cpu" to "intel")
-            override fun abiType(): String {
-                TODO("Not yet implemented")
-            }
+            override fun abiType() = "armV7"
 
-            override fun coresCount(): String {
-                TODO("Not yet implemented")
-            }
+            override fun coresCount() = 8
         }
 
         val memInfoProvider = object :
@@ -44,19 +59,13 @@ class HardwareSignalGroupProviderTests {
             OsBuildInfoProvider {
             override fun modelName() = "model"
             override fun manufacturerName() = "manufacturer"
-            override fun androidVersion(): String {
-                TODO("Not yet implemented")
-            }
+            override fun androidVersion() = "11"
 
-            override fun sdkVersion(): String {
-                TODO("Not yet implemented")
-            }
+            override fun sdkVersion() = "30"
 
-            override fun kernelVersion(): String {
-                TODO("Not yet implemented")
-            }
+            override fun kernelVersion() = "5.11"
 
-            override fun fingerprint() = ""
+            override fun fingerprint() = "fingerprint"
         }
 
         val sensorDataSource = object :
@@ -80,36 +89,35 @@ class HardwareSignalGroupProviderTests {
         }
 
         val batteryInfoDataSource = object : BatteryInfoDataSource {
-            override fun batteryHealth(): String {
-                TODO("Not yet implemented")
-            }
+            override fun batteryHealth() = "good"
 
-            override fun batteryTotalCapacity(): String {
-                TODO("Not yet implemented")
-            }
+            override fun batteryTotalCapacity() = "3700"
 
         }
 
         val cameraInfoProvider = object : CameraInfoProvider {
-            override fun getCameraInfo(): List<CameraInfo> {
-                TODO("Not yet implemented")
-            }
+            override fun getCameraInfo() = listOf(
+                CameraInfo("0", "frontal", "vertical"),
+                CameraInfo("1", "back", "horizontal")
+            )
 
         }
 
-        val fingerprinter =
-            HardwareSignalGroupProvider(
-                cpuInfoProvider = cpuInfoProvider,
-                memInfoProvider = memInfoProvider,
-                osBuildInfoProvider = osBuildInfoProvider,
-                sensorsDataSource = sensorDataSource,
-                inputDeviceDataSource = inputDeviceDataSource,
-                batteryInfoDataSource = batteryInfoDataSource,
-                cameraInfoProvider = cameraInfoProvider,
-                hasher = EmptyHasher(),
-                version = 1
-            )
+        val gpuInfoProvider = object : GpuInfoProvider {
+            override fun glesVersion() = "1.00"
+        }
 
-        assertEquals("manufacturermodel10241024cpuintelsensorNamevendorNameinputDeviceNamevendorName", fingerprinter.fingerprint())
+        return HardwareSignalGroupProvider(
+            cpuInfoProvider = cpuInfoProvider,
+            memInfoProvider = memInfoProvider,
+            osBuildInfoProvider = osBuildInfoProvider,
+            sensorsDataSource = sensorDataSource,
+            inputDeviceDataSource = inputDeviceDataSource,
+            batteryInfoDataSource = batteryInfoDataSource,
+            cameraInfoProvider = cameraInfoProvider,
+            gpuInfoProvider = gpuInfoProvider,
+            hasher = EmptyHasher(),
+            version = version
+        )
+
     }
-}

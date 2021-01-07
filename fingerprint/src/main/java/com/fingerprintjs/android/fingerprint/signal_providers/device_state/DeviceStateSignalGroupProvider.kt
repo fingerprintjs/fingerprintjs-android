@@ -2,8 +2,8 @@ package com.fingerprintjs.android.fingerprint.signal_providers.device_state
 
 
 import com.fingerprintjs.android.fingerprint.info_providers.DevicePersonalizationDataSource
+import com.fingerprintjs.android.fingerprint.info_providers.DeviceSecurityInfoProvider
 import com.fingerprintjs.android.fingerprint.info_providers.FingerprintSensorInfoProvider
-import com.fingerprintjs.android.fingerprint.info_providers.KeyGuardInfoProvider
 import com.fingerprintjs.android.fingerprint.info_providers.SettingsDataSource
 import com.fingerprintjs.android.fingerprint.signal_providers.SignalGroupProvider
 import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
@@ -12,7 +12,7 @@ import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 class DeviceStateSignalGroupProvider(
     settingsDataSource: SettingsDataSource,
     devicePersonalizationDataSource: DevicePersonalizationDataSource,
-    keyGuardInfoProvider: KeyGuardInfoProvider,
+    deviceSecurityInfoProvider: DeviceSecurityInfoProvider,
     fingerprintSensorInfoProvider: FingerprintSensorInfoProvider,
     private val hasher: Hasher,
     version: Int
@@ -38,17 +38,21 @@ class DeviceStateSignalGroupProvider(
             settingsDataSource.textAutoReplaceEnable(),
             settingsDataSource.textAutoPunctuate(),
             settingsDataSource.time12Or24(),
-            keyGuardInfoProvider.isPinSecurityEnabled(),
+            deviceSecurityInfoProvider.isPinSecurityEnabled(),
             fingerprintSensorInfoProvider.getStatus().stringDescription,
             devicePersonalizationDataSource.ringtoneSource(),
-            devicePersonalizationDataSource.availableLocales().toList()
+            devicePersonalizationDataSource.availableLocales().toList(),
+            devicePersonalizationDataSource.regionCountry(),
+            devicePersonalizationDataSource.defaultLanguage(),
+            devicePersonalizationDataSource.timezone()
         )
 
     override fun fingerprint(): String {
-        return when (version) {
+        return hasher.hash(when (version) {
             1 -> v1()
-            else -> v1()
-        }
+            2 -> v2()
+            else -> v2()
+        })
     }
 
     override fun rawData() = rawData
@@ -84,6 +88,40 @@ class DeviceStateSignalGroupProvider(
             deviceStateSb.append(it)
         }
 
-        return hasher.hash(deviceStateSb.toString())
+        return deviceStateSb.toString()
+    }
+
+    private fun v2(): String {
+        val deviceStateSb = StringBuilder()
+        deviceStateSb
+            .append(rawData.adbEnabled)
+            .append(rawData.developmentSettingsEnabled)
+            .append(rawData.httpProxy)
+            .append(rawData.transitionAnimationScale)
+            .append(rawData.windowAnimationScale)
+
+            .append(rawData.dataRoamingEnabled)
+            .append(rawData.accessibilityEnabled)
+            .append(rawData.defaultInputMethod)
+            .append(rawData.touchExplorationEnabled)
+
+            .append(rawData.alarmAlertPath)
+            .append(rawData.dateFormat)
+            .append(rawData.endButtonBehaviour)
+            .append(rawData.fontScale)
+            .append(rawData.screenOffTimeout)
+            .append(rawData.time12Or24)
+            .append(rawData.isPinSecurityEnabled)
+            .append(rawData.fingerprintSensorStatus)
+            .append(rawData.ringtoneSource)
+            .append(rawData.regionCountry)
+            .append(rawData.timezone)
+            .append(rawData.defaultLanguage)
+
+        rawData.availableLocales.forEach {
+            deviceStateSb.append(it)
+        }
+
+        return deviceStateSb.toString()
     }
 }

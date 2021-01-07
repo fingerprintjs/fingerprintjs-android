@@ -33,7 +33,7 @@ class MemInfoProviderImpl(
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
                 (internalStorageStats.blockSize * internalStorageStats.blockCount).toLong()
             } else internalStorageStats.totalBytes
-        }, 0)
+        }, 0L)
     }
 
     override fun totalExternalStorageSpace(): Long {
@@ -43,10 +43,10 @@ class MemInfoProviderImpl(
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
                         (it.blockSize * it.blockCount).toLong()
                     } else it.totalBytes
-                } ?: 0
+                } ?: 0L
 
             },
-            0
+            0L
         )
     }
 }

@@ -6,7 +6,7 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.fingerprintjs.android.fingerprint.signal_providers.SignalProviderType
+import com.fingerprintjs.android.fingerprint.signal_providers.SignalGroupProviderType
 import com.fingerprintjs.android.playground.R
 import com.fingerprintjs.android.playground.fingerprinters_screen.adapter.FingerprintItemAdapter
 import com.fingerprintjs.android.playground.fingerprinters_screen.adapter.FingerprinterItem
@@ -56,25 +56,25 @@ class PlaygroundViewImpl(
 
         hardwareFingerprintCheckbox.setOnClickListener {
             checkboxChangedListener?.invoke(
-                SignalProviderType.HARDWARE
+                SignalGroupProviderType.HARDWARE
             )
         }
 
         osBuildFingerprintCheckbox.setOnClickListener {
             checkboxChangedListener?.invoke(
-                SignalProviderType.OS_BUILD
+                SignalGroupProviderType.OS_BUILD
             )
         }
 
         deviceStateFingerprintCheckbox.setOnClickListener {
             checkboxChangedListener?.invoke(
-                SignalProviderType.DEVICE_STATE
+                SignalGroupProviderType.DEVICE_STATE
             )
         }
 
         installedAppsFingerprintCheckbox.setOnClickListener {
             checkboxChangedListener?.invoke(
-                SignalProviderType.INSTALLED_APPS
+                SignalGroupProviderType.INSTALLED_APPS
             )
         }
     }
@@ -110,11 +110,11 @@ class PlaygroundViewImpl(
 
                 enabledFingerprintTypes.forEach {
                     when (it) {
-                        SignalProviderType.HARDWARE -> hardwareFingerprintCheckbox.isChecked = true
-                        SignalProviderType.OS_BUILD -> osBuildFingerprintCheckbox.isChecked = true
-                        SignalProviderType.DEVICE_STATE -> deviceStateFingerprintCheckbox.isChecked =
+                        SignalGroupProviderType.HARDWARE -> hardwareFingerprintCheckbox.isChecked = true
+                        SignalGroupProviderType.OS_BUILD -> osBuildFingerprintCheckbox.isChecked = true
+                        SignalGroupProviderType.DEVICE_STATE -> deviceStateFingerprintCheckbox.isChecked =
                             true
-                        SignalProviderType.INSTALLED_APPS -> installedAppsFingerprintCheckbox.isChecked =
+                        SignalGroupProviderType.INSTALLED_APPS -> installedAppsFingerprintCheckbox.isChecked =
                             true
                     }
                 }

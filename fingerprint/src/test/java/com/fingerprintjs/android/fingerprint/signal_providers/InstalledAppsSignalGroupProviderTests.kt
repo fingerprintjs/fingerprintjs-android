@@ -29,7 +29,16 @@ class InstalledAppsSignalGroupProviderTests {
                 )
             )
 
+            override fun getSystemApplicationsList() = listOf(
+                PackageInfo(
+                    "app3"
+                ),
+                PackageInfo(
+                    "app2"
+                )
+            )
         }
+
         val fingerprinter =
             InstalledAppsSignalGroupProvider(
                 packageManagerDataSource,
