@@ -9,6 +9,7 @@ import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertNotNull
 import org.junit.Test
 
+
 // Check that there is no unhandled exceptions. Calling mock methods produces NPE.
 class InfoProvidersExceptionsHandlingTests {
     @Test
@@ -29,15 +30,15 @@ class InfoProvidersExceptionsHandlingTests {
                 mock()
             )
 
-        assertEquals(0, memInfoProvider.totalRAM())
-        assertEquals(0, memInfoProvider.totalExternalStorageSpace())
-        assertEquals(0, memInfoProvider.totalInternalStorageSpace())
+        assertNotNull(memInfoProvider.totalRAM())
+        assertNotNull(memInfoProvider.totalExternalStorageSpace())
+        assertNotNull(memInfoProvider.totalInternalStorageSpace())
     }
 
     @Test
     fun `DevicePersonalizationDataSource crash free`() {
         val devicePersonalizationDataSource =
-            DevicePersonalizationDataSourceImpl(
+            DevicePersonalizationInfoProviderImpl(
                 mock(),
                 mock(),
                 mock()
@@ -55,7 +56,7 @@ class InfoProvidersExceptionsHandlingTests {
             InputDevicesDataSourceImpl(
                 mock()
             )
-        assertEquals(0, inputDeviceDatasource.getInputDeviceData().size)
+        assertNotNull(inputDeviceDatasource.getInputDeviceData().size)
     }
 
     @Test
@@ -64,7 +65,7 @@ class InfoProvidersExceptionsHandlingTests {
             SensorDataSourceImpl(
                 mock()
             )
-        assertEquals(0, sensorsDataSource.sensors().size)
+        assertNotNull(sensorsDataSource.sensors().size)
     }
 
     @Test
@@ -73,20 +74,8 @@ class InfoProvidersExceptionsHandlingTests {
             PackageManagerDataSourceImpl(
                 mock()
             )
-        assertEquals(0, packageManagerDataSource.getApplicationsList())
-        assertEquals(0, packageManagerDataSource.getSystemApplicationsList())
-    }
-
-    @Test
-    fun `KeyGuardInfoProvider datasource crash free`() {
-        val deviceSecurityInfoProvider =
-            DeviceSecurityInfoProviderImpl(
-                mock(),
-                mock()
-            )
-        assertEquals(false, deviceSecurityInfoProvider.isPinSecurityEnabled())
-        assertEquals(false, deviceSecurityInfoProvider.encryptionStatus())
-        assertEquals(false, deviceSecurityInfoProvider.securityProvidersData())
+        assertNotNull(packageManagerDataSource.getApplicationsList())
+        assertNotNull(packageManagerDataSource.getSystemApplicationsList())
     }
 
     @Test
@@ -125,4 +114,47 @@ class InfoProvidersExceptionsHandlingTests {
         assertEquals("", deviceIdProvider.getDeviceId())
     }
 
+    @Test
+    fun `BatteryInfoProvider crash free`() {
+        val batteryInfoProvider = BatteryInfoProviderImpl(mock())
+        assertNotNull(batteryInfoProvider.batteryHealth())
+        assertNotNull(batteryInfoProvider.batteryTotalCapacity())
+    }
+
+    @Test
+    fun `CameraInfoProvicer crash free`() {
+        val cameraInfoProviderImpl = CameraInfoProviderImpl()
+        assertNotNull(cameraInfoProviderImpl.getCameraInfo())
+    }
+
+    @Test
+    fun `CodecInfoProvider crash free`() {
+        val codecInfoProvider = CodecInfoProviderImpl(mock())
+        assertNotNull(codecInfoProvider.codecsList())
+    }
+
+    @Test
+    fun `GpuInfo provider`() {
+        val gpuInfoProvider = GpuInfoProviderImpl(mock())
+        assertNotNull(gpuInfoProvider.glesVersion())
+    }
+
+    @Test
+    fun `DeviceSecurityInfoProvider crash free`() {
+        val deviceSecurityInfoProvider = DeviceSecurityInfoProviderImpl(mock(), mock())
+        assertNotNull(deviceSecurityInfoProvider.encryptionStatus())
+        assertNotNull(deviceSecurityInfoProvider.isPinSecurityEnabled())
+        assertNotNull(deviceSecurityInfoProvider.securityProvidersData())
+    }
+
+    @Test
+    fun `DevicePersonalizationInfoProvider crash free`() {
+        val devicePersonalizationDataSource =
+            DevicePersonalizationInfoProviderImpl(mock(), mock(), mock())
+        assertNotNull(devicePersonalizationDataSource.availableLocales())
+        assertNotNull(devicePersonalizationDataSource.defaultLanguage())
+        assertNotNull(devicePersonalizationDataSource.regionCountry())
+        assertNotNull(devicePersonalizationDataSource.timezone())
+        assertNotNull(devicePersonalizationDataSource.ringtoneSource())
+    }
 }

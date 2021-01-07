@@ -18,12 +18,12 @@ import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 import com.fingerprintjs.android.fingerprint.device_id_providers.AndroidIdProvider
 import com.fingerprintjs.android.fingerprint.device_id_providers.DeviceIdProviderImpl
 import com.fingerprintjs.android.fingerprint.device_id_providers.GsfIdProvider
-import com.fingerprintjs.android.fingerprint.info_providers.BatteryInfoDataSourceImpl
+import com.fingerprintjs.android.fingerprint.info_providers.BatteryInfoProviderImpl
 import com.fingerprintjs.android.fingerprint.info_providers.CameraInfoProvider
 import com.fingerprintjs.android.fingerprint.info_providers.CameraInfoProviderImpl
 import com.fingerprintjs.android.fingerprint.info_providers.CodecInfoProviderImpl
 import com.fingerprintjs.android.fingerprint.info_providers.CpuInfoProviderImpl
-import com.fingerprintjs.android.fingerprint.info_providers.DevicePersonalizationDataSourceImpl
+import com.fingerprintjs.android.fingerprint.info_providers.DevicePersonalizationInfoProviderImpl
 import com.fingerprintjs.android.fingerprint.info_providers.DeviceSecurityInfoProviderImpl
 import com.fingerprintjs.android.fingerprint.info_providers.FingerprintSensorInfoProviderImpl
 import com.fingerprintjs.android.fingerprint.info_providers.GpuInfoProviderImpl
@@ -176,7 +176,7 @@ object FingerprinterFactory {
 
 
     private fun createDevicePersonalizationDataSource(context: Context) =
-        DevicePersonalizationDataSourceImpl(
+        DevicePersonalizationInfoProviderImpl(
             RingtoneManager(context),
             context.assets,
             context.resources.configuration
@@ -201,7 +201,7 @@ object FingerprinterFactory {
             null
         }
 
-    private fun createBatteryInfoDataSource(context: Context) = BatteryInfoDataSourceImpl(
+    private fun createBatteryInfoDataSource(context: Context) = BatteryInfoProviderImpl(
         context
     )
 

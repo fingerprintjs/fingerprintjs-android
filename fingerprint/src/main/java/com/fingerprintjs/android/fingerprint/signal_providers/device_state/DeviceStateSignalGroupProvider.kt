@@ -1,7 +1,7 @@
 package com.fingerprintjs.android.fingerprint.signal_providers.device_state
 
 
-import com.fingerprintjs.android.fingerprint.info_providers.DevicePersonalizationDataSource
+import com.fingerprintjs.android.fingerprint.info_providers.DevicePersonalizationInfoProvider
 import com.fingerprintjs.android.fingerprint.info_providers.DeviceSecurityInfoProvider
 import com.fingerprintjs.android.fingerprint.info_providers.FingerprintSensorInfoProvider
 import com.fingerprintjs.android.fingerprint.info_providers.SettingsDataSource
@@ -11,7 +11,7 @@ import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 
 class DeviceStateSignalGroupProvider(
     settingsDataSource: SettingsDataSource,
-    devicePersonalizationDataSource: DevicePersonalizationDataSource,
+    devicePersonalizationInfoProvider: DevicePersonalizationInfoProvider,
     deviceSecurityInfoProvider: DeviceSecurityInfoProvider,
     fingerprintSensorInfoProvider: FingerprintSensorInfoProvider,
     private val hasher: Hasher,
@@ -40,11 +40,11 @@ class DeviceStateSignalGroupProvider(
             settingsDataSource.time12Or24(),
             deviceSecurityInfoProvider.isPinSecurityEnabled(),
             fingerprintSensorInfoProvider.getStatus().stringDescription,
-            devicePersonalizationDataSource.ringtoneSource(),
-            devicePersonalizationDataSource.availableLocales().toList(),
-            devicePersonalizationDataSource.regionCountry(),
-            devicePersonalizationDataSource.defaultLanguage(),
-            devicePersonalizationDataSource.timezone()
+            devicePersonalizationInfoProvider.ringtoneSource(),
+            devicePersonalizationInfoProvider.availableLocales().toList(),
+            devicePersonalizationInfoProvider.regionCountry(),
+            devicePersonalizationInfoProvider.defaultLanguage(),
+            devicePersonalizationInfoProvider.timezone()
         )
 
     override fun fingerprint(): String {

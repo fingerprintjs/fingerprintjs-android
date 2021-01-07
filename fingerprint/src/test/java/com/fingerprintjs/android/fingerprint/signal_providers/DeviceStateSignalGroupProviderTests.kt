@@ -1,6 +1,7 @@
 package com.fingerprintjs.android.fingerprint.signal_providers
 
-import com.fingerprintjs.android.fingerprint.info_providers.DevicePersonalizationDataSource
+
+import com.fingerprintjs.android.fingerprint.info_providers.DevicePersonalizationInfoProvider
 import com.fingerprintjs.android.fingerprint.info_providers.DeviceSecurityInfoProvider
 import com.fingerprintjs.android.fingerprint.info_providers.FingerprintSensorInfoProvider
 import com.fingerprintjs.android.fingerprint.info_providers.FingerprintSensorStatus
@@ -10,9 +11,31 @@ import com.fingerprintjs.android.fingerprint.tools.hashers.EmptyHasher
 import junit.framework.Assert.assertEquals
 import org.junit.Test
 
+
 class DeviceStateSignalGroupProviderTests {
     @Test
     fun `DeviceStateFingerprinter v1 - success`() {
+        val deviceSecurityInfoProvider = createDeviceStateSignalGroupProvider(1)
+        assertEquals(
+            "adbEnableddevelopmentSettingsEnabledhttpProxytransition" +
+                    "AnimationScalewindowAnimationScaledataRoamingEnabledaccessibilityEnabled" +
+                    "defaultInputMethodrttCallingModetouchExplorationEnabledalarmAlertPath" +
+                    "dateFormatendButtonBehaviourfontScalescreenOffTimeouttextAutoReplaceEnable" +
+                    "textAutoPunctuatetime12Or24truesupportedHotelCaliforniaEN-USRU-ru"
+            , deviceSecurityInfoProvider.fingerprint()
+        )
+    }
+
+    @Test
+    fun `DeviceStateFingerprinter v2 - success`() {
+        val deviceSecurityInfoProvider = createDeviceStateSignalGroupProvider(2)
+        assertEquals(
+            "adbEnableddevelopmentSettingsEnabledhttpProxytransitionAnimationScalewindowAnimationScaledataRoamingEnabledaccessibilityEnableddefaultInputMethodtouchExplorationEnabledalarmAlertPathdateFormatendButtonBehaviourfontScalescreenOffTimeouttime12Or24truesupportedHotelCaliforniaUSAGreenwichEN-USEN-USRU-ru"
+            , deviceSecurityInfoProvider.fingerprint()
+        )
+    }
+
+    private fun createDeviceStateSignalGroupProvider(version: Int): DeviceStateSignalGroupProvider {
         val settingsDataSource = object :
             SettingsDataSource {
             override fun adbEnabled() = "adbEnabled"
@@ -36,31 +59,22 @@ class DeviceStateSignalGroupProviderTests {
         }
 
         val devicePersonalizationDataSource = object :
-            DevicePersonalizationDataSource {
+            DevicePersonalizationInfoProvider {
             override fun ringtoneSource() = "HotelCalifornia"
             override fun availableLocales() = arrayOf("EN-US", "RU-ru")
-            override fun regionCountry(): String {
-                TODO("Not yet implemented")
-            }
+            override fun regionCountry() = "USA"
 
-            override fun defaultLanguage(): String {
-                TODO("Not yet implemented")
-            }
+            override fun defaultLanguage() = "EN-US"
 
-            override fun timezone(): String {
-                TODO("Not yet implemented")
-            }
+            override fun timezone() = "Greenwich"
         }
 
         val deviceSecurityInfoProvider = object :
             DeviceSecurityInfoProvider {
-            override fun encryptionStatus(): String {
-                TODO("Not yet implemented")
-            }
+            override fun encryptionStatus() = "inactive"
 
-            override fun securityProvidersData(): List<Pair<String, String>> {
-                TODO("Not yet implemented")
-            }
+            override fun securityProvidersData() =
+                listOf(Pair("Bouncy castle", "1.2.1"), Pair("Sun security", "2.0.0"))
 
             override fun isPinSecurityEnabled() = true
         }
@@ -70,23 +84,13 @@ class DeviceStateSignalGroupProviderTests {
             override fun getStatus() = FingerprintSensorStatus.SUPPORTED
         }
 
-        val fingerprinter =
-            DeviceStateSignalGroupProvider(
-                settingsDataSource,
-                devicePersonalizationDataSource,
-                deviceSecurityInfoProvider,
-                fingerprintSensorInfoProvider,
-                EmptyHasher(),
-                1
-            )
-
-        assertEquals(
-            "adbEnableddevelopmentSettingsEnabledhttpProxytransition" +
-                    "AnimationScalewindowAnimationScaledataRoamingEnabledaccessibilityEnabled" +
-                    "defaultInputMethodrttCallingModetouchExplorationEnabledalarmAlertPath" +
-                    "dateFormatendButtonBehaviourfontScalescreenOffTimeouttextAutoReplaceEnable" +
-                    "textAutoPunctuatetime12Or24truesupportedHotelCaliforniaEN-USRU-ru"
-            , fingerprinter.fingerprint()
+        return DeviceStateSignalGroupProvider(
+            settingsDataSource,
+            devicePersonalizationDataSource,
+            deviceSecurityInfoProvider,
+            fingerprintSensorInfoProvider,
+            EmptyHasher(),
+            version
         )
     }
 }

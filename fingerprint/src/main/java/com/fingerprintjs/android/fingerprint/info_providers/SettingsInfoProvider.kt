@@ -1,5 +1,6 @@
 package com.fingerprintjs.android.fingerprint.info_providers
 
+
 import android.content.ContentResolver
 import android.os.Build
 import android.provider.Settings

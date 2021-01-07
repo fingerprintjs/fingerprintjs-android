@@ -21,17 +21,21 @@ class CpuInfoProviderImpl :
 
     @Suppress("DEPRECATION")
     override fun abiType(): String {
-        return if (Build.VERSION.SDK_INT >= 21) {
-            Build.SUPPORTED_ABIS[0]
-        } else {
-            Build.CPU_ABI
-        }
+        return executeSafe({
+            if (Build.VERSION.SDK_INT >= 21) {
+                Build.SUPPORTED_ABIS[0]
+            } else {
+                Build.CPU_ABI
+            }
+        }, "")
     }
 
     override fun coresCount(): Int {
-        return if (Build.VERSION.SDK_INT >= 17) {
-            Runtime.getRuntime().availableProcessors()
-        } else 0
+        return executeSafe({
+            if (Build.VERSION.SDK_INT >= 17) {
+                Runtime.getRuntime().availableProcessors()
+            } else 0
+        }, 0)
     }
 
     private fun getCpuInfo(): Map<String, String> {
