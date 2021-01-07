@@ -39,7 +39,9 @@ class HardwareSignalGroupProvider(
             batteryInfoDataSource.batteryHealth(),
             batteryInfoDataSource.batteryTotalCapacity(),
             cameraInfoProvider.getCameraInfo(),
-            gpuInfoProvider.glesVersion()
+            gpuInfoProvider.glesVersion(),
+            cpuInfoProvider.abiType(),
+            cpuInfoProvider.coresCount()
         )
 
     override fun fingerprint(): String {
@@ -77,11 +79,18 @@ class HardwareSignalGroupProvider(
         val sb = StringBuilder()
         sb.append(v1())
 
-        sb.append(rawData.batteryFullCapacity)
-        sb.append(rawData.batteryHealth)
+        sb
+            .append(rawData.batteryFullCapacity)
+            .append(rawData.batteryHealth)
+            .append(rawData.glesVersion)
+            .append(rawData.abiType)
+            .append(rawData.coresCount)
 
         rawData.cameraList.forEach {
-            sb.append(it.cameraName).append(it.cameraType).append(it.cameraOrientation)
+            sb
+                .append(it.cameraName)
+                .append(it.cameraType)
+                .append(it.cameraOrientation)
         }
 
         return sb.toString()

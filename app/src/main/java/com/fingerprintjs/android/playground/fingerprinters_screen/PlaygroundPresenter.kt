@@ -5,8 +5,8 @@ import android.os.Parcelable
 import com.fingerprintjs.android.fingerprint.DeviceIdResult
 import com.fingerprintjs.android.fingerprint.FingerprintResult
 import com.fingerprintjs.android.fingerprint.Fingerprinter
-import com.fingerprintjs.android.fingerprint.signal_providers.SignalProviderType
-import com.fingerprintjs.android.fingerprint.signal_providers.hardware.HardwareSignalProvider
+import com.fingerprintjs.android.fingerprint.signal_providers.SignalGroupProviderType
+import com.fingerprintjs.android.fingerprint.signal_providers.hardware.HardwareSignalGroupProvider
 import com.fingerprintjs.android.playground.fingerprinters_screen.adapter.FingerprintItemConverterImpl
 import com.fingerprintjs.android.playground.fingerprinters_screen.adapter.FingerprinterItem
 import kotlinx.android.parcel.Parcelize
@@ -88,7 +88,7 @@ class PlaygroundPresenterImpl(
             return
         }
 
-        fingerprintResult.getSignalProvider(HardwareSignalProvider::class.java)?.let {
+        fingerprintResult.getSignalProvider(HardwareSignalGroupProvider::class.java)?.let {
             externalStorageDir?.let { externalStorageDir ->
                 val csvFilePath = "$externalStorageDir/${it.rawData().manufacturerName}-${it.rawData().modelName}-${deviceIdResult.deviceId}.csv"
                 this.csvFilePath = csvFilePath
@@ -107,16 +107,16 @@ class PlaygroundPresenterImpl(
         }
 
         signalProvidersMask =
-                SignalProviderType.HARDWARE or SignalProviderType.OS_BUILD or
-                        SignalProviderType.DEVICE_STATE
+            SignalGroupProviderType.HARDWARE or SignalGroupProviderType.OS_BUILD or
+                        SignalGroupProviderType.DEVICE_STATE
 
         fingerprinter.getFingerprint(signalProvidersMask) { fingerprintResult ->
             view.setCustomFingerprint(
                     fingerprintResult.fingerprint,
                     listOf(
-                            SignalProviderType.HARDWARE,
-                            SignalProviderType.OS_BUILD,
-                            SignalProviderType.DEVICE_STATE
+                        SignalGroupProviderType.HARDWARE,
+                        SignalGroupProviderType.OS_BUILD,
+                        SignalGroupProviderType.DEVICE_STATE
                     )
             )
         }

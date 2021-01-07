@@ -10,7 +10,7 @@ import java.util.Scanner
 interface CpuInfoProvider {
     fun cpuInfo(): Map<String, String>
     fun abiType(): String
-    fun coresCount(): String
+    fun coresCount(): Int
 }
 
 class CpuInfoProviderImpl :
@@ -28,10 +28,10 @@ class CpuInfoProviderImpl :
         }
     }
 
-    override fun coresCount(): String {
+    override fun coresCount(): Int {
         return if (Build.VERSION.SDK_INT >= 17) {
-            Runtime.getRuntime().availableProcessors().toString()
-        } else "0"
+            Runtime.getRuntime().availableProcessors()
+        } else 0
     }
 
     private fun getCpuInfo(): Map<String, String> {

@@ -1,6 +1,7 @@
 package com.fingerprintjs.android.fingerprint.info_providers
 
 
+import android.app.KeyguardManager
 import android.app.admin.DevicePolicyManager
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
 import java.security.Security
@@ -9,10 +10,12 @@ import java.security.Security
 interface DeviceSecurityInfoProvider {
     fun encryptionStatus(): String
     fun securityProvidersData(): List<Pair<String, String>>
+    fun isPinSecurityEnabled(): Boolean
 }
 
 class DeviceSecurityInfoProviderImpl(
-    private val devicePolicyManager: DevicePolicyManager
+    private val devicePolicyManager: DevicePolicyManager,
+    private val keyguardManager: KeyguardManager
 ) : DeviceSecurityInfoProvider {
     override fun encryptionStatus(): String {
         return executeSafe({
@@ -28,16 +31,20 @@ class DeviceSecurityInfoProviderImpl(
         }, emptyList())
     }
 
-    private fun stringDescriptionForEncryptionStatus(status: Int): String {
-        return when (status) {
-            DevicePolicyManager.ENCRYPTION_STATUS_UNSUPPORTED -> UNSUPPORTED
-            DevicePolicyManager.ENCRYPTION_STATUS_INACTIVE -> INACTIVE
-            DevicePolicyManager.ENCRYPTION_STATUS_ACTIVATING -> ACTIVATING
-            DevicePolicyManager.ENCRYPTION_STATUS_ACTIVE -> ACTIVE
-            DevicePolicyManager.ENCRYPTION_STATUS_ACTIVE_PER_USER ->
-                ACTIVE_PER_USER
-            else -> ""
-        }
+    override fun isPinSecurityEnabled() = executeSafe(
+        { keyguardManager.isKeyguardSecure }, false
+    )
+}
+
+private fun stringDescriptionForEncryptionStatus(status: Int): String {
+    return when (status) {
+        DevicePolicyManager.ENCRYPTION_STATUS_UNSUPPORTED -> UNSUPPORTED
+        DevicePolicyManager.ENCRYPTION_STATUS_INACTIVE -> INACTIVE
+        DevicePolicyManager.ENCRYPTION_STATUS_ACTIVATING -> ACTIVATING
+        DevicePolicyManager.ENCRYPTION_STATUS_ACTIVE -> ACTIVE
+        DevicePolicyManager.ENCRYPTION_STATUS_ACTIVE_PER_USER ->
+            ACTIVE_PER_USER
+        else -> ""
     }
 }
 

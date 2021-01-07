@@ -14,7 +14,8 @@ class InstalledAppsSignalGroupProvider(
 
     private val rawData =
         InstalledAppsRawData(
-            packageManagerDataSource.getApplicationsList()
+            packageManagerDataSource.getApplicationsList(),
+            packageManagerDataSource.getSystemApplicationsList()
         )
 
     override fun fingerprint(): String {

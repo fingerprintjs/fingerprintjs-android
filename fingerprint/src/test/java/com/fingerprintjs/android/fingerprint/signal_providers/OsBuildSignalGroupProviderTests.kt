@@ -3,6 +3,7 @@ package com.fingerprintjs.android.fingerprint.signal_providers
 import com.fingerprintjs.android.fingerprint.info_providers.OsBuildInfoProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.os_build.OsBuildSignalGroupProvider
 import com.fingerprintjs.android.fingerprint.tools.hashers.EmptyHasher
+import com.nhaarman.mockitokotlin2.mock
 import junit.framework.Assert.assertEquals
 import org.junit.Test
 
@@ -32,6 +33,7 @@ class OsBuildSignalGroupProviderTests {
             OsBuildSignalGroupProvider(
                 osBuildInfoProvider,
                 null,
+                mock(),
                 EmptyHasher(),
                 1
             )

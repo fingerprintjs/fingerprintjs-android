@@ -2,6 +2,7 @@ package com.fingerprintjs.android.fingerprint.signal_providers.os_build
 
 
 import com.fingerprintjs.android.fingerprint.info_providers.CodecInfoProvider
+import com.fingerprintjs.android.fingerprint.info_providers.DeviceSecurityInfoProvider
 import com.fingerprintjs.android.fingerprint.info_providers.OsBuildInfoProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.SignalGroupProvider
 import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
@@ -10,6 +11,7 @@ import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 class OsBuildSignalGroupProvider(
     osBuildInfoProvider: OsBuildInfoProvider,
     codecInfoProvider: CodecInfoProvider?,
+    deviceSecurityInfoProvider: DeviceSecurityInfoProvider,
     private val hasher: Hasher,
     version: Int
 ) : SignalGroupProvider<OsBuildRawData>(version) {
@@ -20,7 +22,9 @@ class OsBuildSignalGroupProvider(
             osBuildInfoProvider.androidVersion(),
             osBuildInfoProvider.sdkVersion(),
             osBuildInfoProvider.kernelVersion(),
-            codecInfoProvider?.codecsList() ?: emptyList()
+            codecInfoProvider?.codecsList() ?: emptyList(),
+            deviceSecurityInfoProvider.encryptionStatus(),
+            deviceSecurityInfoProvider.securityProvidersData()
         )
 
     override fun fingerprint(): String {
@@ -50,6 +54,13 @@ class OsBuildSignalGroupProvider(
         osBuildInfoSB.append(rawData.androidVersion)
         osBuildInfoSB.append(rawData.sdkVersion)
         osBuildInfoSB.append(rawData.kernelVersion)
+        osBuildInfoSB.append(rawData.encryptionStatus)
+
+        rawData.securityProvidersData.forEach {
+            osBuildInfoSB
+                .append(it.first)
+                .append(it.second)
+        }
 
         rawData.codecList.forEach {
             osBuildInfoSB.append(it.name)

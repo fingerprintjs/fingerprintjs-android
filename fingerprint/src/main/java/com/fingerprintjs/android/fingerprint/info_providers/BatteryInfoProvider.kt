@@ -24,7 +24,7 @@ class BatteryInfoDataSourceImpl(
         val health = intent.getIntExtra(BatteryManager.EXTRA_HEALTH, -1)
 
         return if (health != -1) {
-            health.toString()
+            batteryHealthStringDescription(health)
         } else {
             ""
         }
@@ -44,6 +44,16 @@ class BatteryInfoDataSourceImpl(
 
             batteryCapacity.toString()
         }, "")
+    }
+
+    private fun batteryHealthStringDescription(batteryHealth: Int) = when(batteryHealth) {
+        BatteryManager.BATTERY_HEALTH_GOOD -> "good"
+        BatteryManager.BATTERY_HEALTH_OVERHEAT -> "overheat"
+        BatteryManager.BATTERY_HEALTH_COLD -> "cold"
+        BatteryManager.BATTERY_HEALTH_DEAD -> "dead"
+        BatteryManager.BATTERY_HEALTH_OVER_VOLTAGE -> "over voltage"
+        BatteryManager.BATTERY_HEALTH_UNSPECIFIED_FAILURE -> "unspecified failure"
+        else -> "unknown"
     }
 }
 
