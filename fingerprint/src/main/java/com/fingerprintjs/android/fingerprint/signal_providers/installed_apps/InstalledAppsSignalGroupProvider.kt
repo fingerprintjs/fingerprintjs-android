@@ -20,21 +20,25 @@ class InstalledAppsSignalGroupProvider(
         )
 
     override fun fingerprint(stabilityLevel: StabilityLevel): String {
-        return when (version) {
-            1 -> v1()
-            else -> v1()
-        }
+        return hasher.hash(
+            combineSignals(
+                when (version) {
+                    1 -> v1()
+                    2 -> v2()
+                    else -> v1()
+                }, stabilityLevel
+            )
+        )
     }
 
     override fun rawData() = rawData
 
-    private fun v1(): String {
-        val installedAppsSb = StringBuilder()
-        rawData
-            .applicationsNamesList
-            .sortedBy { it.packageName }
-            .forEach { installedAppsSb.append(it.packageName) }
-        return hasher.hash(installedAppsSb.toString())
-    }
+    private fun v1() = listOf(
+        rawData.applicationsList()
+    )
 
+    private fun v2() = listOf(
+        rawData.applicationsList(),
+        rawData.systemApplicationsList()
+    )
 }
