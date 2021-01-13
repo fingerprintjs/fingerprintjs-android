@@ -3,6 +3,7 @@ package com.fingerprintjs.android.fingerprint
 
 import com.fingerprintjs.android.fingerprint.device_id_providers.DeviceIdProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.SignalGroupProviderType
+import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 import com.fingerprintjs.android.fingerprint.signal_providers.device_state.DeviceStateSignalGroupProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.hardware.HardwareSignalGroupProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.installed_apps.InstalledAppsSignalGroupProvider
@@ -70,6 +71,10 @@ internal class FingerprinterImpl(
 
             val result = object : FingerprintResult {
                 override val fingerprint = configuration.hasher.hash(fingerprintSb.toString())
+
+                override fun fingerprint(stabilityLevel: StabilityLevel): String {
+                    TODO("Not yet implemented")
+                }
 
                 @Suppress("UNCHECKED_CAST")
                 override fun <T> getSignalProvider(clazz: Class<T>): T? {
