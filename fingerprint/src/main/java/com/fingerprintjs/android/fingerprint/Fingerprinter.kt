@@ -1,5 +1,7 @@
 package com.fingerprintjs.android.fingerprint
 
+import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
+
 
 interface Fingerprinter {
     fun getDeviceId(listener: (DeviceIdResult) -> (Unit))
@@ -9,6 +11,7 @@ interface Fingerprinter {
 
 interface FingerprintResult {
     val fingerprint: String
+    fun fingerprint(stabilityLevel: StabilityLevel): String
     fun <T> getSignalProvider(clazz: Class<T>): T?
 }
 
