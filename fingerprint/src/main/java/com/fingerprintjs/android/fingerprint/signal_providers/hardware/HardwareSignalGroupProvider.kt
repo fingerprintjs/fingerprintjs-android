@@ -10,6 +10,7 @@ import com.fingerprintjs.android.fingerprint.info_providers.MemInfoProvider
 import com.fingerprintjs.android.fingerprint.info_providers.OsBuildInfoProvider
 import com.fingerprintjs.android.fingerprint.info_providers.SensorDataSource
 import com.fingerprintjs.android.fingerprint.signal_providers.SignalGroupProvider
+import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 
 
@@ -44,44 +45,42 @@ class HardwareSignalGroupProvider(
             cpuInfoProvider.coresCount()
         )
 
-    override fun fingerprint(): String {
+    override fun fingerprint(stabilityLevel: StabilityLevel): String {
         return hasher.hash(
             when (version) {
-                1 -> v1()
-                2 -> v2()
-                else -> v2()
+                1 -> v1(stabilityLevel)
+                2 -> v2(stabilityLevel)
+                else -> v2(stabilityLevel)
             }
         )
     }
 
-    private fun v1(): String {
+    private fun v1(stabilityLevel: StabilityLevel): String {
         val sb = StringBuilder()
-        sb.append(rawData.manufacturerName)
-        sb.append(rawData.modelName)
-        sb.append(rawData.totalRAM)
-        sb.append(rawData.totalInternalStorageSpace)
-        rawData.procCpuInfo.entries.forEach {
-            sb.append(it.key).append(it.value)
-        }
+        val signals = listOf(
+            rawData.manufacturerName(),
+            rawData.modelName(),
+            rawData.totalRAM(),
+            rawData.totalInternalStorageSpace(),
+            rawData.procCpuInfo(),
+            rawData.sensors(),
+            rawData.inputDevices()
+        )
 
-        rawData.sensors.forEach {
-            sb.append(it.sensorName).append(it.vendorName)
-        }
-
-        rawData.inputDevices.forEach {
-            sb.append(it.name).append(it.vendor)
+        signals.forEach {
+            sb.append(it.toString())
         }
 
         return sb.toString()
     }
 
-    private fun v2(): String {
+    private fun v2(stabilityLevel: StabilityLevel): String {
         val sb = StringBuilder()
-        sb.append(v1())
+
+        // Stable
+        sb.append(v1(stabilityLevel))
 
         sb
-            .append(rawData.batteryFullCapacity)
-            .append(rawData.batteryHealth)
             .append(rawData.glesVersion)
             .append(rawData.abiType)
             .append(rawData.coresCount)
@@ -91,6 +90,12 @@ class HardwareSignalGroupProvider(
                 .append(it.cameraName)
                 .append(it.cameraType)
                 .append(it.cameraOrientation)
+        }
+
+        // Optimal
+        if ((stabilityLevel == StabilityLevel.OPTIMAL) or (stabilityLevel == StabilityLevel.UNIQUE)) {
+            sb.append(rawData.batteryFullCapacity)
+                .append(rawData.batteryHealth)
         }
 
         return sb.toString()

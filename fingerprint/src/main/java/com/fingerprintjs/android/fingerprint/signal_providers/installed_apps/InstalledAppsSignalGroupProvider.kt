@@ -3,6 +3,7 @@ package com.fingerprintjs.android.fingerprint.signal_providers.installed_apps
 
 import com.fingerprintjs.android.fingerprint.info_providers.PackageManagerDataSource
 import com.fingerprintjs.android.fingerprint.signal_providers.SignalGroupProvider
+import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 
 
@@ -18,7 +19,7 @@ class InstalledAppsSignalGroupProvider(
             packageManagerDataSource.getSystemApplicationsList()
         )
 
-    override fun fingerprint(): String {
+    override fun fingerprint(stabilityLevel: StabilityLevel): String {
         return when (version) {
             1 -> v1()
             else -> v1()

@@ -6,6 +6,7 @@ import com.fingerprintjs.android.fingerprint.info_providers.DeviceSecurityInfoPr
 import com.fingerprintjs.android.fingerprint.info_providers.FingerprintSensorInfoProvider
 import com.fingerprintjs.android.fingerprint.info_providers.SettingsDataSource
 import com.fingerprintjs.android.fingerprint.signal_providers.SignalGroupProvider
+import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 
 
@@ -47,7 +48,7 @@ class DeviceStateSignalGroupProvider(
             devicePersonalizationInfoProvider.timezone()
         )
 
-    override fun fingerprint(): String {
+    override fun fingerprint(stabilityLevel: StabilityLevel): String {
         return hasher.hash(when (version) {
             1 -> v1()
             2 -> v2()

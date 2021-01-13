@@ -5,6 +5,7 @@ import com.fingerprintjs.android.fingerprint.info_providers.CodecInfoProvider
 import com.fingerprintjs.android.fingerprint.info_providers.DeviceSecurityInfoProvider
 import com.fingerprintjs.android.fingerprint.info_providers.OsBuildInfoProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.SignalGroupProvider
+import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 
 
@@ -27,7 +28,7 @@ class OsBuildSignalGroupProvider(
             deviceSecurityInfoProvider.securityProvidersData()
         )
 
-    override fun fingerprint(): String {
+    override fun fingerprint(stabilityLevel: StabilityLevel): String {
         return hasher.hash(
             when (version) {
                 1 -> v1()

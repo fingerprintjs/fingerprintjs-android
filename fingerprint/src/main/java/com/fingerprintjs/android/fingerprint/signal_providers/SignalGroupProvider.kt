@@ -4,7 +4,7 @@ package com.fingerprintjs.android.fingerprint.signal_providers
 abstract class SignalGroupProvider<T>(
     val version: Int
 ) {
-    abstract fun fingerprint(): String
+    abstract fun fingerprint(stabilityLevel: StabilityLevel = StabilityLevel.OPTIMAL): String
     abstract fun rawData(): T
 }
 
@@ -20,4 +20,10 @@ object SignalGroupProviderType {
 
     @JvmField
     val DEVICE_STATE = 1 shl 3
+}
+
+enum class StabilityLevel {
+    STABLE,
+    OPTIMAL,
+    UNIQUE
 }
