@@ -2,6 +2,8 @@ package com.fingerprintjs.android.fingerprint.signal_providers.os_build
 
 
 import com.fingerprintjs.android.fingerprint.info_providers.MediaCodecInfo
+import com.fingerprintjs.android.fingerprint.signal_providers.Signal
+import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 
 
 data class OsBuildRawData(
@@ -12,4 +14,102 @@ data class OsBuildRawData(
     val codecList: List<MediaCodecInfo>,
     val encryptionStatus: String,
     val securityProvidersData: List<Pair<String, String>>
-)
+) {
+    fun fingerprint() = object : Signal<String>(
+        1,
+        2,
+        StabilityLevel.OPTIMAL,
+        FINGERPRINT_KEY,
+        FINGERPRINT_DISPLAY_NAME,
+        fingerprint
+    ) {
+        override fun toString() = fingerprint
+    }
+
+    fun androidVersion() = object : Signal<String>(
+        2,
+        null,
+        StabilityLevel.OPTIMAL,
+        ANDROID_VERSION_KEY,
+        ANDROID_VERSION_DISPLAY_NAME,
+        androidVersion
+    ) {
+        override fun toString() = androidVersion
+    }
+
+    fun sdkVersion() = object : Signal<String>(
+        2,
+        null,
+        StabilityLevel.OPTIMAL,
+        SDK_VERSION_KEY,
+        SDK_VERSION_DISPLAY_NAME,
+        sdkVersion
+    ) {
+        override fun toString() = sdkVersion
+    }
+
+    fun kernelVersion() = object : Signal<String>(
+        2,
+        null,
+        StabilityLevel.OPTIMAL,
+        KERNEL_VERSION_KEY,
+        KERNEL_VERSION_DISPLAY_NAME,
+        kernelVersion
+    ) {
+        override fun toString() = kernelVersion
+    }
+
+    fun encryptionStatus() = object : Signal<String>(
+        2,
+        null,
+        StabilityLevel.OPTIMAL,
+        ENCRYPTION_STATUS_KEY,
+        ENCRYPTION_STATUS_DISPLAY_NAME,
+        encryptionStatus
+    ) {
+        override fun toString() = encryptionStatus
+    }
+
+    fun codecList() = object : Signal<List<MediaCodecInfo>>(
+        2,
+        null,
+        StabilityLevel.OPTIMAL,
+        CODEC_LIST_KEY,
+        CODEC_LIST_DISPLAY_NAME,
+        codecList
+    ) {
+        override fun toString(): String {
+            val sb = StringBuilder()
+
+            codecList.forEach {
+                sb.append(it.name)
+                it.capabilities.forEach { capability ->
+                    sb.append(capability)
+                }
+            }
+
+            return sb.toString()
+        }
+    }
+
+    fun securityProviders() = object : Signal<List<Pair<String, String>>>(
+        2,
+        null,
+        StabilityLevel.OPTIMAL,
+        SECURITY_PROVIDERS_DATA_KEY,
+        SECURITY_PROVIDERS_DATA_KEY,
+        securityProvidersData
+    ) {
+        override fun toString(): String {
+            val sb = StringBuilder()
+
+            securityProvidersData.forEach {
+                sb
+                    .append(it.first)
+                    .append(it.second)
+            }
+
+            return sb.toString()
+        }
+    }
+}

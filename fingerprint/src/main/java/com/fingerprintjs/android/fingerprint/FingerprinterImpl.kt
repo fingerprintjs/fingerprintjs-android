@@ -44,10 +44,22 @@ internal class FingerprinterImpl(
     }
 
     override fun getFingerprint(listener: (FingerprintResult) -> Unit) {
-        getFingerprint(DEFAULT_MASK, listener)
+        getFingerprint(StabilityLevel.OPTIMAL, DEFAULT_MASK, listener)
     }
 
-    override fun getFingerprint(signalProvidersMask: Int, listener: (FingerprintResult) -> Unit) {
+    override fun getFingerprint(
+        stabilityLevel: StabilityLevel,
+        listener: (FingerprintResult) -> Unit
+    ) = getFingerprint(stabilityLevel, ALL_PROVIDERS_MASK, listener)
+
+    override fun getFingerprint(signalProvidersMask: Int, listener: (FingerprintResult) -> Unit) =
+        getFingerprint(StabilityLevel.OPTIMAL, signalProvidersMask, listener)
+
+    private fun getFingerprint(
+        stabilityLevel: StabilityLevel,
+        signalProvidersMask: Int,
+        listener: (FingerprintResult) -> Unit
+    ) {
         fingerprintResult?.let {
             listener.invoke(it)
             return
@@ -57,24 +69,20 @@ internal class FingerprinterImpl(
             val fingerprintSb = StringBuilder()
 
             if (signalProvidersMask and SignalGroupProviderType.HARDWARE != 0) {
-                fingerprintSb.append(hardwareSignalProvider.fingerprint())
+                fingerprintSb.append(hardwareSignalProvider.fingerprint(stabilityLevel))
             }
             if (signalProvidersMask and SignalGroupProviderType.OS_BUILD != 0) {
-                fingerprintSb.append(osBuildSignalProvider.fingerprint())
+                fingerprintSb.append(osBuildSignalProvider.fingerprint(stabilityLevel))
             }
             if (signalProvidersMask and SignalGroupProviderType.DEVICE_STATE != 0) {
-                fingerprintSb.append(deviceStateSignalProvider.fingerprint())
+                fingerprintSb.append(deviceStateSignalProvider.fingerprint(stabilityLevel))
             }
             if (signalProvidersMask and SignalGroupProviderType.INSTALLED_APPS != 0) {
-                fingerprintSb.append(installedAppsSignalProvider.fingerprint())
+                fingerprintSb.append(installedAppsSignalProvider.fingerprint(stabilityLevel))
             }
 
             val result = object : FingerprintResult {
                 override val fingerprint = configuration.hasher.hash(fingerprintSb.toString())
-
-                override fun fingerprint(stabilityLevel: StabilityLevel): String {
-                    TODO("Not yet implemented")
-                }
 
                 @Suppress("UNCHECKED_CAST")
                 override fun <T> getSignalProvider(clazz: Class<T>): T? {
@@ -95,3 +103,7 @@ internal class FingerprinterImpl(
 
 private val DEFAULT_MASK =
     SignalGroupProviderType.HARDWARE or SignalGroupProviderType.OS_BUILD or SignalGroupProviderType.DEVICE_STATE
+
+private val ALL_PROVIDERS_MASK =
+    SignalGroupProviderType.HARDWARE or SignalGroupProviderType.OS_BUILD or SignalGroupProviderType.DEVICE_STATE or SignalGroupProviderType.INSTALLED_APPS
+

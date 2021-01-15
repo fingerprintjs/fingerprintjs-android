@@ -31,7 +31,7 @@ class DeviceStateSignalGroupProviderTests {
         val deviceSecurityInfoProvider = createDeviceStateSignalGroupProvider(2)
         assertEquals(
             "adbEnableddevelopmentSettingsEnabledhttpProxytransitionAnimationScalewindowAnimationScaledataRoamingEnabledaccessibilityEnableddefaultInputMethodtouchExplorationEnabledalarmAlertPathdateFormatendButtonBehaviourfontScalescreenOffTimeouttime12Or24truesupportedHotelCaliforniaUSAGreenwichEN-USEN-USRU-ru"
-            , deviceSecurityInfoProvider.fingerprint()
+            , deviceSecurityInfoProvider.fingerprint(stabilityLevel = StabilityLevel.UNIQUE)
         )
     }
 

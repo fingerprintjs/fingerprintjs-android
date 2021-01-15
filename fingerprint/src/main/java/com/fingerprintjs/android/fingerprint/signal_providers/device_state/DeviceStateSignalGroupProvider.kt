@@ -49,80 +49,62 @@ class DeviceStateSignalGroupProvider(
         )
 
     override fun fingerprint(stabilityLevel: StabilityLevel): String {
-        return hasher.hash(when (version) {
-            1 -> v1()
-            2 -> v2()
-            else -> v2()
-        })
+        return when (version) {
+            1 -> combineSignals(v1(), stabilityLevel = StabilityLevel.UNIQUE)
+            2 -> combineSignals(v2(), stabilityLevel)
+            else -> combineSignals(v2(), stabilityLevel)
+        }
     }
 
     override fun rawData() = rawData
 
-    private fun v1(): String {
-        val deviceStateSb = StringBuilder()
-        deviceStateSb
-            .append(rawData.adbEnabled)
-            .append(rawData.developmentSettingsEnabled)
-            .append(rawData.httpProxy)
-            .append(rawData.transitionAnimationScale)
-            .append(rawData.windowAnimationScale)
+    private fun v1() = listOf(
+        rawData.adbEnabled(),
+        rawData.developmentSettingsEnabled(),
+        rawData.httpProxy(),
+        rawData.transitionAnimationScale(),
+        rawData.windowAnimationScale(),
+        rawData.dataRoamingEnabled(),
+        rawData.accessibilityEnabled(),
+        rawData.defaultInputMethod(),
+        rawData.rttCallingMode(),
+        rawData.touchExplorationEnabled(),
+        rawData.alarmAlertPath(),
+        rawData.dateFormat(),
+        rawData.endButtonBehaviour(),
+        rawData.fontScale(),
+        rawData.screenOffTimeout(),
+        rawData.textAutoReplaceEnable(),
+        rawData.textAutoPunctuate(),
+        rawData.time12Or24(),
+        rawData.isPinSecurityEnabled(),
+        rawData.fingerprintSensorStatus(),
+        rawData.ringtoneSource(),
+        rawData.availableLocales()
+    )
 
-            .append(rawData.dataRoamingEnabled)
-            .append(rawData.accessibilityEnabled)
-            .append(rawData.defaultInputMethod)
-            .append(rawData.rttCallingMode)
-            .append(rawData.touchExplorationEnabled)
-
-            .append(rawData.alarmAlertPath)
-            .append(rawData.dateFormat)
-            .append(rawData.endButtonBehaviour)
-            .append(rawData.fontScale)
-            .append(rawData.screenOffTimeout)
-            .append(rawData.textAutoReplaceEnable)
-            .append(rawData.textAutoPunctuate)
-            .append(rawData.time12Or24)
-            .append(rawData.isPinSecurityEnabled)
-            .append(rawData.fingerprintSensorStatus)
-            .append(rawData.ringtoneSource)
-
-        rawData.availableLocales.forEach {
-            deviceStateSb.append(it)
-        }
-
-        return deviceStateSb.toString()
-    }
-
-    private fun v2(): String {
-        val deviceStateSb = StringBuilder()
-        deviceStateSb
-            .append(rawData.adbEnabled)
-            .append(rawData.developmentSettingsEnabled)
-            .append(rawData.httpProxy)
-            .append(rawData.transitionAnimationScale)
-            .append(rawData.windowAnimationScale)
-
-            .append(rawData.dataRoamingEnabled)
-            .append(rawData.accessibilityEnabled)
-            .append(rawData.defaultInputMethod)
-            .append(rawData.touchExplorationEnabled)
-
-            .append(rawData.alarmAlertPath)
-            .append(rawData.dateFormat)
-            .append(rawData.endButtonBehaviour)
-            .append(rawData.fontScale)
-            .append(rawData.screenOffTimeout)
-            .append(rawData.time12Or24)
-            .append(rawData.isPinSecurityEnabled)
-            .append(rawData.fingerprintSensorStatus)
-            .append(rawData.ringtoneSource)
-            .append(rawData.regionCountry)
-            .append(rawData.timezone)
-            .append(rawData.defaultLanguage)
-
-        rawData.availableLocales.forEach {
-            deviceStateSb.append(it)
-        }
-
-        return deviceStateSb.toString()
-    }
+    private fun v2() = listOf(
+        rawData.adbEnabled(),
+        rawData.developmentSettingsEnabled(),
+        rawData.httpProxy(),
+        rawData.transitionAnimationScale(),
+        rawData.windowAnimationScale(),
+        rawData.dataRoamingEnabled(),
+        rawData.accessibilityEnabled(),
+        rawData.defaultInputMethod(),
+        rawData.touchExplorationEnabled(),
+        rawData.alarmAlertPath(),
+        rawData.dateFormat(),
+        rawData.endButtonBehaviour(),
+        rawData.fontScale(),
+        rawData.screenOffTimeout(),
+        rawData.time12Or24(),
+        rawData.isPinSecurityEnabled(),
+        rawData.fingerprintSensorStatus(),
+        rawData.ringtoneSource(),
+        rawData.regionCountry(),
+        rawData.timezone(),
+        rawData.defaultLanguage(),
+        rawData.availableLocales()
+    )
 }
