@@ -30,46 +30,29 @@ class OsBuildSignalGroupProvider(
 
     override fun fingerprint(stabilityLevel: StabilityLevel): String {
         return hasher.hash(
-            when (version) {
-                1 -> v1()
-                2 -> v2()
-                else -> v2()
-            }
+            combineSignals(
+                when (version) {
+                    1 -> v1()
+                    2 -> v2()
+                    else -> v2()
+                }, stabilityLevel
+            )
         )
 
     }
 
     override fun rawData() = rawData
 
-    private fun v1(): String {
-        val osBuildInfoSB = StringBuilder()
+    private fun v1() = listOf(
+        rawData.fingerprint()
+    )
 
-        osBuildInfoSB.append(rawData.fingerprint)
-
-        return osBuildInfoSB.toString()
-    }
-
-    private fun v2(): String {
-        val osBuildInfoSB = StringBuilder()
-
-        osBuildInfoSB.append(rawData.androidVersion)
-        osBuildInfoSB.append(rawData.sdkVersion)
-        osBuildInfoSB.append(rawData.kernelVersion)
-        osBuildInfoSB.append(rawData.encryptionStatus)
-
-        rawData.securityProvidersData.forEach {
-            osBuildInfoSB
-                .append(it.first)
-                .append(it.second)
-        }
-
-        rawData.codecList.forEach {
-            osBuildInfoSB.append(it.name)
-            it.capabilities.forEach { capability ->
-                osBuildInfoSB.append(capability)
-            }
-        }
-
-        return osBuildInfoSB.toString()
-    }
+    private fun v2() = listOf(
+        rawData.androidVersion(),
+        rawData.sdkVersion(),
+        rawData.kernelVersion(),
+        rawData().encryptionStatus(),
+        rawData().securityProviders(),
+        rawData().codecList()
+    )
 }
