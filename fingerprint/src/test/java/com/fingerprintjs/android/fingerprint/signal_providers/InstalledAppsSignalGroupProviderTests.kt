@@ -46,6 +46,6 @@ class InstalledAppsSignalGroupProviderTests {
                 1
             )
 
-        assertEquals("app1app2app3app4", fingerprinter.fingerprint())
+        assertEquals("app1app2app3app4", fingerprinter.fingerprint(StabilityLevel.UNIQUE))
     }
 }
