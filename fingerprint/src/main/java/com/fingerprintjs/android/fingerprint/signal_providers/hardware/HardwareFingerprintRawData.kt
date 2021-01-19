@@ -4,6 +4,7 @@ package com.fingerprintjs.android.fingerprint.signal_providers.hardware
 import com.fingerprintjs.android.fingerprint.info_providers.CameraInfo
 import com.fingerprintjs.android.fingerprint.info_providers.InputDeviceData
 import com.fingerprintjs.android.fingerprint.info_providers.SensorData
+import com.fingerprintjs.android.fingerprint.signal_providers.RawData
 import com.fingerprintjs.android.fingerprint.signal_providers.Signal
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 
@@ -22,7 +23,24 @@ data class HardwareFingerprintRawData(
     val glesVersion: String,
     val abiType: String,
     val coresCount: Int
-) {
+) : RawData {
+
+    override fun signals() = listOf(
+        manufacturerName(),
+        modelName(),
+        totalRAM(),
+        totalInternalStorageSpace(),
+        procCpuInfo(),
+        sensors(),
+        inputDevices(),
+        batteryHealth(),
+        batteryFullCapacity(),
+        cameraList(),
+        glesVersion(),
+        abiType(),
+        coresCount()
+    )
+
     fun manufacturerName() = object : Signal<String>(
         1,
         null,

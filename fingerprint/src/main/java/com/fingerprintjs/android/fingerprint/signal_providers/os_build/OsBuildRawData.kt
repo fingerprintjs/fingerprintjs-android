@@ -2,6 +2,7 @@ package com.fingerprintjs.android.fingerprint.signal_providers.os_build
 
 
 import com.fingerprintjs.android.fingerprint.info_providers.MediaCodecInfo
+import com.fingerprintjs.android.fingerprint.signal_providers.RawData
 import com.fingerprintjs.android.fingerprint.signal_providers.Signal
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 
@@ -14,7 +15,18 @@ data class OsBuildRawData(
     val codecList: List<MediaCodecInfo>,
     val encryptionStatus: String,
     val securityProvidersData: List<Pair<String, String>>
-) {
+) : RawData {
+
+    override fun signals() = listOf(
+        fingerprint(),
+        androidVersion(),
+        sdkVersion(),
+        kernelVersion(),
+        codecList(),
+        encryptionStatus(),
+        securityProviders()
+    )
+
     fun fingerprint() = object : Signal<String>(
         1,
         2,
@@ -97,7 +109,7 @@ data class OsBuildRawData(
         null,
         StabilityLevel.OPTIMAL,
         SECURITY_PROVIDERS_DATA_KEY,
-        SECURITY_PROVIDERS_DATA_KEY,
+        SECURITY_PROVIDERS_DATA_DISPLAY_NAME,
         securityProvidersData
     ) {
         override fun toString(): String {

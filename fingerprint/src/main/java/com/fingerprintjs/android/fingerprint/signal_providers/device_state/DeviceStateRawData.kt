@@ -1,5 +1,6 @@
 package com.fingerprintjs.android.fingerprint.signal_providers.device_state
 
+import com.fingerprintjs.android.fingerprint.signal_providers.RawData
 import com.fingerprintjs.android.fingerprint.signal_providers.Signal
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 import java.lang.StringBuilder
@@ -36,7 +37,36 @@ data class DeviceStateRawData(
     val regionCountry: String,
     val defaultLanguage: String,
     val timezone: String
-) {
+) : RawData {
+
+    override fun signals() = listOf(
+        adbEnabled(),
+        developmentSettingsEnabled(),
+        httpProxy(),
+        transitionAnimationScale(),
+        windowAnimationScale(),
+        dataRoamingEnabled(),
+        accessibilityEnabled(),
+        defaultInputMethod(),
+        rttCallingMode(),
+        touchExplorationEnabled(),
+        alarmAlertPath(),
+        dateFormat(),
+        endButtonBehaviour(),
+        fontScale(),
+        screenOffTimeout(),
+        textAutoReplaceEnable(),
+        textAutoPunctuate(),
+        time12Or24(),
+        isPinSecurityEnabled(),
+        fingerprintSensorStatus(),
+        ringtoneSource(),
+        availableLocales(),
+        regionCountry(),
+        defaultLanguage(),
+        timezone()
+    )
+
     fun adbEnabled() = object : Signal<String>(
         1,
         null,

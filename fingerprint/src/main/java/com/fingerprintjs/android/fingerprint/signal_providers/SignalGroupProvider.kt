@@ -21,7 +21,7 @@ enum class StabilityLevel {
     UNIQUE
 }
 
-abstract class SignalGroupProvider<T>(
+abstract class SignalGroupProvider<T : RawData>(
     val version: Int
 ) {
     abstract fun fingerprint(stabilityLevel: StabilityLevel = StabilityLevel.OPTIMAL): String

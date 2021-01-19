@@ -22,7 +22,7 @@ interface FingerprinterItemView {
 }
 
 class FingerprinterItemViewImpl @JvmOverloads constructor(
-        context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
+    context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
 ) : CardView(context, attrs, defStyle), FingerprinterItemView {
 
     private val container: RecyclerView by lazy {
@@ -34,9 +34,9 @@ class FingerprinterItemViewImpl @JvmOverloads constructor(
     private val viewManager = LinearLayoutManager(context)
     private val dataset = LinkedList<DescriptionItem>()
     private val adapter =
-            DescriptionItemAdapter(
-                    dataset
-            )
+        DescriptionItemAdapter(
+            dataset
+        )
 
     private val titleView: TextView by lazy {
         findViewById(R.id.fingerprinter_title)
@@ -75,19 +75,19 @@ class FingerprinterItemViewImpl @JvmOverloads constructor(
         dataset.clear()
         description.forEach {
             dataset.add(
-                    DescriptionItem(
-                            it.name,
-                            "",
-                            true
-                    )
+                DescriptionItem(
+                    it.name,
+                    "",
+                    true
+                )
             )
             it.fields.forEach { field ->
                 dataset.add(
-                        DescriptionItem(
-                                field.first,
-                                field.second,
-                                false
-                        )
+                    DescriptionItem(
+                        field.first,
+                        field.second,
+                        false
+                    )
                 )
             }
         }
