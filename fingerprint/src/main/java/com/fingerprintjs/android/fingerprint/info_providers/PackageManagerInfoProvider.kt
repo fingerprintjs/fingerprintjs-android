@@ -13,7 +13,11 @@ interface PackageManagerDataSource {
 
 data class PackageInfo(
     val packageName: String
-)
+) {
+    override fun toString(): String {
+        return packageName
+    }
+}
 
 class PackageManagerDataSourceImpl(
     private val packageManager: PackageManager

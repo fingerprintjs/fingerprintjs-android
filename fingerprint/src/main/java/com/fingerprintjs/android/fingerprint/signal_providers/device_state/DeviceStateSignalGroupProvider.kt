@@ -49,11 +49,13 @@ class DeviceStateSignalGroupProvider(
         )
 
     override fun fingerprint(stabilityLevel: StabilityLevel): String {
-        return when (version) {
-            1 -> combineSignals(v1(), stabilityLevel = StabilityLevel.UNIQUE)
-            2 -> combineSignals(v2(), stabilityLevel)
-            else -> combineSignals(v2(), stabilityLevel)
-        }
+        return hasher.hash(
+            when (version) {
+                1 -> combineSignals(v1(), stabilityLevel = StabilityLevel.UNIQUE)
+                2 -> combineSignals(v2(), stabilityLevel)
+                else -> combineSignals(v2(), stabilityLevel)
+            }
+        )
     }
 
     override fun rawData() = rawData

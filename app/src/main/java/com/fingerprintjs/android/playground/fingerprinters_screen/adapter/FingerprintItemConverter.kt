@@ -3,6 +3,13 @@ package com.fingerprintjs.android.playground.fingerprinters_screen.adapter
 
 import com.fingerprintjs.android.fingerprint.DeviceIdResult
 import com.fingerprintjs.android.fingerprint.FingerprintResult
+import com.fingerprintjs.android.fingerprint.info_providers.CameraInfo
+import com.fingerprintjs.android.fingerprint.info_providers.InputDeviceData
+import com.fingerprintjs.android.fingerprint.info_providers.MediaCodecInfo
+import com.fingerprintjs.android.fingerprint.info_providers.PackageInfo
+import com.fingerprintjs.android.fingerprint.info_providers.SensorData
+import com.fingerprintjs.android.fingerprint.signal_providers.Signal
+import com.fingerprintjs.android.fingerprint.signal_providers.SignalGroupProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.device_state.DeviceStateSignalGroupProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.hardware.HardwareSignalGroupProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.installed_apps.InstalledAppsSignalGroupProvider
@@ -95,238 +102,148 @@ class FingerprintItemConverterImpl : FingerprintItemConverter {
         )
     }
 
-    private fun prepareHardwareFingerprinterItem(hardwareSignalProvider: HardwareSignalGroupProvider): FingerprinterItem {
-        val deviceModelDescription = FingerprintSectionDescription(
-            "Device name",
-            listOf(
-                Pair("Device manufacturer", hardwareSignalProvider.rawData().manufacturerName),
-                Pair("Device model", hardwareSignalProvider.rawData().modelName)
-            )
-        )
+    private fun prepareHardwareFingerprinterItem(
+        hardwareSignalProvider: HardwareSignalGroupProvider
+    ) = prepareSignalGroupProviderSection(
+        hardwareSignalProvider,
+        "hardware",
+        "Hardware Fingerprint",
+        "Hardware"
+    )
 
-        val memoryDescription =
-            FingerprintSectionDescription(
-                "Memory info",
-                listOf(
-                    Pair(
-                        "Total RAM in bytes",
-                        hardwareSignalProvider.rawData().totalRAM.toString()
-                    ),
-                    Pair(
-                        "Total internal storage in bytes",
-                        hardwareSignalProvider.rawData().totalInternalStorageSpace.toString()
-                    )
-                )
-            )
+    private fun prepareInstalledAppsFingerprinter(
+        installedAppsSignalProvider: InstalledAppsSignalGroupProvider
+    ) = prepareSignalGroupProviderSection(
+        installedAppsSignalProvider,
+        "apps",
+        "Installed apps fingerprint"
+    )
 
-        val cpuInfoList = LinkedList<Pair<String, String>>()
-
-        cpuInfoList.addAll(
-            listOf(
-                Pair("Cores count", hardwareSignalProvider.rawData().coresCount.toString()),
-                Pair("ABI type", hardwareSignalProvider.rawData().abiType),
-                Pair("GL ES version", hardwareSignalProvider.rawData().glesVersion),
-            )
-        )
-
-        cpuInfoList.addAll(hardwareSignalProvider.rawData().procCpuInfo.entries.map {
-            Pair(it.key, it.value)
-        })
-
-
-        val cpuInfoDescription =
-            FingerprintSectionDescription(
-                "CPU info",
-                cpuInfoList
-            )
-
-        val sensorsDescription = FingerprintSectionDescription(
-            "Sensors",
-            hardwareSignalProvider.rawData().sensors.map {
-                Pair(it.sensorName, it.vendorName)
-            }
-        )
-
-        val inputDevicesDescription = FingerprintSectionDescription(
-            "Input devices",
-            hardwareSignalProvider.rawData().inputDevices.map {
-                Pair(it.vendor, it.name)
-            }
-        )
-
-        val batteryInfoDescription = FingerprintSectionDescription(
-            "Battery Info",
-            listOf(
-                Pair("Battery full capacity", hardwareSignalProvider.rawData().batteryFullCapacity),
-                Pair("Battery health", hardwareSignalProvider.rawData().batteryHealth)
-            )
-        )
-
-        val cameraInfoDescription = FingerprintSectionDescription(
-            "Cameras",
-            hardwareSignalProvider.rawData().cameraList.map {
-                Pair(it.cameraName, "${it.cameraType}-${it.cameraOrientation}")
-            }
-        )
-
-        return FingerprinterItem(
-            "hardware",
-            "Hardware Fingerprint",
-            hardwareSignalProvider.fingerprint(),
-            listOf(
-                deviceModelDescription,
-                memoryDescription,
-                cpuInfoDescription,
-                sensorsDescription,
-                inputDevicesDescription,
-                batteryInfoDescription,
-                cameraInfoDescription
-            )
-        )
-    }
-
-    private fun prepareInstalledAppsFingerprinter(installedAppsSignalProvider: InstalledAppsSignalGroupProvider): FingerprinterItem {
-        val installedAppsFingerprintDescription = FingerprintSectionDescription(
-            "Installed apps",
-            installedAppsSignalProvider.rawData().applicationsNamesList.mapIndexed { index, app ->
-                Pair(index.toString(), app.packageName)
-            }
-        )
-
-        val systemAppsFingerprintDescription = FingerprintSectionDescription(
-            "System apps",
-            installedAppsSignalProvider.rawData().systemApplicationsList.mapIndexed { index, app ->
-                Pair(index.toString(), app.packageName)
-            }
-        )
-        return FingerprinterItem(
-            "apps",
-            "Installed apps fingerprint",
-            installedAppsSignalProvider.fingerprint(),
-            listOf(
-                installedAppsFingerprintDescription,
-                systemAppsFingerprintDescription
-            )
-        )
-    }
-
-    private fun prepareOsBuildFingerprint(osBuildSignalProvider: OsBuildSignalGroupProvider): FingerprinterItem {
-        val osBuildDescription = FingerprintSectionDescription(
-            "OS Build fingerprint",
-            listOf(
-                Pair("Build fingerprint", osBuildSignalProvider.rawData().fingerprint),
-                Pair("Android version", osBuildSignalProvider.rawData().androidVersion),
-                Pair("SDK version", osBuildSignalProvider.rawData().sdkVersion),
-                Pair("Kernel version", osBuildSignalProvider.rawData().kernelVersion),
-                Pair("Encryption status", osBuildSignalProvider.rawData().encryptionStatus)
-            )
-        )
-
-        val codecListInfo = FingerprintSectionDescription(
-            "Codecs",
-            osBuildSignalProvider.rawData().codecList.map {
-                val sb = StringBuilder()
-
-                it.capabilities.forEach { capability ->
-                    sb.append("$capability  ")
-                }
-                Pair(it.name, sb.toString())
-            }
-        )
-
-        val securityProviders = FingerprintSectionDescription(
-            "Security providers",
-            osBuildSignalProvider.rawData().securityProvidersData
-        )
-
-        return FingerprinterItem(
-            "osBuild",
-            "OS Build fingerprint",
-            osBuildSignalProvider.fingerprint(),
-            listOf(
-                osBuildDescription,
-                codecListInfo,
-                securityProviders
-            )
-        )
-    }
+    private fun prepareOsBuildFingerprint(
+        osBuildSignalProvider: OsBuildSignalGroupProvider
+    ) = prepareSignalGroupProviderSection(
+        osBuildSignalProvider,
+        "osBuild",
+        "OS Build fingerprint",
+        "OS Build parameters"
+    )
 
     private fun prepareDeviceStateFingerprint(
         deviceStateSignalProvider: DeviceStateSignalGroupProvider
+    ) = prepareSignalGroupProviderSection(
+        deviceStateSignalProvider,
+        "deviceState",
+        "Device state fingerprint",
+        "Device state parameters"
+    )
+
+
+    private fun prepareSignalGroupProviderSection(
+        signalProvider: SignalGroupProvider<*>,
+        sectionId: String,
+        title: String,
+        stringSectionTitle: String = ""
     ): FingerprinterItem {
-        val deviceStateDescription = FingerprintSectionDescription(
-            "Device state fingerprint params",
-            listOf(
-                Pair(
-                    "Accessibility enabled",
-                    deviceStateSignalProvider.rawData().accessibilityEnabled
-                ),
-                Pair("ADB enabled", deviceStateSignalProvider.rawData().adbEnabled),
-                Pair(
-                    "Development settings enabled",
-                    deviceStateSignalProvider.rawData().developmentSettingsEnabled
-                ),
-                Pair("HTTP proxy", deviceStateSignalProvider.rawData().httpProxy),
-                Pair(
-                    "Transition animation scale",
-                    deviceStateSignalProvider.rawData().transitionAnimationScale
-                ),
-                Pair(
-                    "Window animation scale",
-                    deviceStateSignalProvider.rawData().windowAnimationScale
-                ),
-                Pair(
-                    "Data roaming enabled",
-                    deviceStateSignalProvider.rawData().dataRoamingEnabled
-                ),
-                Pair(
-                    "Default input method",
-                    deviceStateSignalProvider.rawData().defaultInputMethod
-                ),
-                Pair("RTT calling mode", deviceStateSignalProvider.rawData().rttCallingMode),
-                Pair(
-                    "Touch exploration enabled",
-                    deviceStateSignalProvider.rawData().touchExplorationEnabled
-                ),
-                Pair("Alarm alert path", deviceStateSignalProvider.rawData().alarmAlertPath),
-                Pair("Date format", deviceStateSignalProvider.rawData().dateFormat),
-                Pair(
-                    "End button behaviour",
-                    deviceStateSignalProvider.rawData().endButtonBehaviour
-                ),
-                Pair("Font scale", deviceStateSignalProvider.rawData().fontScale),
-                Pair("Screen off timeout", deviceStateSignalProvider.rawData().screenOffTimeout),
-                Pair(
-                    "Text autoreplace enable",
-                    deviceStateSignalProvider.rawData().textAutoReplaceEnable
-                ),
-                Pair("Text auto punctuate", deviceStateSignalProvider.rawData().textAutoPunctuate),
-                Pair("Time 12 or 24", deviceStateSignalProvider.rawData().time12Or24),
-                Pair(
-                    "is PIN security enabled",
-                    deviceStateSignalProvider.rawData().isPinSecurityEnabled.toString()
-                ),
-                Pair(
-                    "Fingerprint sensor status",
-                    deviceStateSignalProvider.rawData().fingerprintSensorStatus
-                ),
-                Pair("Ringtone source", deviceStateSignalProvider.rawData().ringtoneSource),
-                Pair("Region country", deviceStateSignalProvider.rawData().regionCountry),
-                Pair("Timezone", deviceStateSignalProvider.rawData().timezone),
-                Pair(
-                    "Available locales",
-                    deviceStateSignalProvider.rawData().availableLocales.toString()
-                )
-            )
-        )
         return FingerprinterItem(
-            "deviceState",
-            "Device state fingerprint",
-            deviceStateSignalProvider.fingerprint(),
-            listOf(
-                deviceStateDescription
+            sectionId,
+            title,
+            signalProvider.fingerprint(),
+            convertSignalToFingerprintSectionDescription(
+                signalProvider.rawData().signals(),
+                stringSectionTitle
             )
         )
+    }
+
+    private fun convertSignalToFingerprintSectionDescription(
+        signals: List<Signal<*>>,
+        stringSectionTitle: String = ""
+    ): List<FingerprintSectionDescription> {
+        val sections = LinkedList<FingerprintSectionDescription>()
+
+        val stringSignals = signals.filter {
+            (it.value is String) or (it.value is Int) or (it.value is Long) or (it.value is Boolean)
+        }.map {
+            Pair(it.displayName, it.toString())
+        }
+
+        val stringSection = FingerprintSectionDescription(stringSectionTitle, stringSignals)
+
+        val notStringSections: List<FingerprintSectionDescription> = signals
+            .filter {
+                (it.value !is String) and (it.value !is Int) and (it.value !is Long) and (it.value !is Boolean)
+            }.map { signal ->
+                when (val value = signal.value) {
+                    is List<*> -> {
+                        if (value.isNotEmpty() and (value[0] is String) or (value[0] is PackageInfo)) {
+                            val sb = StringBuilder()
+
+                            value.forEach {
+                                sb.append(it.toString()).append("\n")
+                            }
+
+                            FingerprintSectionDescription(
+                                signal.displayName,
+                                listOf(Pair(signal.displayName, sb.toString()))
+                            )
+                        } else {
+                            val listItems = value.mapIndexed() { index, item ->
+                                when (item) {
+                                    is MediaCodecInfo -> {
+                                        val sb = StringBuilder()
+                                        item.capabilities.forEach { capability ->
+                                            sb.append("$capability  ")
+                                        }
+                                        Pair(item.name, sb.toString())
+                                    }
+                                    is InputDeviceData -> {
+                                        Pair(item.vendor, item.name)
+                                    }
+                                    is SensorData -> {
+                                        Pair(item.sensorName, item.vendorName)
+                                    }
+                                    is CameraInfo -> {
+                                        Pair(
+                                            item.cameraName,
+                                            "${item.cameraType}-${item.cameraOrientation}"
+                                        )
+                                    }
+                                    is Pair<*, *> -> Pair(
+                                        item.first.toString(),
+                                        item.second.toString()
+                                    )
+                                    else -> {
+                                        Pair(index.toString(), item.toString())
+                                    }
+                                }
+                            }
+                            FingerprintSectionDescription(signal.displayName, listItems)
+                        }
+                    }
+                    is Map<*, *> -> {
+                        val list = value.entries.map { entry ->
+                            Pair(entry.key.toString(), entry.value.toString())
+                        }
+                        FingerprintSectionDescription(signal.displayName, list)
+                    }
+                    else -> {
+                        FingerprintSectionDescription(
+                            signal.displayName,
+                            listOf(
+                                Pair(signal.displayName, signal.toString())
+                            )
+                        )
+                    }
+                }
+            }
+
+        if (stringSection.fields.isNotEmpty()) {
+            sections.add(stringSection)
+        }
+
+        sections.addAll(notStringSections)
+
+        return sections
     }
 }
 
