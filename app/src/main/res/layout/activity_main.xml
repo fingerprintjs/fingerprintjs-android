@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -43,7 +44,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|start"
                     android:layout_marginHorizontal="6dp"
-                    android:layout_marginBottom="4dp"
                     android:fontFamily="monospace"
                     android:textSize="16sp"
                     tools:text="169cf3ea59cf60765c0e25a1e37494e8" />
@@ -51,37 +51,43 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_marginVertical="8dp"
                     android:background="@color/colorLightGray" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="6dp"
                     android:orientation="horizontal">
 
                     <com.google.android.material.button.MaterialButtonToggleGroup
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.75">
+                        android:layout_weight="0.75"
+                        app:singleSelection="true">
 
-                        <Button
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/stable_toggle_button"
                             style="@style/PlaygroundToggleButton"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="0.33"
+                            android:layout_weight="0.3"
                             android:text="@string/toggle_button_stable_text" />
 
-                        <Button
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/optimal_toggle_button"
                             style="@style/PlaygroundToggleButton"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="0.33"
+                            android:layout_weight="0.3"
                             android:text="@string/toggle_button_optimal_text" />
 
-                        <Button
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/unique_toggle_button"
                             style="@style/PlaygroundToggleButton"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="0.33"
+                            android:layout_weight="0.3"
                             android:text="@string/toggle_button_unique_text" />
                     </com.google.android.material.button.MaterialButtonToggleGroup>
 
@@ -91,7 +97,8 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="0.25"
-                        android:entries="@array/versions" />
+                        android:entries="@array/versions"
+                        android:gravity="center" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
