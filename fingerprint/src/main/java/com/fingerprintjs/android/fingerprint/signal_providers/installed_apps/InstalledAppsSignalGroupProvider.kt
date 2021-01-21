@@ -21,13 +21,11 @@ class InstalledAppsSignalGroupProvider(
 
     override fun fingerprint(stabilityLevel: StabilityLevel): String {
         return hasher.hash(
-            combineSignals(
-                when (version) {
-                    1 -> v1()
-                    2 -> v2()
-                    else -> v1()
-                }, stabilityLevel
-            )
+            when (version) {
+                1 -> combineSignals(v1(), stabilityLevel = StabilityLevel.UNIQUE)
+                2 -> combineSignals(v2(), stabilityLevel)
+                else -> combineSignals(v2(), stabilityLevel)
+            }
         )
     }
 

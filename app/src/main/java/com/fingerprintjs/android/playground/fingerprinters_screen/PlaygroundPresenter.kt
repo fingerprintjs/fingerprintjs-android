@@ -48,13 +48,28 @@ class PlaygroundPresenterImpl(
 
     override fun attachView(playgroundView: PlaygroundView) {
         view = playgroundView
+        subscribeToView()
 
         fingerprinter.getDeviceId { deviceIdResult ->
             fingerprinter.getFingerprint(stabilityLevel) { fingerprintResult ->
                 updateView(fingerprintResult, deviceIdResult)
             }
         }
+    }
 
+    override fun detachView() {
+        unsubscribeFromView()
+        view = null
+    }
+
+    override fun onSaveState(): Parcelable {
+        return State(
+            items,
+            csvFilePath
+        )
+    }
+
+    private fun subscribeToView() {
         view?.setOnStabilityChangedListener {
             stabilityLevel = it
             reloadFingerprinter(version, stabilityLevel)
@@ -66,17 +81,9 @@ class PlaygroundPresenterImpl(
         }
     }
 
-    override fun detachView() {
+    private fun unsubscribeFromView() {
         view?.setOnStabilityChangedListener(null)
         view?.setOnVersionChangedListener(null)
-        view = null
-    }
-
-    override fun onSaveState(): Parcelable {
-        return State(
-            items,
-            csvFilePath
-        )
     }
 
     override fun shareActionClicked(listener: (String) -> (Unit)) {
@@ -89,18 +96,31 @@ class PlaygroundPresenterImpl(
         fingerprinter = fingerprinterProvider.provideInstance(version)
         fingerprinter.getDeviceId { deviceIdResult ->
             fingerprinter.getFingerprint(stabilityLevel) { fingerprintResult ->
-                updateView(fingerprintResult, deviceIdResult)
+                updateView(fingerprintResult, deviceIdResult, true)
             }
         }
     }
 
-    private fun updateView(fingerprintResult: FingerprintResult, deviceIdResult: DeviceIdResult) {
-        val adapterItems = items ?: itemConverter.convert(
-            deviceIdResult,
-            fingerprintResult,
-            stabilityLevel,
-            version
-        )
+    private fun updateView(
+        fingerprintResult: FingerprintResult,
+        deviceIdResult: DeviceIdResult,
+        needToConvert: Boolean = false
+    ) {
+        val adapterItems = if (!needToConvert && items != null) {
+            items ?: itemConverter.convert(
+                deviceIdResult,
+                fingerprintResult,
+                stabilityLevel,
+                version
+            )
+        } else {
+            itemConverter.convert(
+                deviceIdResult,
+                fingerprintResult,
+                stabilityLevel,
+                version
+            )
+        }
 
         view?.setFingerprint(fingerprintResult.fingerprint, version, stabilityLevel)
         view?.setFingerprintItems(
