@@ -10,7 +10,7 @@ import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 data class InstalledAppsRawData(
     val applicationsNamesList: List<PackageInfo>,
     val systemApplicationsList: List<PackageInfo>
-) : RawData {
+) : RawData() {
 
     override fun signals() = listOf(
         applicationsList(),

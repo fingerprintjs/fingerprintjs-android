@@ -10,10 +10,13 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
-import com.fingerprintjs.android.fingerprint.Configuration
-import com.fingerprintjs.android.fingerprint.FingerprinterFactory
 import com.fingerprintjs.android.playground.R.layout
-import com.fingerprintjs.android.playground.fingerprinters_screen.*
+import com.fingerprintjs.android.playground.fingerprinters_screen.AboutDialog
+import com.fingerprintjs.android.playground.fingerprinters_screen.DEFAULT_FINGERPRINTER_VERSION
+import com.fingerprintjs.android.playground.fingerprinters_screen.FingerprinterProvider
+import com.fingerprintjs.android.playground.fingerprinters_screen.PlaygroundPresenter
+import com.fingerprintjs.android.playground.fingerprinters_screen.PlaygroundPresenterImpl
+import com.fingerprintjs.android.playground.fingerprinters_screen.PlaygroundViewImpl
 import java.io.File
 
 
@@ -27,9 +30,9 @@ class MainActivity : AppCompatActivity() {
 
         init(savedInstanceState)
         presenter.attachView(
-                PlaygroundViewImpl(
-                        this
-                )
+            PlaygroundViewImpl(
+                this
+            )
         )
         supportActionBar?.apply {
             title = "${this.title}-${BuildConfig.VERSION_NAME}"
@@ -41,17 +44,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun init(state: Bundle?) {
-        val fingerprinter =
-                FingerprinterFactory.getInstance(
-                        applicationContext,
-                        Configuration(version = DEFAULT_FINGERPRINTER_VERSION)
-                )
+        val fingerprinterProvider = FingerprinterProvider(applicationContext)
         val presenterState: Parcelable? = state?.getParcelable(PLAYGROUND_PRESENTER_STATE_KEY)
         val externalStorageDir = applicationContext.getExternalFilesDir(null)?.absolutePath
         presenter =
-                PlaygroundPresenterImpl(
-                        fingerprinter, DEFAULT_FINGERPRINTER_VERSION, externalStorageDir, presenterState
-                )
+            PlaygroundPresenterImpl(
+                fingerprinterProvider,
+                DEFAULT_FINGERPRINTER_VERSION,
+                externalStorageDir,
+                presenterState
+            )
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -71,11 +73,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun shareActionClicked(path: String) {
-        val uri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", File(path))
+        val uri =
+            FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", File(path))
         val sendEmailIntent = Intent(
-                Intent.ACTION_SEND, Uri.fromParts(
+            Intent.ACTION_SEND, Uri.fromParts(
                 "mailto", "", null
-        )
+            )
         ).apply {
             type = "message/rfc822"
             putExtra(Intent.EXTRA_EMAIL, arrayOf(DEVELOPERS_EMAIL))

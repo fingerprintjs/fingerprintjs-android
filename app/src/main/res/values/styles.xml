@@ -1,11 +1,20 @@
 <resources>
-    <style name="AppTheme" parent="Theme.AppCompat.Light">
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light">
         <item name="colorPrimary">@color/colorWhite</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="MyTextTitle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+    <style name="PlaygroundToggleButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:paddingLeft">@dimen/mtrl_btn_text_btn_padding_left</item>
+        <item name="android:paddingRight">@dimen/mtrl_btn_text_btn_padding_right</item>
+        <item name="iconPadding">@dimen/mtrl_btn_text_btn_icon_padding</item>
+        <item name="backgroundTint">@drawable/toggle_button_selector</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="PlaygroundTextTitle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
         <item name="android:textColor">@android:color/black</item>
     </style>
 

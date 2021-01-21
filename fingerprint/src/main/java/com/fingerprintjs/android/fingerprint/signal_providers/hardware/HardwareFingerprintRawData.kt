@@ -23,7 +23,7 @@ data class HardwareFingerprintRawData(
     val glesVersion: String,
     val abiType: String,
     val coresCount: Int
-) : RawData {
+) : RawData() {
 
     override fun signals() = listOf(
         manufacturerName(),
