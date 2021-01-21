@@ -8,7 +8,6 @@ abstract class RawData {
             stabilityLevel
         )
         .filterByVersion(version)
-
 }
 
 fun List<Signal<*>>.filterByStabilityLevel(stabilityLevel: StabilityLevel): List<Signal<*>> {
@@ -30,7 +29,7 @@ fun List<Signal<*>>.filterByStabilityLevel(stabilityLevel: StabilityLevel): List
 fun List<Signal<*>>.filterByVersion(version: Int): List<Signal<*>> {
     return this.filter {
         val isNotRemoved =
-            ((it.removedInVersion == null) or ((it.removedInVersion != null) and (it.removedInVersion!! > version)))
+            ((it.removedInVersion == null) || ((it.removedInVersion >= version)))
         val enableInVersion = it.addedInVersion in 1..version
         isNotRemoved && enableInVersion
     }

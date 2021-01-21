@@ -15,7 +15,7 @@ data class OsBuildRawData(
     val codecList: List<MediaCodecInfo>,
     val encryptionStatus: String,
     val securityProvidersData: List<Pair<String, String>>
-) : RawData {
+) : RawData() {
 
     override fun signals() = listOf(
         fingerprint(),

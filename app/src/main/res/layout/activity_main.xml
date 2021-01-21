@@ -22,59 +22,77 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginHorizontal="8dp"
-                android:layout_marginVertical="4dp"
+                android:layout_marginVertical="8dp"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/custom_fingerprinter_heading"
+                    android:id="@+id/custom_fingerprint_heading"
                     style="@style/TextAppearance.AppCompat.Headline"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|start"
                     android:layout_marginHorizontal="6dp"
-                    android:text="@string/custom_fingerprint_heading" />
+                    tools:text="@string/custom_fingerprint_heading" />
 
                 <TextView
-                    android:id="@+id/custom_fingerprinter_value"
+                    android:id="@+id/custom_fingerprinе_value"
                     style="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|start"
                     android:layout_marginHorizontal="6dp"
+                    android:layout_marginBottom="4dp"
                     android:fontFamily="monospace"
                     android:textSize="16sp"
-                    tools:text="231jdsd1231124r8" />
+                    tools:text="169cf3ea59cf60765c0e25a1e37494e8" />
 
-                <CheckBox
-                    android:id="@+id/checkbox_hardware_fingerprint"
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorLightGray" />
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:saveEnabled="false"
-                    android:text="@string/checkbox_hardware_fingerprint_text" />
+                    android:orientation="horizontal">
 
-                <CheckBox
-                    android:id="@+id/checkbox_osbuild_fingerprint"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:saveEnabled="false"
-                    android:text="@string/checkbox_osbuild_fingerprint_text" />
+                    <com.google.android.material.button.MaterialButtonToggleGroup
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.75">
 
-                <CheckBox
-                    android:id="@+id/checkbox_device_state_fingerprint"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:saveEnabled="false"
-                    android:text="@string/checkbox_device_state_fingerprint_text" />
+                        <Button
+                            style="@style/PlaygroundToggleButton"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.33"
+                            android:text="@string/toggle_button_stable_text" />
 
-                <CheckBox
-                    android:id="@+id/checkbox_installed_applications_fingerprint"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:saveEnabled="false"
-                    android:text="@string/checkbox_installed_applications_fingerprint_text" />
+                        <Button
+                            style="@style/PlaygroundToggleButton"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.33"
+                            android:text="@string/toggle_button_optimal_text" />
 
+                        <Button
+                            style="@style/PlaygroundToggleButton"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.33"
+                            android:text="@string/toggle_button_unique_text" />
+                    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/version_spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.25"
+                        android:entries="@array/versions" />
+                </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
