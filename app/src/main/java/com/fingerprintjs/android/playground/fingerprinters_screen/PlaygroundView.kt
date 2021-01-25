@@ -45,7 +45,7 @@ class PlaygroundViewImpl(
 
     private var onStabilityChangedListener: (((StabilityLevel) -> (Unit)))? = null
     private var onVersionChangedListener: ((Int) -> (Unit))? = null
-
+    
     init {
         container.layoutManager = viewManager
         container.adapter = adapter
@@ -118,6 +118,6 @@ class PlaygroundViewImpl(
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {
-        // Do nothing
+
     }
 }

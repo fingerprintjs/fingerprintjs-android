@@ -173,7 +173,7 @@ class FingerprintItemConverterImpl : FingerprintItemConverter {
         return FingerprinterItem(
             sectionId,
             title,
-            signalProvider.fingerprint(),
+            signalProvider.fingerprint(stabilityLevel),
             convertSignalToFingerprintSectionDescription(
                 signalProvider.rawData().signals(version, stabilityLevel),
                 stringSectionTitle

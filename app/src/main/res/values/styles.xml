@@ -10,12 +10,11 @@
         <item name="android:paddingLeft">@dimen/mtrl_btn_text_btn_padding_left</item>
         <item name="android:paddingRight">@dimen/mtrl_btn_text_btn_padding_right</item>
         <item name="iconPadding">@dimen/mtrl_btn_text_btn_icon_padding</item>
-        <item name="backgroundTint">@drawable/toggle_button_selector</item>
+        <item name="backgroundTint">@color/toggle_button_selector</item>
+        <item name="rippleColor">@color/colorAccent</item>
         <item name="strokeColor">@color/mtrl_btn_stroke_color_selector</item>
         <item name="strokeWidth">@dimen/mtrl_btn_stroke_size</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
-        <item name="android:textOn">ON</item>
-        <item name="android:textOff">OFF</item>
     </style>
 
     <style name="PlaygroundTextTitle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">

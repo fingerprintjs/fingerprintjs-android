@@ -29,8 +29,8 @@ fun List<Signal<*>>.filterByStabilityLevel(stabilityLevel: StabilityLevel): List
 fun List<Signal<*>>.filterByVersion(version: Int): List<Signal<*>> {
     return this.filter {
         val isNotRemoved =
-            ((it.removedInVersion == null) || ((it.removedInVersion >= version)))
-        val enableInVersion = it.addedInVersion in 1..version
-        isNotRemoved && enableInVersion
+            ((it.removedInVersion == null) || ((it.removedInVersion > version)))
+        val enabledInVersion = it.addedInVersion in 1..version
+        isNotRemoved && enabledInVersion
     }
 }

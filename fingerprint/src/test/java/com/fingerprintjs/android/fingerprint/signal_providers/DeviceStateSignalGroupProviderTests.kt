@@ -17,12 +17,8 @@ class DeviceStateSignalGroupProviderTests {
     fun `DeviceStateFingerprinter v1 - success`() {
         val deviceSecurityInfoProvider = createDeviceStateSignalGroupProvider(1)
         assertEquals(
-            "adbEnableddevelopmentSettingsEnabledhttpProxytransition" +
-                    "AnimationScalewindowAnimationScaledataRoamingEnabledaccessibilityEnabled" +
-                    "defaultInputMethodrttCallingModetouchExplorationEnabledalarmAlertPath" +
-                    "dateFormatendButtonBehaviourfontScalescreenOffTimeouttextAutoReplaceEnable" +
-                    "textAutoPunctuatetime12Or24truesupportedHotelCaliforniaEN-USRU-ru"
-            , deviceSecurityInfoProvider.fingerprint()
+            "adbEnableddevelopmentSettingsEnabledhttpProxytransitionAnimationScalewindowAnimationScaledataRoamingEnabledaccessibilityEnableddefaultInputMethodrttCallingModetouchExplorationEnabledalarmAlertPathdateFormatendButtonBehaviourfontScalescreenOffTimeouttextAutoReplaceEnabletextAutoPunctuatetime12Or24truesupportedHotelCaliforniaEN-USRU-ru",
+            deviceSecurityInfoProvider.fingerprint(StabilityLevel.UNIQUE)
         )
     }
 
@@ -30,8 +26,8 @@ class DeviceStateSignalGroupProviderTests {
     fun `DeviceStateFingerprinter v2 - success`() {
         val deviceSecurityInfoProvider = createDeviceStateSignalGroupProvider(2)
         assertEquals(
-            "adbEnableddevelopmentSettingsEnabledhttpProxytransitionAnimationScalewindowAnimationScaledataRoamingEnabledaccessibilityEnableddefaultInputMethodtouchExplorationEnabledalarmAlertPathdateFormatendButtonBehaviourfontScalescreenOffTimeouttime12Or24truesupportedHotelCaliforniaUSAGreenwichEN-USEN-USRU-ru"
-            , deviceSecurityInfoProvider.fingerprint(stabilityLevel = StabilityLevel.UNIQUE)
+            "adbEnableddevelopmentSettingsEnabledhttpProxytransitionAnimationScalewindowAnimationScaledataRoamingEnabledaccessibilityEnableddefaultInputMethodtouchExplorationEnabledalarmAlertPathdateFormatendButtonBehaviourfontScalescreenOffTimeouttime12Or24truesupportedHotelCaliforniaEN-USRU-ruUSAGreenwichEN-US",
+            deviceSecurityInfoProvider.fingerprint(stabilityLevel = StabilityLevel.UNIQUE)
         )
     }
 

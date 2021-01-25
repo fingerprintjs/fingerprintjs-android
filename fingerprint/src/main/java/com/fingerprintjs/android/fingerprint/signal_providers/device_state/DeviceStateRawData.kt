@@ -316,7 +316,7 @@ data class DeviceStateRawData(
     }
 
     fun regionCountry() = object : Signal<String>(
-        1,
+        2,
         null,
         StabilityLevel.OPTIMAL,
         REGION_COUNTRY_KEY,
@@ -327,7 +327,7 @@ data class DeviceStateRawData(
     }
 
     fun defaultLanguage() = object : Signal<String>(
-        1,
+        2,
         null,
         StabilityLevel.OPTIMAL,
         DEFAULT_LANGUAGE_KEY,
@@ -338,7 +338,7 @@ data class DeviceStateRawData(
     }
 
     fun timezone() = object : Signal<String>(
-        1,
+        2,
         null,
         StabilityLevel.OPTIMAL,
         TIMEZONE_KEY,
