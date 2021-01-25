@@ -104,9 +104,9 @@ class DeviceStateSignalGroupProvider(
         rawData.isPinSecurityEnabled(),
         rawData.fingerprintSensorStatus(),
         rawData.ringtoneSource(),
+        rawData.availableLocales(),
         rawData.regionCountry(),
         rawData.timezone(),
         rawData.defaultLanguage(),
-        rawData.availableLocales()
     )
 }

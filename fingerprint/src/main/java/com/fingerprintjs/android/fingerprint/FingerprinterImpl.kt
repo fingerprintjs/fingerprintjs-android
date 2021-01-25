@@ -44,7 +44,7 @@ internal class FingerprinterImpl(
     }
 
     override fun getFingerprint(listener: (FingerprintResult) -> Unit) {
-        getFingerprint(StabilityLevel.OPTIMAL, DEFAULT_MASK, listener)
+        getFingerprint(StabilityLevel.OPTIMAL, ALL_PROVIDERS_MASK, listener)
     }
 
     override fun getFingerprint(
@@ -53,7 +53,7 @@ internal class FingerprinterImpl(
     ) = getFingerprint(stabilityLevel, ALL_PROVIDERS_MASK, listener)
 
     override fun getFingerprint(signalProvidersMask: Int, listener: (FingerprintResult) -> Unit) =
-        getFingerprint(StabilityLevel.OPTIMAL, signalProvidersMask, listener)
+        getFingerprint(StabilityLevel.UNIQUE, signalProvidersMask, listener)
 
     private fun getFingerprint(
         stabilityLevel: StabilityLevel,
