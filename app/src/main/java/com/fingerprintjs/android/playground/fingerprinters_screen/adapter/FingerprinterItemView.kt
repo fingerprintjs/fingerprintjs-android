@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fingerprintjs.android.playground.R
 import com.fingerprintjs.android.playground.fingerprinters_screen.adapter.description.DescriptionItem
 import com.fingerprintjs.android.playground.fingerprinters_screen.adapter.description.DescriptionItemAdapter
-import java.util.*
+import java.util.LinkedList
 
 
 interface FingerprinterItemView {

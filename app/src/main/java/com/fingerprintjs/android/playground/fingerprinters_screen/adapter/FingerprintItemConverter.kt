@@ -214,7 +214,7 @@ class FingerprintItemConverterImpl : FingerprintItemConverter {
                                 listOf(Pair(signal.displayName, sb.toString()))
                             )
                         } else {
-                            val listItems = value.mapIndexed() { index, item ->
+                            val listItems = value.mapIndexed { index, item ->
                                 when (item) {
                                     is MediaCodecInfo -> {
                                         val sb = StringBuilder()

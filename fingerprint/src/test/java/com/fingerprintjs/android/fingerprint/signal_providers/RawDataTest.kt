@@ -21,12 +21,7 @@ class RawDataTest {
         assertEquals(7, optimalSignalsList.size)
         assertEquals(8, uniqueSignalsList.size)
     }
-
-    @Test
-    fun `Combined filtering is working`() {
-
-    }
-
+    
     private fun prepareSignalsList(): List<Signal<*>> = listOf(
         createSignal(1, null, StabilityLevel.OPTIMAL),
         createSignal(1, 2, StabilityLevel.OPTIMAL),

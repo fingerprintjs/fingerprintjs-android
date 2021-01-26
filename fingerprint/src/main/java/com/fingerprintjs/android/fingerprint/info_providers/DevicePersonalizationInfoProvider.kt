@@ -33,7 +33,7 @@ class DevicePersonalizationInfoProviderImpl(
 
     @Suppress("DEPRECATION")
     override fun regionCountry(): String {
-        return executeSafe({ configuration.locale.getCountry() }, "")
+        return executeSafe({ configuration.locale.country }, "")
     }
 
     override fun defaultLanguage(): String {

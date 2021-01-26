@@ -11,7 +11,6 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.fingerprintjs.android.playground.R.layout
-import com.fingerprintjs.android.playground.fingerprinters_screen.AboutDialog
 import com.fingerprintjs.android.playground.fingerprinters_screen.DEFAULT_FINGERPRINTER_VERSION
 import com.fingerprintjs.android.playground.fingerprinters_screen.FingerprinterProvider
 import com.fingerprintjs.android.playground.fingerprinters_screen.PlaygroundPresenter
@@ -63,9 +62,6 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.menu_about) {
-            AboutDialog().show(this)
-        }
         if (item.itemId == R.id.menu_share) {
             presenter.shareActionClicked { shareActionClicked(it) }
         }
