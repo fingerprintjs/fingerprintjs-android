@@ -101,9 +101,6 @@ internal class FingerprinterImpl(
     }
 }
 
-private val DEFAULT_MASK =
-    SignalGroupProviderType.HARDWARE or SignalGroupProviderType.OS_BUILD or SignalGroupProviderType.DEVICE_STATE
-
 private val ALL_PROVIDERS_MASK =
     SignalGroupProviderType.HARDWARE or SignalGroupProviderType.OS_BUILD or SignalGroupProviderType.DEVICE_STATE or SignalGroupProviderType.INSTALLED_APPS
 

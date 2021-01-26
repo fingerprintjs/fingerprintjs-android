@@ -114,8 +114,8 @@ data class DeviceStateRawData(
         1,
         null,
         StabilityLevel.OPTIMAL,
-        TRANSITION_ANIMATION_SCALE_KEY,
-        TRANSITION_ANIMATION_SCALE_DISPLAY_NAME,
+        WINDOW_ANIMATION_SCALE_KEY,
+        WINDOW_ANIMATION_SCALE_DISPLAY_NAME,
         windowAnimationScale
     ) {
         override fun toString() = windowAnimationScale
@@ -299,7 +299,7 @@ data class DeviceStateRawData(
     }
 
     fun availableLocales() = object : Signal<List<String>>(
-        1,
+        2,
         null,
         StabilityLevel.OPTIMAL,
         AVAILABLE_LOCALES_KEY,
