@@ -299,7 +299,7 @@ data class DeviceStateRawData(
     }
 
     fun availableLocales() = object : Signal<List<String>>(
-        2,
+        1,
         null,
         StabilityLevel.OPTIMAL,
         AVAILABLE_LOCALES_KEY,
