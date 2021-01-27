@@ -66,7 +66,7 @@ dependencies {
   // Add this line only if you use this library with Java
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-  implementation "com.github.fingerprintjs:fingerprint-android:1.0.2"
+  implementation "com.github.fingerprintjs:fingerprint-android:1.1"
 }
 ```
 
@@ -172,7 +172,7 @@ The full public API of the library is following:
 interface Fingerprinter {
   fun getDeviceId(listener: (DeviceIdResult) -> (Unit))
   fun getFingerprint(listener: (FingerprintResult) -> (Unit))
-  fun getFingerprint(signalProvidersMask: Int, listener: (FingerprintResult) -> (Unit))
+  fun getFingerprint(stabilityLevel: StabilityLevel, listener: (FingerprintResult) -> (Unit))
 }
 
 interface FingerprintResult {
@@ -192,31 +192,23 @@ data class DeviceIdResult(
 
 There is a probability that two different devices will have the same `fingerprint` value. There is also a probability that the same device will have different `fingerprint` values in different moments of time due to system upgrades or updated settings (although this should be infrequent).
 
-A device fingerprint can be calculated using various signals.
-These signals are grouped into several categories:
+By default the library calculates a fingerprint with optimal stability and uniqueness. But also there are two more modes for fingerprints: Stable and Unique. 
 
-1. Hardware signals (e.g. CPU info, sensors list etc.)
-2. OS build signals & attributes (the information about current ROM, its version etc.)
-3. Device state information (the information about some settings of the device)
-4. Installed apps information (unstable signal source as apps get reinstalled all the time).
-
-By default we only use signals from sources #1, #2, and #3, because this combination provides the best balance between fingerprint uniqueness and  stability.
-
-You can increase the uniqueness by adding the installed apps signal source, but this will decrease the stability of fingerprints.
-
-
-Example of how to use all available signal providers for fingerprint calculation. 
-This will improve the uniqueness of the fingerprint, but also it will reduce the stability i.e. the `fingerprint` will change more frequently.
+Use them as shown below:
 
 ```kotlin
 
-val signalMask = SignalProviderType.HARDWARE or
-		 SignalProviderType.OS_BUILD or
-		 SignalProviderType.DEVICE_STATE or
-		 SignalProviderType.INSTALLED_APPS
 
-fingerprinter.getFingerprint(signalMask) { fingerprintResult ->
-  val customFingerprint = fingerprintResult.fingerprint
+fingerprinter.getFingerprint(StabilityMode.Stable) { fingerprintResult ->
+  val stableFingerprint = fingerprintResult.fingerprint
+}
+
+fingerprinter.getFingerprint(StabilityMode.Optimal) { fingerprintResult ->
+  val optimalFingerprint = fingerprintResult.fingerprint
+}
+
+fingerprinter.getFingerprint(StabilityMode.Unique) { fingerprintResult ->
+  val uniqueFingerprint = fingerprintResult.fingerprint
 }
 
 ``` 
@@ -258,6 +250,7 @@ val hasher = object : Hasher {
 val fingerprinter = FingerprinterFactory.getInstance(
   applicationContext,
   Configuration(version = 1, hasher = hasher)
+
 )
 
 ```
@@ -287,11 +280,11 @@ v2Fingerprinter.getFingerprint { fingerprintResult ->
 
 ## Playground App
 
-Try all the library features in the [Playground App](https://github.com/fingerprintjs/fingerprint-android/releases/download/1.0.2/Playground-release-1.0.2.apk).
+Try all the library features in the [Playground App](https://github.com/fingerprintjs/fingerprint-android/releases/download/1.1/Playground-release-1.1.apk).
 
 
 <p align="center">
-  <a href="https://github.com/fingerprintjs/fingerprint-android/releases/download/1.0.2/Playground-release-1.0.2.apk">
+  <a href="https://github.com/fingerprintjs/fingerprint-android/releases/download/1.1/Playground-release-1.1.apk">
     <img src="resources/playground-1.0.2-QR.png" alt="PlaygroundApp" width="300px" />
    </a>
 </p>			
