@@ -199,15 +199,15 @@ Use them as shown below:
 ```kotlin
 
 
-fingerprinter.getFingerprint(StabilityMode.Stable) { fingerprintResult ->
+fingerprinter.getFingerprint(StabilityMode.STABLE) { fingerprintResult ->
   val stableFingerprint = fingerprintResult.fingerprint
 }
 
-fingerprinter.getFingerprint(StabilityMode.Optimal) { fingerprintResult ->
+fingerprinter.getFingerprint(StabilityMode.OPTIMAL) { fingerprintResult ->
   val optimalFingerprint = fingerprintResult.fingerprint
 }
 
-fingerprinter.getFingerprint(StabilityMode.Unique) { fingerprintResult ->
+fingerprinter.getFingerprint(StabilityMode.UNIQUE) { fingerprintResult ->
   val uniqueFingerprint = fingerprintResult.fingerprint
 }
 
@@ -226,7 +226,7 @@ fingerprinter.getFingerprint { fingerprintResult ->
 
   val hardwareFingerprint = hardwareSignalProvider.fingerprint()
 
-  val cpuInfo = hardwareSignalProvider.rawData.procCpuInfo
+  val cpuInfo = hardwareSignalProvider.rawData().procCpuInfo()
 }
 
 ```
