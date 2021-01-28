@@ -157,7 +157,7 @@ data class DeviceStateRawData(
 
     fun rttCallingMode() = object : Signal<String>(
         1,
-        null,
+        2,
         StabilityLevel.OPTIMAL,
         RTT_CALLING_MODE_KEY,
         RTT_CALLING_MODE_DISPLAY_NAME,
@@ -234,7 +234,7 @@ data class DeviceStateRawData(
 
     fun textAutoReplaceEnable() = object : Signal<String>(
         1,
-        null,
+        2,
         StabilityLevel.OPTIMAL,
         TEXT_AUTO_REPLACE_ENABLE_KEY,
         TEXT_AUTO_REPLACE_ENABLE_DISPLAY_NAME,
@@ -245,7 +245,7 @@ data class DeviceStateRawData(
 
     fun textAutoPunctuate() = object : Signal<String>(
         1,
-        null,
+        2,
         StabilityLevel.OPTIMAL,
         TEXT_AUTO_PUNCTUATE_KEY,
         TEXT_AUTO_PUNCTUATE_DISPLAY_NAME,
