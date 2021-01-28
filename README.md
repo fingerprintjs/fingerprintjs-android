@@ -222,7 +222,7 @@ If you need access to raw data from signal providers, you can get it as shown be
 fingerprinter.getFingerprint { fingerprintResult ->
 
   val hardwareSignalProvider = fingerprintResult
-  			.getSignalProvider(HardwareSignalProvider::class.java)
+  			.getSignalProvider(HardwareSignalGroupProvider::class.java)
 
   val hardwareFingerprint = hardwareSignalProvider.fingerprint()
 
