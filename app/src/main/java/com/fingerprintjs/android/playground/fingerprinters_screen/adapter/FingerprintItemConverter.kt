@@ -201,7 +201,7 @@ class FingerprintItemConverterImpl : FingerprintItemConverter {
             }.map { signal ->
                 when (val value = signal.value) {
                     is List<*> -> {
-                        if (value.isNotEmpty() and (value[0] is String) or (value[0] is PackageInfo)) {
+                        if (value.isNotEmpty() && ((value[0] is String) || (value[0] is PackageInfo))) {
                             val sb = StringBuilder()
 
                             value.forEach {
