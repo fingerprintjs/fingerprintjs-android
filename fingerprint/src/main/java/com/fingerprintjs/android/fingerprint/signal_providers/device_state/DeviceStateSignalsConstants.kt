@@ -70,8 +70,8 @@ const val AVAILABLE_LOCALES_DISPLAY_NAME = "Available locales"
 const val REGION_COUNTRY_KEY = "regionCountry"
 const val REGION_COUNTRY_DISPLAY_NAME = "Region country"
 
-const val DEFAULT_LANGUAGE_KEY = "Default language"
-const val DEFAULT_LANGUAGE_DISPLAY_NAME = "defaultLanguage"
+const val DEFAULT_LANGUAGE_KEY = "defaultLanguage"
+const val DEFAULT_LANGUAGE_DISPLAY_NAME = "Default language"
 
 const val TIMEZONE_KEY = "timezone"
 const val TIMEZONE_DISPLAY_NAME = "Timezone"
