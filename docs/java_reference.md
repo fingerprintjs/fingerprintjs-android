@@ -4,35 +4,27 @@
 
 ### Increasing the uniqueness of fingerprints
 
-There is a probability that two different devices will have the same `fingerprint` value. There is also a probability that the same device will have different `fingerprint` values in different moments of time due to system upgrades or updated settings (although this should be infrequent).
+There is a probability that two different devices will have the same fingerprint value. There is also a probability that the same device will have different fingerprint values in different moments of time due to system upgrades or updated settings (although this should be infrequent).
 
-A device fingerprint can be calculated using various signals.
-These signals are grouped into several categories:
+By default the library calculates a fingerprint with optimal stability and uniqueness. But also there are two more modes for fingerprints: Stable and Unique.
 
-1. Hardware signals (e.g. CPU info, sensors list etc.)
-2. OS build signals & attributes (the information about current ROM, its version etc.)
-3. Device state information (the information about some settings of the device)
-4. Installed apps information (unstable signal source as apps get reinstalled all the time).
-
-By default we only use signals from sources #1, #2, and #3, because this combination provides the best balance between fingerprint uniqueness and  stability.
-
-You can increase the uniqueness by adding the installed apps signal source, but this will decrease the stability of fingerprints.
-
-
-Example of how to use all available signal providers for fingerprint calculation. 
-This will improve the uniqueness of the fingerprint, but also it will reduce the stability i.e. the `fingerprint` will change more frequently.
+Use them as shown below:
 
 ```java
 
-int mask = SignalProviderType.HARDWARE |
-		   SignalProviderType.OS_BUILD |
-		   SignalProviderType.DEVICE_STATE |
-		   SignalProviderType.INSTALLED_APPS
 
-fingerprinter.getFingerprint(mask, new Function1<FingerprintResult, Unit>() {
+fingerprinter.getFingerprint(StabilityMode.STABLE, new Function1<FingerprintResult, Unit>() {
             @Override
             public Unit invoke(FingerprintResult fingerprintResult) {
-            	String fingerprint = fingerprintResult.getFingerprint();
+            	String stableFingerprint = fingerprintResult.getFingerprint();
+                return null;
+            }
+        });
+	
+fingerprinter.getFingerprint(StabilityMode.UNIQUE, new Function1<FingerprintResult, Unit>() {
+            @Override
+            public Unit invoke(FingerprintResult fingerprintResult) {
+            	String uniqueFingerprint = fingerprintResult.getFingerprint();
                 return null;
             }
         });
@@ -52,7 +44,7 @@ fingerprinter.getFingerprint(new Function1<FingerprintResult, Unit>() {
                 String fingerprint = fingerprintResult.getFingerprint();
 
                 HardwareSignalProvider hardwareSignalProvider = fingerprintResult
-                        .getSignalProvider(HardwareSignalProvider::class.java);
+                        .getSignalProvider(HardwareSignalGroupProvider::class.java);
 
                 String hardwareFingerprint = hardwareSignalProvider.fingerprint();
                 Map<String, String> cpuInfo = hardwareSignalProvider.rawData.getProcCpuInfo();
@@ -67,10 +59,10 @@ Also you can get fingerprint for every signal provider.
 
 Available signal providers classes are:
 
-1. HardwareSignalProvider
-2. OsBuildSignalProvider
-3. DeviceStateSignalProvider
-4. InstalledAppsSignalProvider
+1. HardwareSignalGroupProvider
+2. OsBuildSignalGroupProvider
+3. DeviceStateSignalGroupProvider
+4. InstalledAppsSignalGroupProvider
 
 ### Change hash function
 
