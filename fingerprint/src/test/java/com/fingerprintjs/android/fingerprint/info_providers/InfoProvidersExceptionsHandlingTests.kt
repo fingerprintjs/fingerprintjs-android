@@ -4,6 +4,7 @@ package com.fingerprintjs.android.fingerprint.info_providers
 import com.fingerprintjs.android.fingerprint.device_id_providers.AndroidIdProvider
 import com.fingerprintjs.android.fingerprint.device_id_providers.DeviceIdProviderImpl
 import com.fingerprintjs.android.fingerprint.device_id_providers.GsfIdProvider
+import com.fingerprintjs.android.fingerprint.device_id_providers.MediaDrmIdProvider
 import com.nhaarman.mockitokotlin2.mock
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertNotNull
@@ -109,7 +110,8 @@ class InfoProvidersExceptionsHandlingTests {
     fun `DeviceId crash free`() {
         val deviceIdProvider = DeviceIdProviderImpl(
             GsfIdProvider(mock()),
-            AndroidIdProvider(mock())
+            AndroidIdProvider(mock()),
+            MediaDrmIdProvider()
         )
         assertEquals("", deviceIdProvider.getDeviceId())
     }
