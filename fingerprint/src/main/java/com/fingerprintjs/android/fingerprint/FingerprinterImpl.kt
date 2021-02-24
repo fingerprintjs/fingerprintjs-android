@@ -36,7 +36,8 @@ internal class FingerprinterImpl(
             val deviceIdResult = DeviceIdResult(
                 deviceIdProvider.getDeviceId(),
                 deviceIdProvider.getGsfId(),
-                deviceIdProvider.getAndroidId()
+                deviceIdProvider.getAndroidId(),
+                deviceIdProvider.getMediaDrmId()
             )
             this.deviceIdResult = deviceIdResult
             listener.invoke(deviceIdResult)

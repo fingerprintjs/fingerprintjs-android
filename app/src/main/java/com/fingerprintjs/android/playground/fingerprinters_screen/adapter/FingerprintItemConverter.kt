@@ -95,7 +95,8 @@ class FingerprintItemConverterImpl : FingerprintItemConverter {
             "Device ID",
             listOf(
                 Pair("GSF ID", deviceIdResult.gsfId ?: ""),
-                Pair("Android ID", deviceIdResult.androidId)
+                Pair("Android ID", deviceIdResult.androidId),
+                Pair("Media DRM ID", deviceIdResult.mediaDrmId ?: "")
             )
         )
 

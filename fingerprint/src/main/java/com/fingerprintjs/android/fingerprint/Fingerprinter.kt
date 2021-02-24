@@ -21,5 +21,6 @@ interface FingerprintResult {
 data class DeviceIdResult(
     val deviceId: String,
     val gsfId: String?,
-    val androidId: String
+    val androidId: String,
+    val mediaDrmId: String?
 )
