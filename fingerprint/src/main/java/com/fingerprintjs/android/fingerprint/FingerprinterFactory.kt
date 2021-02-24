@@ -18,6 +18,7 @@ import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 import com.fingerprintjs.android.fingerprint.device_id_providers.AndroidIdProvider
 import com.fingerprintjs.android.fingerprint.device_id_providers.DeviceIdProviderImpl
 import com.fingerprintjs.android.fingerprint.device_id_providers.GsfIdProvider
+import com.fingerprintjs.android.fingerprint.device_id_providers.MediaDrmIdProvider
 import com.fingerprintjs.android.fingerprint.info_providers.BatteryInfoProviderImpl
 import com.fingerprintjs.android.fingerprint.info_providers.CameraInfoProvider
 import com.fingerprintjs.android.fingerprint.info_providers.CameraInfoProviderImpl
@@ -127,7 +128,8 @@ object FingerprinterFactory {
 
     private fun createDeviceIdProvider(context: Context) = DeviceIdProviderImpl(
         createGsfIdProvider(context),
-        createAndroidIdProvider(context)
+        createAndroidIdProvider(context),
+        createMediaDrmProvider()
     )
 
     //endregion
@@ -154,6 +156,8 @@ object FingerprinterFactory {
     private fun createOsBuildInfoProvider() = OsBuildInfoProviderImpl()
 
     private fun createGsfIdProvider(context: Context) = GsfIdProvider(context.contentResolver!!)
+
+    private fun createMediaDrmProvider() = MediaDrmIdProvider()
 
     private fun createAndroidIdProvider(context: Context) =
         AndroidIdProvider(context.contentResolver!!)

@@ -5,17 +5,21 @@ interface DeviceIdProvider {
     fun getDeviceId(): String
     fun getAndroidId(): String
     fun getGsfId(): String?
+    fun getMediaDrmId(): String?
 }
 
 class DeviceIdProviderImpl(
     private val gsfIdProvider: GsfIdProvider,
-    private val androidIdProvider: AndroidIdProvider
+    private val androidIdProvider: AndroidIdProvider,
+    private val mediaDrmIdProvider: MediaDrmIdProvider
 ) : DeviceIdProvider {
     override fun getDeviceId(): String {
-        return getGsfId() ?: getAndroidId()
+        return getGsfId() ?: getMediaDrmId() ?: getAndroidId()
     }
 
     override fun getAndroidId() = androidIdProvider.getAndroidId()
 
     override fun getGsfId() = gsfIdProvider.getGsfAndroidId()
+
+    override fun getMediaDrmId() = mediaDrmIdProvider.getMediaDrmId()
 }
