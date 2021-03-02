@@ -68,6 +68,7 @@ dependencies {
 
   implementation "com.github.fingerprintjs:fingerprint-android:1.1"
 }
+
 ```
 
 
@@ -187,6 +188,8 @@ data class DeviceIdResult(
 )
 
 ```
+
+If you are using RxJava or Kotlin Coroutines - use the [extensions](docs/extension.md).
 
 ### Increasing the uniqueness of fingerprints
 
