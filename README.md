@@ -69,6 +69,7 @@ dependencies {
   implementation "com.github.fingerprintjs:fingerprint-android:1.1"
 }
 
+
 ```
 
 
@@ -189,7 +190,7 @@ data class DeviceIdResult(
 
 ```
 
-If you are using RxJava or Kotlin Coroutines - use the [extensions](docs/extension.md).
+If you are using RxJava or Kotlin Coroutines - use the [extensions](docs/extensions.md).
 
 ### Increasing the uniqueness of fingerprints
 
@@ -198,6 +199,7 @@ There is a probability that two different devices will have the same `fingerprin
 By default the library calculates a fingerprint with optimal stability and uniqueness. But also there are two more modes for fingerprints: Stable and Unique. 
 
 Use them as shown below:
+
 
 ```kotlin
 
