@@ -19,7 +19,7 @@ data class PackageInfo(
     }
 }
 
-class PackageManagerDataSourceImpl(
+internal class PackageManagerDataSourceImpl(
     private val packageManager: PackageManager
 ) : PackageManagerDataSource {
     @SuppressLint("QueryPermissionsNeeded")

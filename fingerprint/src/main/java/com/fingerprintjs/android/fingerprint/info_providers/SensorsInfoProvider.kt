@@ -15,7 +15,7 @@ interface SensorDataSource {
     fun sensors(): List<SensorData>
 }
 
-class SensorDataSourceImpl(
+internal class SensorDataSourceImpl(
     private val sensorManager: SensorManager
 ) : SensorDataSource {
     override fun sensors(): List<SensorData> {

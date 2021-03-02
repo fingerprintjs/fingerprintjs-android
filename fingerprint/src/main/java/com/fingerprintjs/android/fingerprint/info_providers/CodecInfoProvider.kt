@@ -15,7 +15,7 @@ interface CodecInfoProvider {
     fun codecsList(): List<MediaCodecInfo>
 }
 
-class CodecInfoProviderImpl(
+internal class CodecInfoProviderImpl(
         private val codecList: MediaCodecList
 ) : CodecInfoProvider {
     override fun codecsList(): List<MediaCodecInfo> {

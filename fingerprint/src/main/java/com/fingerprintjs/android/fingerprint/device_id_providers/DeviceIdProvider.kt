@@ -8,7 +8,7 @@ interface DeviceIdProvider {
     fun getMediaDrmId(): String?
 }
 
-class DeviceIdProviderImpl(
+internal class DeviceIdProviderImpl(
     private val gsfIdProvider: GsfIdProvider,
     private val androidIdProvider: AndroidIdProvider,
     private val mediaDrmIdProvider: MediaDrmIdProvider

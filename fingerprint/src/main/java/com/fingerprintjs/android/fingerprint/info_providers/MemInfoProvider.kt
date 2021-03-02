@@ -13,7 +13,7 @@ interface MemInfoProvider {
     fun totalExternalStorageSpace(): Long
 }
 
-class MemInfoProviderImpl(
+internal class MemInfoProviderImpl(
     private val activityManager: ActivityManager,
     private val internalStorageStats: StatFs,
     private val externalStorageStats: StatFs?

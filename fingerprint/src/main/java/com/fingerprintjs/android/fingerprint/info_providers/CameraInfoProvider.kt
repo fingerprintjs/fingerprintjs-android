@@ -17,7 +17,7 @@ interface CameraInfoProvider {
 }
 
 @Suppress("DEPRECATION")
-class CameraInfoProviderImpl(
+internal class CameraInfoProviderImpl(
 ) : CameraInfoProvider {
     override fun getCameraInfo(): List<CameraInfo> {
         return executeSafe({ extractInfo() }, emptyList())

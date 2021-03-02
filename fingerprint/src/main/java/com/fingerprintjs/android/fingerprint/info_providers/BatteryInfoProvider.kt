@@ -14,7 +14,7 @@ interface BatteryInfoProvider {
     fun batteryTotalCapacity(): String
 }
 
-class BatteryInfoProviderImpl(
+internal class BatteryInfoProviderImpl(
         private val applicationContext: Context
 ) : BatteryInfoProvider {
     override fun batteryHealth(): String {
