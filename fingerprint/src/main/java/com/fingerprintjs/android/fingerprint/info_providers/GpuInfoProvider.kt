@@ -9,7 +9,7 @@ interface GpuInfoProvider {
     fun glesVersion(): String
 }
 
-class GpuInfoProviderImpl(
+internal class GpuInfoProviderImpl(
     private val activityManager: ActivityManager
 ) : GpuInfoProvider {
     override fun glesVersion(): String {

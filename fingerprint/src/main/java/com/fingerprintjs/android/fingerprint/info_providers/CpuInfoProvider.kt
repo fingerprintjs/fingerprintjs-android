@@ -13,7 +13,7 @@ interface CpuInfoProvider {
     fun coresCount(): Int
 }
 
-class CpuInfoProviderImpl :
+internal class CpuInfoProviderImpl :
     CpuInfoProvider {
     override fun cpuInfo(): Map<String, String> {
         return executeSafe({ getCpuInfo() }, emptyMap())

@@ -10,7 +10,7 @@ interface FingerprintSensorInfoProvider {
     fun getStatus(): FingerprintSensorStatus
 }
 
-class FingerprintSensorInfoProviderImpl(
+internal class FingerprintSensorInfoProviderImpl(
     private val fingerprintManager: FingerprintManagerCompat
 ) : FingerprintSensorInfoProvider {
     override fun getStatus(): FingerprintSensorStatus {

@@ -17,7 +17,7 @@ interface DevicePersonalizationInfoProvider {
     fun timezone(): String
 }
 
-class DevicePersonalizationInfoProviderImpl(
+internal class DevicePersonalizationInfoProviderImpl(
     private val ringtoneManager: RingtoneManager,
     private val assetManager: AssetManager,
     private val configuration: Configuration

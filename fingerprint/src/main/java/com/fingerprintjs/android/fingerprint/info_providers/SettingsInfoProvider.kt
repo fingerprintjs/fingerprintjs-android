@@ -32,7 +32,7 @@ interface SettingsDataSource {
     fun time12Or24(): String
 }
 
-class SettingsDataSourceImpl(
+internal class SettingsDataSourceImpl(
     private val contentResolver: ContentResolver
 ) : SettingsDataSource {
     //region: Global settings

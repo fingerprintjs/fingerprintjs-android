@@ -13,7 +13,7 @@ interface DeviceSecurityInfoProvider {
     fun isPinSecurityEnabled(): Boolean
 }
 
-class DeviceSecurityInfoProviderImpl(
+internal class DeviceSecurityInfoProviderImpl(
     private val devicePolicyManager: DevicePolicyManager,
     private val keyguardManager: KeyguardManager
 ) : DeviceSecurityInfoProvider {

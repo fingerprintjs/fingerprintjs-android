@@ -14,7 +14,7 @@ interface OsBuildInfoProvider {
     fun fingerprint(): String
 }
 
-class OsBuildInfoProviderImpl :
+internal class OsBuildInfoProviderImpl :
     OsBuildInfoProvider {
     override fun modelName(): String {
         return executeSafe({ Build.MODEL }, "")

@@ -7,7 +7,7 @@ import android.provider.Settings
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
 
 
-class AndroidIdProvider(
+internal class AndroidIdProvider(
     private val contentResolver: ContentResolver
 ) {
     @SuppressLint("HardwareIds")

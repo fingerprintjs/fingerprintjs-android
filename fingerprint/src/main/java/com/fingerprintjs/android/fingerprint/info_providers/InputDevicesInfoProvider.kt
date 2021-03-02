@@ -15,7 +15,7 @@ data class InputDeviceData(
     val vendor: String
 )
 
-class InputDevicesDataSourceImpl(
+internal class InputDevicesDataSourceImpl(
     private val inputDeviceManager: InputManager
 ) : InputDeviceDataSource {
     override fun getInputDeviceData(): List<InputDeviceData> {
