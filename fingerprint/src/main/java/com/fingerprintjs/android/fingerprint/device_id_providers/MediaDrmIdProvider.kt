@@ -8,7 +8,7 @@ import java.security.MessageDigest
 import java.util.UUID
 
 
-internal class MediaDrmIdProvider {
+class MediaDrmIdProvider {
     fun getMediaDrmId() = executeSafe({
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
             mediaDrmId()

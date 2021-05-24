@@ -1,7 +1,6 @@
 package com.fingerprintjs.android.playground.fingerprinters_screen.adapter
 
 
-import com.fingerprintjs.android.fingerprint.DeviceIdResult
 import com.fingerprintjs.android.fingerprint.FingerprintResult
 import com.fingerprintjs.android.fingerprint.info_providers.CameraInfo
 import com.fingerprintjs.android.fingerprint.info_providers.InputDeviceData
@@ -11,6 +10,7 @@ import com.fingerprintjs.android.fingerprint.info_providers.SensorData
 import com.fingerprintjs.android.fingerprint.signal_providers.Signal
 import com.fingerprintjs.android.fingerprint.signal_providers.SignalGroupProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
+import com.fingerprintjs.android.fingerprint.signal_providers.device_id.DeviceIdProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.device_state.DeviceStateSignalGroupProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.hardware.HardwareSignalGroupProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.installed_apps.InstalledAppsSignalGroupProvider
@@ -21,7 +21,6 @@ import java.util.LinkedList
 
 interface FingerprintItemConverter {
     fun convert(
-        deviceIdResult: DeviceIdResult,
         fingerprintResult: FingerprintResult,
         stabilityLevel: StabilityLevel,
         version: Int
@@ -63,13 +62,16 @@ class FingerprintItemConverterImpl : FingerprintItemConverter {
     }
 
     override fun convert(
-        deviceIdResult: DeviceIdResult,
         fingerprintResult: FingerprintResult,
         stabilityLevel: StabilityLevel,
         version: Int
     ): List<FingerprinterItem> {
         val list = LinkedList<FingerprinterItem>()
-        list.add(prepareDeviceIdItem(deviceIdResult))
+
+        fingerprintResult.getSignalProvider(DeviceIdProvider::class.java)?.let {
+            list.add(prepareDeviceIdItem(it, stabilityLevel, version))
+        }
+
         fingerprintResult.getSignalProvider(HardwareSignalGroupProvider::class.java)?.let {
             list.add(prepareHardwareFingerprinterItem(it, stabilityLevel, version))
         }
@@ -90,25 +92,18 @@ class FingerprintItemConverterImpl : FingerprintItemConverter {
         }
     }
 
-    private fun prepareDeviceIdItem(deviceIdResult: DeviceIdResult): FingerprinterItem {
-        val deviceIdDescription = FingerprintSectionDescription(
-            "Device ID",
-            listOf(
-                Pair("GSF ID", deviceIdResult.gsfId ?: ""),
-                Pair("Android ID", deviceIdResult.androidId),
-                Pair("Media DRM ID", deviceIdResult.mediaDrmId ?: "")
-            )
-        )
-
-        return FingerprinterItem(
-            "deviceId",
-            "Device IDs",
-            deviceIdResult.deviceId,
-            listOf(
-                deviceIdDescription
-            )
-        )
-    }
+    private fun prepareDeviceIdItem(
+        deviceIdProvider: DeviceIdProvider,
+        stabilityLevel: StabilityLevel,
+        version: Int
+    ) = prepareSignalGroupProviderSection(
+        deviceIdProvider,
+        "deviceId",
+        "System-based device IDs",
+        "device IDs",
+        stabilityLevel,
+        version
+    )
 
     private fun prepareHardwareFingerprinterItem(
         hardwareSignalProvider: HardwareSignalGroupProvider,

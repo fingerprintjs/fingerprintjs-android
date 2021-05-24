@@ -16,7 +16,6 @@ import android.os.Environment
 import android.os.StatFs
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 import com.fingerprintjs.android.fingerprint.device_id_providers.AndroidIdProvider
-import com.fingerprintjs.android.fingerprint.device_id_providers.DeviceIdProviderImpl
 import com.fingerprintjs.android.fingerprint.device_id_providers.GsfIdProvider
 import com.fingerprintjs.android.fingerprint.device_id_providers.MediaDrmIdProvider
 import com.fingerprintjs.android.fingerprint.info_providers.BatteryInfoProviderImpl
@@ -35,6 +34,7 @@ import com.fingerprintjs.android.fingerprint.info_providers.OsBuildInfoProviderI
 import com.fingerprintjs.android.fingerprint.info_providers.PackageManagerDataSourceImpl
 import com.fingerprintjs.android.fingerprint.info_providers.SensorDataSourceImpl
 import com.fingerprintjs.android.fingerprint.info_providers.SettingsDataSourceImpl
+import com.fingerprintjs.android.fingerprint.signal_providers.device_id.DeviceIdProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.device_state.DeviceStateSignalGroupProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.hardware.HardwareSignalGroupProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.installed_apps.InstalledAppsSignalGroupProvider
@@ -45,7 +45,7 @@ import com.fingerprintjs.android.fingerprint.tools.hashers.MurMur3x64x128Hasher
 
 object FingerprinterFactory {
 
-    private var configuration: Configuration = Configuration(version = 1)
+    private var configuration: Configuration = Configuration(version = 3)
     private var instance: Fingerprinter? = null
     private var hasher: Hasher = MurMur3x64x128Hasher()
 
@@ -126,10 +126,11 @@ object FingerprinterFactory {
             configuration.version
         )
 
-    private fun createDeviceIdProvider(context: Context) = DeviceIdProviderImpl(
+    private fun createDeviceIdProvider(context: Context) = DeviceIdProvider(
         createGsfIdProvider(context),
         createAndroidIdProvider(context),
-        createMediaDrmProvider()
+        createMediaDrmProvider(),
+        configuration.version
     )
 
     //endregion

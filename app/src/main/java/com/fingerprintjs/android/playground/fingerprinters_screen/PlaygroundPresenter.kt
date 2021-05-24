@@ -2,14 +2,14 @@ package com.fingerprintjs.android.playground.fingerprinters_screen
 
 
 import android.os.Parcelable
-import com.fingerprintjs.android.fingerprint.DeviceIdResult
 import com.fingerprintjs.android.fingerprint.FingerprintResult
 import com.fingerprintjs.android.fingerprint.Fingerprinter
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
+import com.fingerprintjs.android.fingerprint.signal_providers.device_id.DeviceIdProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.hardware.HardwareSignalGroupProvider
 import com.fingerprintjs.android.playground.fingerprinters_screen.adapter.FingerprintItemConverterImpl
 import com.fingerprintjs.android.playground.fingerprinters_screen.adapter.FingerprinterItem
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 
 interface PlaygroundPresenter {
@@ -50,10 +50,8 @@ class PlaygroundPresenterImpl(
         view = playgroundView
         subscribeToView()
 
-        fingerprinter.getDeviceId { deviceIdResult ->
-            fingerprinter.getFingerprint(stabilityLevel) { fingerprintResult ->
-                updateView(fingerprintResult, deviceIdResult)
-            }
+        fingerprinter.getFingerprint(stabilityLevel) { fingerprintResult ->
+            updateView(fingerprintResult)
         }
     }
 
@@ -94,28 +92,23 @@ class PlaygroundPresenterImpl(
 
     private fun reloadFingerprinter(version: Int, stabilityLevel: StabilityLevel) {
         fingerprinter = fingerprinterProvider.provideInstance(version)
-        fingerprinter.getDeviceId { deviceIdResult ->
-            fingerprinter.getFingerprint(stabilityLevel) { fingerprintResult ->
-                updateView(fingerprintResult, deviceIdResult, true)
-            }
+        fingerprinter.getFingerprint(stabilityLevel) { fingerprintResult ->
+            updateView(fingerprintResult, true)
         }
     }
 
     private fun updateView(
         fingerprintResult: FingerprintResult,
-        deviceIdResult: DeviceIdResult,
         needToConvert: Boolean = false
     ) {
         val adapterItems = if (!needToConvert && items != null) {
             items ?: itemConverter.convert(
-                deviceIdResult,
                 fingerprintResult,
                 stabilityLevel,
                 version
             )
         } else {
             itemConverter.convert(
-                deviceIdResult,
                 fingerprintResult,
                 stabilityLevel,
                 version
@@ -127,22 +120,23 @@ class PlaygroundPresenterImpl(
             adapterItems
         )
 
-        prepareCsvFile(fingerprintResult, deviceIdResult, adapterItems)
+        prepareCsvFile(fingerprintResult, adapterItems)
     }
 
     private fun prepareCsvFile(
         fingerprintResult: FingerprintResult,
-        deviceIdResult: DeviceIdResult,
         items: List<FingerprinterItem>
     ) {
         if (csvFilePath != null) {
             return
         }
 
+        val deviceId = fingerprintResult.getSignalProvider(DeviceIdProvider::class.java)?.fingerprint()
+
         fingerprintResult.getSignalProvider(HardwareSignalGroupProvider::class.java)?.let {
             externalStorageDir?.let { externalStorageDir ->
                 val csvFilePath =
-                    "$externalStorageDir/${it.rawData().manufacturerName}-${it.rawData().modelName}-${deviceIdResult.deviceId}.csv"
+                    "$externalStorageDir/${it.rawData().manufacturerName}-${it.rawData().modelName}-$deviceId.csv"
                 this.csvFilePath = csvFilePath
                 itemConverter.convertToCsvFile(csvFilePath, items)
             }

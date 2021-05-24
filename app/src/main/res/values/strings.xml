@@ -26,6 +26,7 @@
     <string-array name="versions">
         <item>v1</item>
         <item>v2</item>
+        <item>v3</item>
     </string-array>
 
 </resources>

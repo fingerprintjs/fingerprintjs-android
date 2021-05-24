@@ -30,9 +30,7 @@ internal class MemInfoProviderImpl(
 
     override fun totalInternalStorageSpace(): Long {
         return executeSafe({
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-                (internalStorageStats.blockSize * internalStorageStats.blockCount).toLong()
-            } else internalStorageStats.totalBytes
+            internalStorageStats.totalBytes
         }, 0L)
     }
 
@@ -40,9 +38,7 @@ internal class MemInfoProviderImpl(
         return executeSafe(
             {
                 externalStorageStats?.let {
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-                        (it.blockSize * it.blockCount).toLong()
-                    } else it.totalBytes
+                    it.totalBytes
                 } ?: 0L
 
             },
