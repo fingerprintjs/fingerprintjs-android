@@ -51,8 +51,8 @@ class OsBuildSignalGroupProvider(
         rawData.androidVersion(),
         rawData.sdkVersion(),
         rawData.kernelVersion(),
-        rawData().encryptionStatus(),
-        rawData().securityProviders(),
-        rawData().codecList()
+        rawData.encryptionStatus(),
+        rawData.securityProviders(),
+        rawData.codecList()
     )
 }

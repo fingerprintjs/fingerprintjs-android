@@ -1,9 +1,9 @@
 package com.fingerprintjs.android.fingerprint
 
 
-import com.fingerprintjs.android.fingerprint.device_id_providers.DeviceIdProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.SignalGroupProviderType
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
+import com.fingerprintjs.android.fingerprint.signal_providers.device_id.DeviceIdProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.device_state.DeviceStateSignalGroupProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.hardware.HardwareSignalGroupProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.installed_apps.InstalledAppsSignalGroupProvider
@@ -34,10 +34,10 @@ internal class FingerprinterImpl(
 
         executor.execute {
             val deviceIdResult = DeviceIdResult(
-                deviceIdProvider.getDeviceId(),
-                deviceIdProvider.getGsfId(),
-                deviceIdProvider.getAndroidId(),
-                deviceIdProvider.getMediaDrmId()
+                deviceIdProvider.fingerprint(),
+                deviceIdProvider.rawData().gsfId().value,
+                deviceIdProvider.rawData().androidId().value,
+                deviceIdProvider.rawData().mediaDrmId().value
             )
             this.deviceIdResult = deviceIdResult
             listener.invoke(deviceIdResult)
@@ -92,6 +92,7 @@ internal class FingerprinterImpl(
                         OsBuildSignalGroupProvider::class.java -> osBuildSignalProvider
                         DeviceStateSignalGroupProvider::class.java -> deviceStateSignalProvider
                         InstalledAppsSignalGroupProvider::class.java -> installedAppsSignalProvider
+                        DeviceIdProvider::class.java -> deviceIdProvider
                         else -> null
                     } as? T
                 }

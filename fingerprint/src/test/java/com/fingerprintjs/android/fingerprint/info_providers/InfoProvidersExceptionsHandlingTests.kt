@@ -2,9 +2,9 @@ package com.fingerprintjs.android.fingerprint.info_providers
 
 
 import com.fingerprintjs.android.fingerprint.device_id_providers.AndroidIdProvider
-import com.fingerprintjs.android.fingerprint.device_id_providers.DeviceIdProviderImpl
 import com.fingerprintjs.android.fingerprint.device_id_providers.GsfIdProvider
 import com.fingerprintjs.android.fingerprint.device_id_providers.MediaDrmIdProvider
+import com.fingerprintjs.android.fingerprint.signal_providers.device_id.DeviceIdProvider
 import com.nhaarman.mockitokotlin2.mock
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertNotNull
@@ -108,12 +108,13 @@ class InfoProvidersExceptionsHandlingTests {
 
     @Test
     fun `DeviceId crash free`() {
-        val deviceIdProvider = DeviceIdProviderImpl(
+        val deviceIdProvider = DeviceIdProvider(
             GsfIdProvider(mock()),
             AndroidIdProvider(mock()),
-            MediaDrmIdProvider()
+            MediaDrmIdProvider(),
+            2
         )
-        assertEquals("", deviceIdProvider.getDeviceId())
+        assertEquals("", deviceIdProvider.fingerprint())
     }
 
     @Test
@@ -124,7 +125,7 @@ class InfoProvidersExceptionsHandlingTests {
     }
 
     @Test
-    fun `CameraInfoProvicer crash free`() {
+    fun `CameraInfoProvider crash free`() {
         val cameraInfoProviderImpl = CameraInfoProviderImpl()
         assertNotNull(cameraInfoProviderImpl.getCameraInfo())
     }

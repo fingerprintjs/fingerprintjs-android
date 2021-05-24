@@ -32,9 +32,7 @@ internal class CpuInfoProviderImpl :
 
     override fun coresCount(): Int {
         return executeSafe({
-            if (Build.VERSION.SDK_INT >= 17) {
-                Runtime.getRuntime().availableProcessors()
-            } else 0
+            Runtime.getRuntime().availableProcessors()
         }, 0)
     }
 
