@@ -4,8 +4,8 @@ package com.fingerprintjs.android.fingerprint.signal_providers.hardware
 import com.fingerprintjs.android.fingerprint.info_providers.CameraInfo
 import com.fingerprintjs.android.fingerprint.info_providers.InputDeviceData
 import com.fingerprintjs.android.fingerprint.info_providers.SensorData
+import com.fingerprintjs.android.fingerprint.signal_providers.IdentificationSignal
 import com.fingerprintjs.android.fingerprint.signal_providers.RawData
-import com.fingerprintjs.android.fingerprint.signal_providers.Signal
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 
 
@@ -41,7 +41,7 @@ data class HardwareFingerprintRawData(
         coresCount()
     )
 
-    fun manufacturerName() = object : Signal<String>(
+    fun manufacturerName() = object : IdentificationSignal<String>(
         1,
         null,
         StabilityLevel.STABLE,
@@ -52,7 +52,7 @@ data class HardwareFingerprintRawData(
         override fun toString() = manufacturerName
     }
 
-    fun modelName() = object : Signal<String>(
+    fun modelName() = object : IdentificationSignal<String>(
         1,
         null,
         StabilityLevel.STABLE,
@@ -63,7 +63,7 @@ data class HardwareFingerprintRawData(
         override fun toString() = modelName
     }
 
-    fun totalRAM() = object : Signal<Long>(
+    fun totalRAM() = object : IdentificationSignal<Long>(
         1,
         null,
         StabilityLevel.STABLE,
@@ -74,18 +74,18 @@ data class HardwareFingerprintRawData(
         override fun toString() = totalRAM.toString()
     }
 
-    fun totalInternalStorageSpace() = object : Signal<Long>(
+    fun totalInternalStorageSpace() = object : IdentificationSignal<Long>(
         1,
         null,
         StabilityLevel.STABLE,
-        name = TOTAL_INTERNAL_STORAGE_SPACE_KEY,
-        displayName = TOTAL_INTERNAL_STORAGE_SPACE_DISPLAY_NAME,
-        value = totalInternalStorageSpace
+        TOTAL_INTERNAL_STORAGE_SPACE_KEY,
+        TOTAL_INTERNAL_STORAGE_SPACE_DISPLAY_NAME,
+        totalInternalStorageSpace
     ) {
         override fun toString() = totalInternalStorageSpace.toString()
     }
 
-    fun procCpuInfo() = object : Signal<Map<String, String>>(
+    fun procCpuInfo() = object : IdentificationSignal<Map<String, String>>(
         1,
         null,
         StabilityLevel.STABLE,
@@ -102,7 +102,7 @@ data class HardwareFingerprintRawData(
         }
     }
 
-    fun sensors() = object : Signal<List<SensorData>>(
+    fun sensors() = object : IdentificationSignal<List<SensorData>>(
         1,
         null,
         StabilityLevel.STABLE,
@@ -119,7 +119,7 @@ data class HardwareFingerprintRawData(
         }
     }
 
-    fun inputDevices() = object : Signal<List<InputDeviceData>>(
+    fun inputDevices() = object : IdentificationSignal<List<InputDeviceData>>(
         1,
         null,
         StabilityLevel.STABLE,
@@ -136,7 +136,7 @@ data class HardwareFingerprintRawData(
         }
     }
 
-    fun batteryHealth() = object : Signal<String>(
+    fun batteryHealth() = object : IdentificationSignal<String>(
         2,
         null,
         StabilityLevel.OPTIMAL,
@@ -147,7 +147,7 @@ data class HardwareFingerprintRawData(
         override fun toString() = batteryHealth
     }
 
-    fun batteryFullCapacity() = object : Signal<String>(
+    fun batteryFullCapacity() = object : IdentificationSignal<String>(
         2,
         null,
         StabilityLevel.STABLE,
@@ -158,7 +158,7 @@ data class HardwareFingerprintRawData(
         override fun toString() = batteryFullCapacity
     }
 
-    fun cameraList() = object : Signal<List<CameraInfo>>(
+    fun cameraList() = object : IdentificationSignal<List<CameraInfo>>(
         2,
         null,
         StabilityLevel.STABLE,
@@ -178,7 +178,7 @@ data class HardwareFingerprintRawData(
         }
     }
 
-    fun glesVersion() = object : Signal<String>(
+    fun glesVersion() = object : IdentificationSignal<String>(
         2,
         null,
         StabilityLevel.STABLE,
@@ -189,7 +189,7 @@ data class HardwareFingerprintRawData(
         override fun toString() = glesVersion
     }
 
-    fun abiType() = object : Signal<String>(
+    fun abiType() = object : IdentificationSignal<String>(
         2,
         null,
         StabilityLevel.STABLE,
@@ -200,7 +200,7 @@ data class HardwareFingerprintRawData(
         override fun toString() = abiType
     }
 
-    fun coresCount() = object : Signal<Int>(
+    fun coresCount() = object : IdentificationSignal<Int>(
         2,
         null,
         StabilityLevel.STABLE,

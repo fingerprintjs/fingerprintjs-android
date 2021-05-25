@@ -2,8 +2,8 @@ package com.fingerprintjs.android.fingerprint.signal_providers.os_build
 
 
 import com.fingerprintjs.android.fingerprint.info_providers.MediaCodecInfo
+import com.fingerprintjs.android.fingerprint.signal_providers.IdentificationSignal
 import com.fingerprintjs.android.fingerprint.signal_providers.RawData
-import com.fingerprintjs.android.fingerprint.signal_providers.Signal
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 
 
@@ -27,7 +27,7 @@ data class OsBuildRawData(
         securityProviders()
     )
 
-    fun fingerprint() = object : Signal<String>(
+    fun fingerprint() = object : IdentificationSignal<String>(
         1,
         2,
         StabilityLevel.OPTIMAL,
@@ -38,7 +38,7 @@ data class OsBuildRawData(
         override fun toString() = fingerprint
     }
 
-    fun androidVersion() = object : Signal<String>(
+    fun androidVersion() = object : IdentificationSignal<String>(
         2,
         null,
         StabilityLevel.OPTIMAL,
@@ -49,7 +49,7 @@ data class OsBuildRawData(
         override fun toString() = androidVersion
     }
 
-    fun sdkVersion() = object : Signal<String>(
+    fun sdkVersion() = object : IdentificationSignal<String>(
         2,
         null,
         StabilityLevel.OPTIMAL,
@@ -60,7 +60,7 @@ data class OsBuildRawData(
         override fun toString() = sdkVersion
     }
 
-    fun kernelVersion() = object : Signal<String>(
+    fun kernelVersion() = object : IdentificationSignal<String>(
         2,
         null,
         StabilityLevel.OPTIMAL,
@@ -71,7 +71,7 @@ data class OsBuildRawData(
         override fun toString() = kernelVersion
     }
 
-    fun encryptionStatus() = object : Signal<String>(
+    fun encryptionStatus() = object : IdentificationSignal<String>(
         2,
         null,
         StabilityLevel.OPTIMAL,
@@ -82,7 +82,7 @@ data class OsBuildRawData(
         override fun toString() = encryptionStatus
     }
 
-    fun codecList() = object : Signal<List<MediaCodecInfo>>(
+    fun codecList() = object : IdentificationSignal<List<MediaCodecInfo>>(
         2,
         null,
         StabilityLevel.OPTIMAL,
@@ -104,7 +104,7 @@ data class OsBuildRawData(
         }
     }
 
-    fun securityProviders() = object : Signal<List<Pair<String, String>>>(
+    fun securityProviders() = object : IdentificationSignal<List<Pair<String, String>>>(
         2,
         null,
         StabilityLevel.OPTIMAL,

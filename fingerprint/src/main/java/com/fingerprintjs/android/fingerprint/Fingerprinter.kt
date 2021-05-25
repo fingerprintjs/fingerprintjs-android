@@ -8,9 +8,6 @@ interface Fingerprinter {
     fun getDeviceId(listener: (DeviceIdResult) -> (Unit))
     fun getFingerprint(listener: (FingerprintResult) -> (Unit))
     fun getFingerprint(stabilityLevel: StabilityLevel, listener: (FingerprintResult) -> (Unit))
-
-    @Deprecated("Use the method with stability level instead.")
-    fun getFingerprint(signalProvidersMask: Int, listener: (FingerprintResult) -> (Unit))
 }
 
 interface FingerprintResult {

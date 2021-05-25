@@ -1,7 +1,8 @@
 package com.fingerprintjs.android.fingerprint.signal_providers.device_state
 
+
+import com.fingerprintjs.android.fingerprint.signal_providers.IdentificationSignal
 import com.fingerprintjs.android.fingerprint.signal_providers.RawData
-import com.fingerprintjs.android.fingerprint.signal_providers.Signal
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 
 
@@ -66,7 +67,7 @@ data class DeviceStateRawData(
         timezone()
     )
 
-    fun adbEnabled() = object : Signal<String>(
+    fun adbEnabled() = object : IdentificationSignal<String>(
         1,
         null,
         StabilityLevel.OPTIMAL,
@@ -77,7 +78,7 @@ data class DeviceStateRawData(
         override fun toString() = adbEnabled
     }
 
-    fun developmentSettingsEnabled() = object : Signal<String>(
+    fun developmentSettingsEnabled() = object : IdentificationSignal<String>(
         1,
         null,
         StabilityLevel.OPTIMAL,
@@ -88,7 +89,7 @@ data class DeviceStateRawData(
         override fun toString() = developmentSettingsEnabled
     }
 
-    fun httpProxy() = object : Signal<String>(
+    fun httpProxy() = object : IdentificationSignal<String>(
         1,
         null,
         StabilityLevel.UNIQUE,
@@ -99,7 +100,7 @@ data class DeviceStateRawData(
         override fun toString() = httpProxy
     }
 
-    fun transitionAnimationScale() = object : Signal<String>(
+    fun transitionAnimationScale() = object : IdentificationSignal<String>(
         1,
         null,
         StabilityLevel.OPTIMAL,
@@ -110,7 +111,7 @@ data class DeviceStateRawData(
         override fun toString() = transitionAnimationScale
     }
 
-    fun windowAnimationScale() = object : Signal<String>(
+    fun windowAnimationScale() = object : IdentificationSignal<String>(
         1,
         null,
         StabilityLevel.OPTIMAL,
@@ -121,7 +122,7 @@ data class DeviceStateRawData(
         override fun toString() = windowAnimationScale
     }
 
-    fun dataRoamingEnabled() = object : Signal<String>(
+    fun dataRoamingEnabled() = object : IdentificationSignal<String>(
         1,
         null,
         StabilityLevel.UNIQUE,
@@ -132,7 +133,7 @@ data class DeviceStateRawData(
         override fun toString() = dataRoamingEnabled
     }
 
-    fun accessibilityEnabled() = object : Signal<String>(
+    fun accessibilityEnabled() = object : IdentificationSignal<String>(
         1,
         null,
         StabilityLevel.OPTIMAL,
@@ -143,7 +144,7 @@ data class DeviceStateRawData(
         override fun toString() = accessibilityEnabled
     }
 
-    fun defaultInputMethod() = object : Signal<String>(
+    fun defaultInputMethod() = object : IdentificationSignal<String>(
         1,
         null,
         StabilityLevel.OPTIMAL,
@@ -155,7 +156,7 @@ data class DeviceStateRawData(
         override fun toString() = defaultInputMethod
     }
 
-    fun rttCallingMode() = object : Signal<String>(
+    fun rttCallingMode() = object : IdentificationSignal<String>(
         1,
         2,
         StabilityLevel.OPTIMAL,
@@ -166,7 +167,7 @@ data class DeviceStateRawData(
         override fun toString() = rttCallingMode
     }
 
-    fun touchExplorationEnabled() = object : Signal<String>(
+    fun touchExplorationEnabled() = object : IdentificationSignal<String>(
         1,
         null,
         StabilityLevel.OPTIMAL,
@@ -177,7 +178,7 @@ data class DeviceStateRawData(
         override fun toString() = touchExplorationEnabled
     }
 
-    fun alarmAlertPath() = object : Signal<String>(
+    fun alarmAlertPath() = object : IdentificationSignal<String>(
         1,
         null,
         StabilityLevel.OPTIMAL,
@@ -188,7 +189,7 @@ data class DeviceStateRawData(
         override fun toString() = alarmAlertPath
     }
 
-    fun dateFormat() = object : Signal<String>(
+    fun dateFormat() = object : IdentificationSignal<String>(
         1,
         null,
         StabilityLevel.OPTIMAL,
@@ -199,7 +200,7 @@ data class DeviceStateRawData(
         override fun toString() = dateFormat
     }
 
-    fun endButtonBehaviour() = object : Signal<String>(
+    fun endButtonBehaviour() = object : IdentificationSignal<String>(
         1,
         null,
         StabilityLevel.OPTIMAL,
@@ -210,7 +211,7 @@ data class DeviceStateRawData(
         override fun toString() = endButtonBehaviour
     }
 
-    fun fontScale() = object : Signal<String>(
+    fun fontScale() = object : IdentificationSignal<String>(
         1,
         null,
         StabilityLevel.OPTIMAL,
@@ -221,7 +222,7 @@ data class DeviceStateRawData(
         override fun toString() = fontScale
     }
 
-    fun screenOffTimeout() = object : Signal<String>(
+    fun screenOffTimeout() = object : IdentificationSignal<String>(
         1,
         null,
         StabilityLevel.OPTIMAL,
@@ -232,7 +233,7 @@ data class DeviceStateRawData(
         override fun toString() = screenOffTimeout
     }
 
-    fun textAutoReplaceEnable() = object : Signal<String>(
+    fun textAutoReplaceEnable() = object : IdentificationSignal<String>(
         1,
         2,
         StabilityLevel.OPTIMAL,
@@ -243,7 +244,7 @@ data class DeviceStateRawData(
         override fun toString() = textAutoReplaceEnable
     }
 
-    fun textAutoPunctuate() = object : Signal<String>(
+    fun textAutoPunctuate() = object : IdentificationSignal<String>(
         1,
         2,
         StabilityLevel.OPTIMAL,
@@ -254,7 +255,7 @@ data class DeviceStateRawData(
         override fun toString() = textAutoPunctuate
     }
 
-    fun time12Or24() = object : Signal<String>(
+    fun time12Or24() = object : IdentificationSignal<String>(
         1,
         null,
         StabilityLevel.OPTIMAL,
@@ -265,7 +266,7 @@ data class DeviceStateRawData(
         override fun toString() = time12Or24
     }
 
-    fun isPinSecurityEnabled() = object : Signal<Boolean>(
+    fun isPinSecurityEnabled() = object : IdentificationSignal<Boolean>(
         1,
         null,
         StabilityLevel.OPTIMAL,
@@ -276,7 +277,7 @@ data class DeviceStateRawData(
         override fun toString() = isPinSecurityEnabled.toString()
     }
 
-    fun fingerprintSensorStatus() = object : Signal<String>(
+    fun fingerprintSensorStatus() = object : IdentificationSignal<String>(
         1,
         null,
         StabilityLevel.OPTIMAL,
@@ -287,7 +288,7 @@ data class DeviceStateRawData(
         override fun toString() = fingerprintSensorStatus
     }
 
-    fun ringtoneSource() = object : Signal<String>(
+    fun ringtoneSource() = object : IdentificationSignal<String>(
         1,
         null,
         StabilityLevel.OPTIMAL,
@@ -298,7 +299,7 @@ data class DeviceStateRawData(
         override fun toString() = ringtoneSource
     }
 
-    fun availableLocales() = object : Signal<List<String>>(
+    fun availableLocales() = object : IdentificationSignal<List<String>>(
         1,
         null,
         StabilityLevel.OPTIMAL,
@@ -315,7 +316,7 @@ data class DeviceStateRawData(
         }
     }
 
-    fun regionCountry() = object : Signal<String>(
+    fun regionCountry() = object : IdentificationSignal<String>(
         2,
         null,
         StabilityLevel.OPTIMAL,
@@ -326,7 +327,7 @@ data class DeviceStateRawData(
         override fun toString() = regionCountry
     }
 
-    fun defaultLanguage() = object : Signal<String>(
+    fun defaultLanguage() = object : IdentificationSignal<String>(
         2,
         null,
         StabilityLevel.OPTIMAL,
@@ -337,7 +338,7 @@ data class DeviceStateRawData(
         override fun toString() = defaultLanguage
     }
 
-    fun timezone() = object : Signal<String>(
+    fun timezone() = object : IdentificationSignal<String>(
         2,
         null,
         StabilityLevel.OPTIMAL,

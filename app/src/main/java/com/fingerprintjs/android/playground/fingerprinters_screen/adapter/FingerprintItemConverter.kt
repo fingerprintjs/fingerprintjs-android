@@ -7,7 +7,7 @@ import com.fingerprintjs.android.fingerprint.info_providers.InputDeviceData
 import com.fingerprintjs.android.fingerprint.info_providers.MediaCodecInfo
 import com.fingerprintjs.android.fingerprint.info_providers.PackageInfo
 import com.fingerprintjs.android.fingerprint.info_providers.SensorData
-import com.fingerprintjs.android.fingerprint.signal_providers.Signal
+import com.fingerprintjs.android.fingerprint.signal_providers.IdentificationSignal
 import com.fingerprintjs.android.fingerprint.signal_providers.SignalGroupProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 import com.fingerprintjs.android.fingerprint.signal_providers.device_id.DeviceIdProvider
@@ -178,7 +178,7 @@ class FingerprintItemConverterImpl : FingerprintItemConverter {
     }
 
     private fun convertSignalToFingerprintSectionDescription(
-        signals: List<Signal<*>>,
+        signals: List<IdentificationSignal<*>>,
         stringSectionTitle: String = ""
     ): List<FingerprintSectionDescription> {
         val sections = LinkedList<FingerprintSectionDescription>()

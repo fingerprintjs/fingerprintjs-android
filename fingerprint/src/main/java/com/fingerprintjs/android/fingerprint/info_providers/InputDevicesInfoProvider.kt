@@ -2,7 +2,6 @@ package com.fingerprintjs.android.fingerprint.info_providers
 
 
 import android.hardware.input.InputManager
-import android.os.Build
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
 
 
@@ -23,9 +22,7 @@ internal class InputDevicesDataSourceImpl(
             {
                 inputDeviceManager.inputDeviceIds.map {
                     val inputDevice = inputDeviceManager.getInputDevice(it)
-                    val vendorId = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-                        ""
-                    } else inputDevice.vendorId.toString()
+                    val vendorId = inputDevice.vendorId.toString()
                     InputDeviceData(
                         inputDevice.name,
                         vendorId

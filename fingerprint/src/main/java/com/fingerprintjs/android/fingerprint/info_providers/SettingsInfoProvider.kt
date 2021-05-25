@@ -37,54 +37,36 @@ internal class SettingsDataSourceImpl(
 ) : SettingsDataSource {
     //region: Global settings
     override fun adbEnabled(): String {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            return ""
-        }
         return extractGlobalSettingsParam(
             Settings.Global.ADB_ENABLED
         )
     }
 
     override fun developmentSettingsEnabled(): String {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            return ""
-        }
         return extractGlobalSettingsParam(
             Settings.Global.DEVELOPMENT_SETTINGS_ENABLED
         )
     }
 
     override fun httpProxy(): String {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            return ""
-        }
         return extractGlobalSettingsParam(
             Settings.Global.HTTP_PROXY
         )
     }
 
     override fun transitionAnimationScale(): String {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            return ""
-        }
         return extractGlobalSettingsParam(
             Settings.Global.TRANSITION_ANIMATION_SCALE
         )
     }
 
     override fun windowAnimationScale(): String {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            return ""
-        }
         return extractGlobalSettingsParam(
             Settings.Global.WINDOW_ANIMATION_SCALE
         )
     }
 
     override fun dataRoamingEnabled(): String {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            return ""
-        }
         return extractGlobalSettingsParam(
             Settings.Global.DATA_ROAMING
         )
@@ -174,9 +156,6 @@ internal class SettingsDataSourceImpl(
     //endregion
 
     private fun extractGlobalSettingsParam(key: String): String {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            return ""
-        }
         return executeSafe({
             Settings.Global.getString(contentResolver, key)
         }, "")
