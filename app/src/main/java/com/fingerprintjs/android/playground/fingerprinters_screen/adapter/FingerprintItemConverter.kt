@@ -99,8 +99,8 @@ class FingerprintItemConverterImpl : FingerprintItemConverter {
     ) = prepareSignalGroupProviderSection(
         deviceIdProvider,
         "deviceId",
-        "System-based device IDs",
-        "device IDs",
+        "System-based device ID",
+        "Available device IDs",
         stabilityLevel,
         version
     )
