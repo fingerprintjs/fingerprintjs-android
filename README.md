@@ -11,8 +11,8 @@
   <a href="https://github.com/fingerprintjs/fingerprint-android/actions?workflow=Test">
     <img src="https://github.com/fingerprintjs/fingerprint-android/workflows/Test/badge.svg" alt="Build status">
   </a>
-  <a href="https://android-arsenal.com/api?level=16">
-    <img src="https://img.shields.io/badge/API-16%2B-brightgreen.svg" alt="Android minAPI status">
+  <a href="https://android-arsenal.com/api?level=21">
+    <img src="https://img.shields.io/badge/API-21%2B-brightgreen.svg" alt="Android minAPI status">
   </a>
 </p>
 
@@ -66,7 +66,7 @@ dependencies {
   // Add this line only if you use this library with Java
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-  implementation "com.github.fingerprintjs:fingerprint-android:1.1"
+  implementation "com.github.fingerprintjs:fingerprint-android:1.2"
 }
 
 
@@ -103,7 +103,7 @@ Kotlin
 
 // Initialization
  val fingerprinter = FingerprinterFactory
-		.getInstance(applicationContext, Configuration(version = 1))
+		.getInstance(applicationContext, Configuration(version = 3))
 
 
 // Usage
@@ -124,7 +124,7 @@ Java
 
 // Initialization
 Fingerprinter fingerprinter = FingerprinterFactory
-				.getInstance(getApplicationContext(), new Configuration(1));
+				.getInstance(getApplicationContext(), new Configuration(3));
 
 
 // Usage
@@ -159,7 +159,7 @@ The `version` is set while the initialization of the library with `Configuration
 ```kotlin
 
 val fingerprinter = FingerprinterFactory
-		.getInstance(applicationContext, Configuration(version = 1))
+		.getInstance(applicationContext, Configuration(version = 3))
 
 ```
 
@@ -285,18 +285,18 @@ v2Fingerprinter.getFingerprint { fingerprintResult ->
 
 ## Playground App
 
-Try all the library features in the [Playground App](https://github.com/fingerprintjs/fingerprint-android/releases/download/1.1/Playground-release-1.1.apk).
+Try all the library features in the [Playground App](https://github.com/fingerprintjs/fingerprint-android/releases/download/1.2/Playground-release-1.2.apk).
 
 
 <p align="center">
-  <a href="https://github.com/fingerprintjs/fingerprint-android/releases/download/1.1/Playground-release-1.1.apk">
-    <img src="resources/playground-1.1-QR.png" alt="PlaygroundApp" width="300px" />
+  <a href="https://github.com/fingerprintjs/fingerprint-android/releases/download/1.2/Playground-release-1.2.apk">
+    <img src="resources/playground-1.2-QR.png" alt="PlaygroundApp" width="300px" />
    </a>
 </p>			
 
 ## Android API support
 
-fingerprint-android supports API versions from 16 (Android 4.1) and higher.
+fingerprint-android supports API versions from 21 (Android 5.0) and higher.
 
 
 ## Contributing
