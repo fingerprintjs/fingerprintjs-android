@@ -1,20 +1,6 @@
 package com.fingerprintjs.android.fingerprint.signal_providers
 
 
-object SignalGroupProviderType {
-    @JvmField
-    val HARDWARE = 1
-
-    @JvmField
-    val OS_BUILD = 1 shl 1
-
-    @JvmField
-    val INSTALLED_APPS = 1 shl 2
-
-    @JvmField
-    val DEVICE_STATE = 1 shl 3
-}
-
 enum class StabilityLevel {
     STABLE,
     OPTIMAL,
@@ -28,7 +14,7 @@ abstract class SignalGroupProvider<T : RawData>(
     abstract fun rawData(): T
 
     protected fun combineSignals(
-        signals: List<Signal<*>>,
+        signals: List<IdentificationSignal<*>>,
         stabilityLevel: StabilityLevel
     ): String {
         val sb = StringBuilder()

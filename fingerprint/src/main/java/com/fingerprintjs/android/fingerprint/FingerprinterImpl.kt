@@ -1,7 +1,6 @@
 package com.fingerprintjs.android.fingerprint
 
 
-import com.fingerprintjs.android.fingerprint.signal_providers.SignalGroupProviderType
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 import com.fingerprintjs.android.fingerprint.signal_providers.device_id.DeviceIdProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.device_state.DeviceStateSignalGroupProvider
@@ -45,20 +44,16 @@ internal class FingerprinterImpl(
     }
 
     override fun getFingerprint(listener: (FingerprintResult) -> Unit) {
-        getFingerprint(StabilityLevel.OPTIMAL, ALL_PROVIDERS_MASK, listener)
+        getFingerprint(StabilityLevel.OPTIMAL, listener)
     }
 
     override fun getFingerprint(
         stabilityLevel: StabilityLevel,
         listener: (FingerprintResult) -> Unit
-    ) = getFingerprint(stabilityLevel, ALL_PROVIDERS_MASK, listener)
+    ) = calculateFingerprint(stabilityLevel, listener)
 
-    override fun getFingerprint(signalProvidersMask: Int, listener: (FingerprintResult) -> Unit) =
-        getFingerprint(StabilityLevel.UNIQUE, signalProvidersMask, listener)
-
-    private fun getFingerprint(
+    private fun calculateFingerprint(
         stabilityLevel: StabilityLevel,
-        signalProvidersMask: Int,
         listener: (FingerprintResult) -> Unit
     ) {
         fingerprintResult?.let {
@@ -69,17 +64,11 @@ internal class FingerprinterImpl(
         executor.execute {
             val fingerprintSb = StringBuilder()
 
-            if (signalProvidersMask and SignalGroupProviderType.HARDWARE != 0) {
-                fingerprintSb.append(hardwareSignalProvider.fingerprint(stabilityLevel))
-            }
-            if (signalProvidersMask and SignalGroupProviderType.OS_BUILD != 0) {
-                fingerprintSb.append(osBuildSignalProvider.fingerprint(stabilityLevel))
-            }
-            if (signalProvidersMask and SignalGroupProviderType.DEVICE_STATE != 0) {
-                fingerprintSb.append(deviceStateSignalProvider.fingerprint(stabilityLevel))
-            }
-            if (signalProvidersMask and SignalGroupProviderType.INSTALLED_APPS != 0) {
-                fingerprintSb.append(installedAppsSignalProvider.fingerprint(stabilityLevel))
+            fingerprintSb.apply {
+                append(hardwareSignalProvider.fingerprint(stabilityLevel))
+                append(osBuildSignalProvider.fingerprint(stabilityLevel))
+                append(deviceStateSignalProvider.fingerprint(stabilityLevel))
+                append(installedAppsSignalProvider.fingerprint(stabilityLevel))
             }
 
             val result = object : FingerprintResult {
@@ -102,7 +91,3 @@ internal class FingerprinterImpl(
         }
     }
 }
-
-private val ALL_PROVIDERS_MASK =
-    SignalGroupProviderType.HARDWARE or SignalGroupProviderType.OS_BUILD or SignalGroupProviderType.DEVICE_STATE or SignalGroupProviderType.INSTALLED_APPS
-

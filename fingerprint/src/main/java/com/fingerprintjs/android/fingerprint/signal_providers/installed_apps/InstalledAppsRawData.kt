@@ -2,8 +2,8 @@ package com.fingerprintjs.android.fingerprint.signal_providers.installed_apps
 
 
 import com.fingerprintjs.android.fingerprint.info_providers.PackageInfo
+import com.fingerprintjs.android.fingerprint.signal_providers.IdentificationSignal
 import com.fingerprintjs.android.fingerprint.signal_providers.RawData
-import com.fingerprintjs.android.fingerprint.signal_providers.Signal
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 
 
@@ -17,7 +17,7 @@ data class InstalledAppsRawData(
         systemApplicationsList()
     )
 
-    fun applicationsList() = object : Signal<List<PackageInfo>>(
+    fun applicationsList() = object : IdentificationSignal<List<PackageInfo>>(
         1,
         null,
         StabilityLevel.UNIQUE,
@@ -36,7 +36,7 @@ data class InstalledAppsRawData(
         }
     }
 
-    fun systemApplicationsList() = object : Signal<List<PackageInfo>>(
+    fun systemApplicationsList() = object : IdentificationSignal<List<PackageInfo>>(
         2,
         null,
         StabilityLevel.OPTIMAL,

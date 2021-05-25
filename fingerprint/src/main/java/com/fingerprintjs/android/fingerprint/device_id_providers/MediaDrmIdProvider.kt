@@ -1,8 +1,8 @@
 package com.fingerprintjs.android.fingerprint.device_id_providers
 
+
 import android.media.MediaDrm
 import android.os.Build
-import androidx.annotation.RequiresApi
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
 import java.security.MessageDigest
 import java.util.UUID
@@ -10,12 +10,9 @@ import java.util.UUID
 
 class MediaDrmIdProvider {
     fun getMediaDrmId() = executeSafe({
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            mediaDrmId()
-        } else null
+        mediaDrmId()
     }, null)
 
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     private fun mediaDrmId(): String {
         val widevineUUID = UUID(WIDEWINE_UUID_MOST_SIG_BITS, WIDEWINE_UUID_LEAST_SIG_BITS)
         val wvDrm: MediaDrm?
@@ -29,7 +26,6 @@ class MediaDrmIdProvider {
         return md.digest().toHexString()
     }
 
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     private fun releaseMediaDRM(drmObject: MediaDrm) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             drmObject.close()

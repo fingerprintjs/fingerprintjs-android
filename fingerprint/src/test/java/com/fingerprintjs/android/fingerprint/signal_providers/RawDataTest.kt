@@ -1,5 +1,6 @@
 package com.fingerprintjs.android.fingerprint.signal_providers
 
+
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -22,7 +23,7 @@ class RawDataTest {
         assertEquals(8, uniqueSignalsList.size)
     }
     
-    private fun prepareSignalsList(): List<Signal<*>> = listOf(
+    private fun prepareSignalsList(): List<IdentificationSignal<*>> = listOf(
         createSignal(1, null, StabilityLevel.OPTIMAL),
         createSignal(1, 2, StabilityLevel.OPTIMAL),
         createSignal(1, 2, StabilityLevel.OPTIMAL),
@@ -37,8 +38,8 @@ class RawDataTest {
         addedInVersion: Int,
         removedInVersion: Int?,
         stabilityLevel: StabilityLevel
-    ): Signal<String> {
-        return object : Signal<String>(
+    ): IdentificationSignal<String> {
+        return object : IdentificationSignal<String>(
             addedInVersion,
             removedInVersion,
             stabilityLevel,

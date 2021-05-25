@@ -2,7 +2,6 @@ package com.fingerprintjs.android.fingerprint.info_providers
 
 
 import android.media.MediaCodecList
-import android.os.Build
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
 
 
@@ -23,10 +22,6 @@ internal class CodecInfoProviderImpl(
     }
 
     private fun extractCodecInfo(): List<MediaCodecInfo> {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            return emptyList()
-        }
-
         return codecList.codecInfos.map {
             MediaCodecInfo(
                 it.name,

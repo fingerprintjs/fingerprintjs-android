@@ -16,6 +16,9 @@ const val KERNEL_VERSION_DISPLAY_NAME = "Kernel version"
 const val CODEC_LIST_KEY = "codecsList"
 const val CODEC_LIST_DISPLAY_NAME = "Codecs list"
 
+const val CODEC_NAME_KEY = "codecName"
+const val CODEC_CAPABILITIES_KEY = "codecCapabilities"
+
 const val ENCRYPTION_STATUS_KEY = "encryptionStatus"
 const val ENCRYPTION_STATUS_DISPLAY_NAME = "Encryption status"
 

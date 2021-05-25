@@ -2,7 +2,6 @@ package com.fingerprintjs.android.fingerprint.info_providers
 
 
 import android.app.ActivityManager
-import android.os.Build
 import android.os.StatFs
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
 
@@ -37,9 +36,7 @@ internal class MemInfoProviderImpl(
     override fun totalExternalStorageSpace(): Long {
         return executeSafe(
             {
-                externalStorageStats?.let {
-                    it.totalBytes
-                } ?: 0L
+                externalStorageStats?.totalBytes ?: 0L
 
             },
             0L

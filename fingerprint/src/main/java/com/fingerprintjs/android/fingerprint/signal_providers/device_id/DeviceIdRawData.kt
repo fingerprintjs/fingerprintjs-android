@@ -1,8 +1,10 @@
 package com.fingerprintjs.android.fingerprint.signal_providers.device_id
 
+
+import com.fingerprintjs.android.fingerprint.signal_providers.IdentificationSignal
 import com.fingerprintjs.android.fingerprint.signal_providers.RawData
-import com.fingerprintjs.android.fingerprint.signal_providers.Signal
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
+
 
 class DeviceIdRawData(
     private val androidId: String,
@@ -16,7 +18,7 @@ class DeviceIdRawData(
         mediaDrmId()
     )
 
-    fun gsfId() = object : Signal<String>(
+    fun gsfId() = object : IdentificationSignal<String>(
         1,
         null,
         StabilityLevel.STABLE,
@@ -27,7 +29,7 @@ class DeviceIdRawData(
         override fun toString() = gsfId ?: ""
     }
 
-    fun androidId() = object : Signal<String>(
+    fun androidId() = object : IdentificationSignal<String>(
         1,
         null,
         StabilityLevel.STABLE,
@@ -38,7 +40,7 @@ class DeviceIdRawData(
         override fun toString() = androidId
     }
 
-    fun mediaDrmId() = object : Signal<String>(
+    fun mediaDrmId() = object : IdentificationSignal<String>(
         3,
         null,
         StabilityLevel.STABLE,

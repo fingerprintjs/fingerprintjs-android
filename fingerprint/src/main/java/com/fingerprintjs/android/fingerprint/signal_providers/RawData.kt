@@ -2,7 +2,7 @@ package com.fingerprintjs.android.fingerprint.signal_providers
 
 
 abstract class RawData {
-    abstract fun signals(): List<Signal<*>>
+    abstract fun signals(): List<IdentificationSignal<*>>
     fun signals(version: Int, stabilityLevel: StabilityLevel) = signals()
         .filterByStabilityLevel(
             stabilityLevel
@@ -10,7 +10,7 @@ abstract class RawData {
         .filterByVersion(version)
 }
 
-fun List<Signal<*>>.filterByStabilityLevel(stabilityLevel: StabilityLevel): List<Signal<*>> {
+fun List<IdentificationSignal<*>>.filterByStabilityLevel(stabilityLevel: StabilityLevel): List<IdentificationSignal<*>> {
     return this.filter {
         when (stabilityLevel) {
             StabilityLevel.STABLE -> {
@@ -26,7 +26,7 @@ fun List<Signal<*>>.filterByStabilityLevel(stabilityLevel: StabilityLevel): List
     }
 }
 
-fun List<Signal<*>>.filterByVersion(version: Int): List<Signal<*>> {
+fun List<IdentificationSignal<*>>.filterByVersion(version: Int): List<IdentificationSignal<*>> {
     return this.filter {
         val isNotRemoved =
             ((it.removedInVersion == null) || ((it.removedInVersion > version)))
