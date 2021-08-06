@@ -310,6 +310,14 @@ Feel free to ask questions and request features.
 Just create an issue with a clear explanation of what you'd like to have in the library.
 For code contributions, please see the [contributing guideline](docs/contributing.md).
 
+## Testimonials
+
+>Just tested on HUAWEI Y6p, with factory reset, we can retrieve the same result with `StabilityLevel.STABLE` setting.
+>
+>Thank you
+>
+> **_GitHub user_**
+
 ## License
 
 This library is MIT licensed.
