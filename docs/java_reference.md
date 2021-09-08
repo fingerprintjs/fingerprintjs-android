@@ -43,11 +43,11 @@ fingerprinter.getFingerprint(new Function1<FingerprintResult, Unit>() {
             public Unit invoke(FingerprintResult fingerprintResult) {
                 String fingerprint = fingerprintResult.getFingerprint();
 
-                HardwareSignalProvider hardwareSignalProvider = fingerprintResult
-                        .getSignalProvider(HardwareSignalGroupProvider::class.java);
+                HardwareSignalGroupProvider hardwareSignalProvider = fingerprintResult
+                        .getSignalProvider(HardwareSignalGroupProvider.class);
 
-                String hardwareFingerprint = hardwareSignalProvider.fingerprint();
-                Map<String, String> cpuInfo = hardwareSignalProvider.rawData.getProcCpuInfo();
+                String hardwareFingerprint = hardwareSignalProvider.fingerprint(StabilityLevel.STABLE);
+                Map<String,String> cpuInfo = hardwareSignalProvider.rawData().procCpuInfo().getValue();
 
                 return null;
             }
