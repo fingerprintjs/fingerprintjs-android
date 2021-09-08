@@ -200,15 +200,17 @@ If you are using RxJava or Kotlin Coroutines - use the [extensions](docs/extensi
 
 ### Increasing the uniqueness of fingerprints
 
-There is a probability that two different devices will have the same `fingerprint` value. There is also a probability that the same device will have different `fingerprint` values in different moments of time due to system upgrades or updated settings (although this should be infrequent).
+There is a probability that two different devices will have the same `fingerprint` value. There is also a probability that the same device will have different `fingerprint` values in different moments of time due to system upgrades or updated settings (although this should be rare).
 
-By default the library calculates a fingerprint with optimal stability and uniqueness. But also there are two more modes for fingerprints: Stable and Unique. 
+By default the library calculates a fingerprint with the best combination of stability and uniqueness. This stability level is called `StabilityMode.OPTIMAL`.
+There are two other stability modes for fingerprinting: `Stable` and `Unique`. 
+`Stable` is when you prefer a more stable, but potentially a less unique fingerprint.
+`Unique` is when you want a very unique, but potentially a less stable fingerprint.
 
 Use them as shown below:
 
 
 ```kotlin
-
 
 fingerprinter.getFingerprint(StabilityMode.STABLE) { fingerprintResult ->
   val stableFingerprint = fingerprintResult.fingerprint
