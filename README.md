@@ -82,7 +82,7 @@ dependencies {
 
 The library operates with two entities. 
 
-1. `deviceId` - is a random and unique device identifier.
+1. `deviceId` - is a unique device identifier.
 
 Can be used by developers to identify devices to deliver personalized content, detect suspicious activity, and perform fraud detection.
 Internally it will use Google Service Framework ID if it's available and ANDROID_ID, if GSF ID is not available. 
@@ -94,7 +94,7 @@ But it will be different after factory reset of the device.
 
 #### Which one should I use?
 
-`deviceId` is guaranteed to be random and should be your first choice for device identification. This identifier can be spoofed though and shouldn't be used in security-focused or fraud detection scenarios.
+`deviceId` is guaranteed to be unique and should be your first choice for device identification. This identifier can be spoofed though and shouldn't be used in security-focused or fraud detection scenarios.
 
 `fingerprint` is much harder to spoof and is a safer choice in security-focused use cases.
 
