@@ -23,6 +23,13 @@
 </p>
 
 <p align="center">
+	<a href='https://play.google.com/store/apps/details?id=com.fingerprintjs.android.playground'>
+		<img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="240px/>
+	</a>
+</p>
+
+
+<p align="center">
     <img src="resources/playground-app.png" alt="PlaygroundApp" width="780px" />
 </p>			
 
@@ -295,13 +302,12 @@ v2Fingerprinter.getFingerprint { fingerprintResult ->
 
 Try all the library features in the [Playground App](https://github.com/fingerprintjs/fingerprint-android/releases/download/1.2/Playground-release-1.2.apk).
 
-
 <p align="center">
-  <a href="https://github.com/fingerprintjs/fingerprint-android/releases/download/1.2/Playground-release-1.2.apk">
-    <img src="resources/playground-1.2-QR.png" alt="PlaygroundApp" width="300px" />
-   </a>
-</p>			
-
+	<a href="https://github.com/fingerprintjs/fingerprint-android/releases/download/1.2/Playground-release-1.2.apk">
+		<img src="resources/playground-1.2-QR.png" alt="PlaygroundApp" width="300px" />
+	</a>
+</p>										
+										
 ## Android API support
 
 fingerprint-android supports API versions from 21 (Android 5.0) and higher.
