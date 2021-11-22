@@ -26,7 +26,7 @@
     <img src="resources/playground-app.png" alt="PlaygroundApp" width="780px" />
 </p>			
 
-# fingerprint android
+# FingerprintJS Android
 
 Lightweight library for device identification and fingerprinting.
 
@@ -38,14 +38,13 @@ The identifier is fully stateless and will remain the same after reinstalling or
 
 ## Table of Contents
 1. [Quick start](#quick-start)
-2. [Usage](#usage)
-3. [Advanced usage](#advanced-usage)
-4. [Playground App](#playground-app)
+2. [Usage](#3-get-deviceids-and-fingerprints)
+3. [Playground App](#playground-app)
 
 
 ## Quick start
 
-### Add repository
+### 1. Add repository
 
 Add these lines to your `build.gradle`.
 
@@ -58,7 +57,7 @@ allprojects {
 }}
 ```
 
-### Add dependency
+### 2. Add dependency
 
 Add these lines to `build.gradle` of a module.
 
@@ -78,7 +77,7 @@ dependencies {
 ```
 
 
-### deviceId vs fingerprint
+#### deviceId vs fingerprint
 
 The library operates with two entities. 
 
@@ -100,7 +99,7 @@ But it will be different after factory reset of the device.
 
 
 
-## Usage
+### 3. Get deviceIDs and fingerprints
 
 Kotlin
 
@@ -168,7 +167,7 @@ val fingerprinter = FingerprinterFactory
 
 ```
 
-See full [Kotlin reference](docs/kotlin_reference.md)./[Java reference](docs/java_reference.md).
+See full [Kotlin reference](docs/kotlin_reference.md)/[Java reference](docs/java_reference.md).
 
 ## Playground App
 
