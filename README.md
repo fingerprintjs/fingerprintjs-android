@@ -23,13 +23,6 @@
 </p>
 
 <p align="center">
-	<a href='https://play.google.com/store/apps/details?id=com.fingerprintjs.android.playground'>
-		<img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="240px/>
-	</a>
-</p>
-
-
-<p align="center">
     <img src="resources/playground-app.png" alt="PlaygroundApp" width="780px" />
 </p>			
 
@@ -89,7 +82,7 @@ dependencies {
 
 The library operates with two entities. 
 
-1. `deviceId` - is a unique device identifier.
+1. `deviceId` - is a random and unique device identifier.
 
 Can be used by developers to identify devices to deliver personalized content, detect suspicious activity, and perform fraud detection.
 Internally it will use Google Service Framework ID if it's available and ANDROID_ID, if GSF ID is not available. 
@@ -101,7 +94,7 @@ But it will be different after factory reset of the device.
 
 #### Which one should I use?
 
-`deviceId` is guaranteed to be unique and should be your first choice for device identification. This identifier can be spoofed though and shouldn't be used in security-focused or fraud detection scenarios.
+`deviceId` is guaranteed to be random and should be your first choice for device identification. This identifier can be spoofed though and shouldn't be used in security-focused or fraud detection scenarios.
 
 `fingerprint` is much harder to spoof and is a safer choice in security-focused use cases.
 
@@ -175,139 +168,19 @@ val fingerprinter = FingerprinterFactory
 
 ```
 
-## Advanced usage
-
-Reference for Kotlin is provided below. [Java reference](docs/java_reference.md).
-
-The full public API of the library is following:
-
-```kotlin
-
-interface Fingerprinter {
-  fun getDeviceId(listener: (DeviceIdResult) -> (Unit))
-  fun getFingerprint(listener: (FingerprintResult) -> (Unit))
-  fun getFingerprint(stabilityLevel: StabilityLevel, listener: (FingerprintResult) -> (Unit))
-}
-
-interface FingerprintResult {
-  val fingerprint: String
-  fun <T> getSignalProvider(clazz: Class<T>): T?
-}
-
-data class DeviceIdResult(
-  val deviceId: String,
-  val gsfId: String?,
-  val androidId: String,
-  val mediaDrmId: String?
-)
-
-```
-
-If you are using RxJava or Kotlin Coroutines - use the [extensions](docs/extensions.md).
-
-### Increasing the uniqueness of fingerprints
-
-There is a probability that two different devices will have the same `fingerprint` value. There is also a probability that the same device will have different `fingerprint` values in different moments of time due to system upgrades or updated settings (although this should be rare).
-
-By default the library calculates a fingerprint with the best combination of stability and uniqueness. This stability level is called `StabilityMode.OPTIMAL`.
-There are two other stability modes for fingerprinting: `Stable` and `Unique`. 
-`Stable` is when you prefer a more stable, but potentially a less unique fingerprint.
-`Unique` is when you want a very unique, but potentially a less stable fingerprint.
-
-Use them as shown below:
-
-
-```kotlin
-
-fingerprinter.getFingerprint(StabilityMode.STABLE) { fingerprintResult ->
-  val stableFingerprint = fingerprintResult.fingerprint
-}
-
-fingerprinter.getFingerprint(StabilityMode.OPTIMAL) { fingerprintResult ->
-  val optimalFingerprint = fingerprintResult.fingerprint
-}
-
-fingerprinter.getFingerprint(StabilityMode.UNIQUE) { fingerprintResult ->
-  val uniqueFingerprint = fingerprintResult.fingerprint
-}
-
-``` 
- 
-### Raw data access
-
-If you need access to raw data from signal providers, you can get it as shown below:
-
-```kotlin
-
-fingerprinter.getFingerprint { fingerprintResult ->
-
-  val hardwareSignalProvider = fingerprintResult
-  			.getSignalProvider(HardwareSignalGroupProvider::class.java)
-
-  val hardwareFingerprint = hardwareSignalProvider.fingerprint()
-
-  val cpuInfo = hardwareSignalProvider.rawData().procCpuInfo()
-}
-
-```
-
-### Change hash function
-
-The library uses [Murmur3 hash](https://en.wikipedia.org/wiki/MurmurHash) (64x128) which is fast and optimal for most cases.
-
-If this hash function does not work for you, you can change it to a different one.
-
-To do it, implement your own hasher, and pass it to `Configuration` class as shown below:
-
-``` kotlin
-
-val hasher = object : Hasher {
-  override fun hash(data: String): String {
-    // Implement your own hashing logic, e.g. call SHA256 here
-  }
-}
-
-val fingerprinter = FingerprinterFactory.getInstance(
-  applicationContext,
-  Configuration(version = 1, hasher = hasher)
-
-)
-
-```
-
-### Backward compatibility
-
-If you want to get a newer version of fingerprint, but also want to keep the old one for backward compatibility, you can get them both as shown below:
-
-```kotlin
-
-val v1Fingerprinter = FingerprinterFactory
-		.getInstance(applicationContext, Configuration(version = 1))
-
-val v2Fingerprinter = FingerprinterFactory
-		.getInstance(applicationContext, Configuration(version = 2))
-
-
-v1Fingerprinter.getFingerprint { fingerprintResult ->
-  val v1Fingerprint = fingerprintResult.fingerprint
-}
-
-v2Fingerprinter.getFingerprint { fingerprintResult ->
-  val v2Fingerprint = fingerprintResult.fingerprint
-}
-
-```
+See full [Kotlin reference](docs/kotlin_reference.md)./[Java reference](docs/java_reference.md).
 
 ## Playground App
 
 Try all the library features in the [Playground App](https://github.com/fingerprintjs/fingerprint-android/releases/download/1.2/Playground-release-1.2.apk).
 
+
 <p align="center">
-	<a href="https://github.com/fingerprintjs/fingerprint-android/releases/download/1.2/Playground-release-1.2.apk">
-		<img src="resources/playground-1.2-QR.png" alt="PlaygroundApp" width="300px" />
-	</a>
-</p>										
-										
+  <a href="https://github.com/fingerprintjs/fingerprint-android/releases/download/1.2/Playground-release-1.2.apk">
+    <img src="resources/playground-1.2-QR.png" alt="PlaygroundApp" width="300px" />
+   </a>
+</p>			
+
 ## Android API support
 
 fingerprint-android supports API versions from 21 (Android 5.0) and higher.
