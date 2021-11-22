@@ -1,6 +1,6 @@
 ## Advanced usage
 
-Reference for Kotlin is provided below. [Java reference](docs/java_reference.md).
+Reference for Kotlin is provided below. [Java reference](java_reference.md).
 
 The full public API of the library is following:
 
