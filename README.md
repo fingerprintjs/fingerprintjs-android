@@ -207,5 +207,5 @@ For code contributions, please see the [contributing guideline](docs/contributin
 ## License
 
 This library is MIT licensed.
-Copyright FingerprintJS, Inc. 2020-2021.
+Copyright FingerprintJS, Inc. 2020-2022.
 
