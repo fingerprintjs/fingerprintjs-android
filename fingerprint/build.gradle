@@ -5,11 +5,11 @@ apply plugin: 'com.github.dcendents.android-maven'
 group='com.github.fingerprintjs'
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 32
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 31
+        targetSdkVersion 32
         versionCode Integer.parseInt(project.VERSION_CODE)
         versionName project.VERSION_NAME
 
