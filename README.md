@@ -103,6 +103,8 @@ But it will be different after factory reset of the device.
 
 `fingerprint` is much harder to spoof and is a safer choice in security-focused use cases.
 
+See the [table](docs/stability.md) about stability of each.
+
 
 
 ### 3. Get deviceIDs and fingerprints
