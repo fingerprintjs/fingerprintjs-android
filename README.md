@@ -40,7 +40,11 @@ Fully written in Kotlin. **100% Crash-free**.
 
 Creates a device identifier from all available platform signals.
 
-The identifier is fully stateless and will remain the same after reinstalling or clearing application data.
+The identifier is fully stateless and will remain the same after reinstalling or clearing application data. 
+
+Check the [FingeprintJS iOS](https://github.com/fingerprintjs/fingerprintjs-ios) – an iOS library for device fingerprinting.
+									     									     
+
 
 ## Table of Contents
 1. [Quick start](#quick-start)
