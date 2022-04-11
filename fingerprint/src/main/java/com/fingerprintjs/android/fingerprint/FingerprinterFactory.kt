@@ -192,8 +192,8 @@ object FingerprinterFactory {
         )
 
     private fun createDeviceSecurityProvider(context: Context) = DeviceSecurityInfoProviderImpl(
-        context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager,
-        context.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+        context.getSystemService(Context.DEVICE_POLICY_SERVICE) as? DevicePolicyManager,
+        context.getSystemService(Context.KEYGUARD_SERVICE) as? KeyguardManager
     )
 
     private fun createCodecInfoProvider() = CodecInfoProviderImpl(
