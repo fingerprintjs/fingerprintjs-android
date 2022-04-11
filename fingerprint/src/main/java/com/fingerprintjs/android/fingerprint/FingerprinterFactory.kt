@@ -11,7 +11,6 @@ import android.hardware.SensorManager
 import android.hardware.input.InputManager
 import android.media.MediaCodecList
 import android.media.RingtoneManager
-import android.os.Build
 import android.os.Environment
 import android.os.StatFs
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
@@ -197,14 +196,9 @@ object FingerprinterFactory {
         context.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
     )
 
-    private fun createCodecInfoProvider() =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            CodecInfoProviderImpl(
-                MediaCodecList(MediaCodecList.ALL_CODECS)
-            )
-        } else {
-            null
-        }
+    private fun createCodecInfoProvider() = CodecInfoProviderImpl(
+        MediaCodecList(MediaCodecList.ALL_CODECS)
+    )
 
     private fun createBatteryInfoDataSource(context: Context) = BatteryInfoProviderImpl(
         context
