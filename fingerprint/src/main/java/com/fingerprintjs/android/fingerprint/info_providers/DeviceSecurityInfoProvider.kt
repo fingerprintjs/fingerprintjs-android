@@ -14,12 +14,12 @@ interface DeviceSecurityInfoProvider {
 }
 
 internal class DeviceSecurityInfoProviderImpl(
-    private val devicePolicyManager: DevicePolicyManager,
-    private val keyguardManager: KeyguardManager
+    private val devicePolicyManager: DevicePolicyManager?,
+    private val keyguardManager: KeyguardManager?
 ) : DeviceSecurityInfoProvider {
     override fun encryptionStatus(): String {
         return executeSafe({
-            stringDescriptionForEncryptionStatus(devicePolicyManager.storageEncryptionStatus)
+            stringDescriptionForEncryptionStatus(devicePolicyManager?.storageEncryptionStatus)
         }, "")
     }
 
@@ -32,11 +32,11 @@ internal class DeviceSecurityInfoProviderImpl(
     }
 
     override fun isPinSecurityEnabled() = executeSafe(
-        { keyguardManager.isKeyguardSecure }, false
+        { keyguardManager?.isKeyguardSecure ?: false }, false
     )
 }
 
-private fun stringDescriptionForEncryptionStatus(status: Int): String {
+private fun stringDescriptionForEncryptionStatus(status: Int?): String {
     return when (status) {
         DevicePolicyManager.ENCRYPTION_STATUS_UNSUPPORTED -> UNSUPPORTED
         DevicePolicyManager.ENCRYPTION_STATUS_INACTIVE -> INACTIVE
