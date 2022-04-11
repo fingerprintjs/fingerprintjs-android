@@ -142,9 +142,14 @@ object FingerprinterFactory {
         val internalStorageDir = Environment.getRootDirectory().absolutePath
         val internalStorageStatFs = StatFs(internalStorageDir)
 
-        val externalStorageDir = context.getExternalFilesDir(null)?.absolutePath
+        val externalStorageDir = context.getExternalFilesDir(null)
+        val externalStorageDirPath = externalStorageDir?.absolutePath
         val externalStorageStatFs =
-            if (externalStorageDir != null) StatFs(externalStorageDir) else null
+            if (externalStorageDirPath != null && externalStorageDir.canRead()) {
+                StatFs(externalStorageDirPath)
+            } else {
+                null
+            }
 
         return MemInfoProviderImpl(
             activityManager,
