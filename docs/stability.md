@@ -11,3 +11,4 @@
 | Factory reset | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ | ❌ |
 | Repackaging the application | ❌ | ❌ | ✅ | ✅ | ✅ | ❌ | ✅ |
 | System update | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ |
+| Different 'User' on the same device  | ❌ | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ |
