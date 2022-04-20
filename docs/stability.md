@@ -12,4 +12,4 @@
 | Repackaging the application | ❌ | ❌ | ✅ | ✅ | ✅ | ❌ | ✅ |
 | System update | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ |
 | Different 'User' on the same device  | ❌ | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ |
-| Instant App compared to a regular app  | ❌ | ❌ | ❌ (not available) | ❌ | ❌ | ❌ (not available) | ❌ |
+| Instant App compared to a regular app  | ✅ | ✅ | ❌ (not available) | ❌ | ❌ | ❌ (not available) | ❌ |
