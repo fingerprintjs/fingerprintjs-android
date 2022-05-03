@@ -78,7 +78,7 @@ dependencies {
   // Add this line only if you use this library with Java
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-  implementation "com.github.fingerprintjs:fingerprint-android:1.2"
+  implementation "com.github.fingerprintjs:fingerprintjs-android:1.2.1"
 }
 
 
