@@ -51,9 +51,7 @@ android {
 }
 
 dependencies {
-    debugImplementation fileTree(dir: "../fingerprint/build/outputs/aar/", include: ["*$project.VERSION_NAME-debug.aar"])
-    releaseImplementation fileTree(dir: "../fingerprint/build/outputs/aar/", include: ["*$project.VERSION_NAME-release.aar"])
-
+    implementation project(":fingerprint")
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.cardview:cardview:1.0.0"
