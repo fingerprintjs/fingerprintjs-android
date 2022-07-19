@@ -28,7 +28,7 @@ class HardwareSignalGroupProvider(
 ) : SignalGroupProvider<HardwareFingerprintRawData>(
     version
 ) {
-    private val rawData =
+    private val rawData by lazy {
         HardwareFingerprintRawData(
             osBuildInfoProvider.manufacturerName(),
             osBuildInfoProvider.modelName(),
@@ -44,6 +44,7 @@ class HardwareSignalGroupProvider(
             cpuInfoProvider.abiType(),
             cpuInfoProvider.coresCount()
         )
+    }
 
     override fun fingerprint(stabilityLevel: StabilityLevel): String {
         return hasher.hash(

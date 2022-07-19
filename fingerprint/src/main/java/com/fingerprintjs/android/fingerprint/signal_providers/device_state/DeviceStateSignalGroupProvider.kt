@@ -19,7 +19,7 @@ class DeviceStateSignalGroupProvider(
     version: Int
 ) : SignalGroupProvider<DeviceStateRawData>(version) {
 
-    private val rawData =
+    private val rawData by lazy {
         DeviceStateRawData(
             settingsDataSource.adbEnabled(),
             settingsDataSource.developmentSettingsEnabled(),
@@ -47,6 +47,7 @@ class DeviceStateSignalGroupProvider(
             devicePersonalizationInfoProvider.defaultLanguage(),
             devicePersonalizationInfoProvider.timezone()
         )
+    }
 
     override fun fingerprint(stabilityLevel: StabilityLevel): String {
         return hasher.hash(

@@ -17,7 +17,7 @@ class OsBuildSignalGroupProvider(
     version: Int
 ) : SignalGroupProvider<OsBuildRawData>(version) {
 
-    private val rawData =
+    private val rawData by lazy {
         OsBuildRawData(
             osBuildInfoProvider.fingerprint(),
             osBuildInfoProvider.androidVersion(),
@@ -27,6 +27,7 @@ class OsBuildSignalGroupProvider(
             deviceSecurityInfoProvider.encryptionStatus(),
             deviceSecurityInfoProvider.securityProvidersData()
         )
+    }
 
     override fun fingerprint(stabilityLevel: StabilityLevel): String {
         return hasher.hash(
