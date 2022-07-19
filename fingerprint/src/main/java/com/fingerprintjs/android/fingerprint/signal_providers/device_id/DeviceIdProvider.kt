@@ -15,11 +15,13 @@ class DeviceIdProvider(
     version: Int
 ) : SignalGroupProvider<DeviceIdRawData>(version) {
 
-    private val rawData = DeviceIdRawData(
-        androidId = androidIdProvider.getAndroidId(),
-        gsfId = gsfIdProvider.getGsfAndroidId(),
-        mediaDrmId = mediaDrmIdProvider.getMediaDrmId()
-    )
+    private val rawData by lazy {
+        DeviceIdRawData(
+            androidId = androidIdProvider.getAndroidId(),
+            gsfId = gsfIdProvider.getGsfAndroidId(),
+            mediaDrmId = mediaDrmIdProvider.getMediaDrmId()
+        )
+    }
 
     override fun rawData() = rawData
 

@@ -13,11 +13,12 @@ class InstalledAppsSignalGroupProvider(
     version: Int
 ) : SignalGroupProvider<InstalledAppsRawData>(version) {
 
-    private val rawData =
+    private val rawData by lazy {
         InstalledAppsRawData(
             packageManagerDataSource.getApplicationsList(),
             packageManagerDataSource.getSystemApplicationsList()
         )
+    }
 
     override fun fingerprint(stabilityLevel: StabilityLevel): String {
         return hasher.hash(
