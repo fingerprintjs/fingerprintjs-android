@@ -3,12 +3,12 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-parcelize'
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "com.fingerprintjs.android.playground"
         minSdkVersion 21
-        targetSdkVersion 32
+        targetSdkVersion 33
         versionCode Integer.parseInt(project.VERSION_CODE)
         versionName project.VERSION_NAME
 

@@ -7,7 +7,7 @@ plugins {
 group='com.github.fingerprintjs'
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
 
     publishing {
         publications {
@@ -22,7 +22,7 @@ android {
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 32
+        targetSdkVersion 33
         versionCode Integer.parseInt(project.VERSION_CODE)
         versionName project.VERSION_NAME
 
