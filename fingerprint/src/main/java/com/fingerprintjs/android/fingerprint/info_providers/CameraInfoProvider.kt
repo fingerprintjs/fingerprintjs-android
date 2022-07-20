@@ -28,12 +28,12 @@ internal class CameraInfoProviderImpl(
         // Avoiding thread hanging forever. Workaround for:
         // https://github.com/fingerprintjs/fingerprintjs-android/issues/35
         // Normally it takes around 1-5ms to get the number of cameras.
-        val numbersOfCameras = await(timeoutMillis = 1000) {
+        val numberOfCameras = await(timeoutMillis = 1000) {
             Camera.getNumberOfCameras()
         }.getOrDefault(0)
         val result = LinkedList<CameraInfo>()
 
-        for (i in 0 until numbersOfCameras) {
+        for (i in 0 until numberOfCameras) {
             val info = Camera.CameraInfo()
             Camera.getCameraInfo(i, info)
             val type = stringDescriptionForType(info.facing)
