@@ -14,6 +14,7 @@ import com.fingerprintjs.android.fingerprint.info_providers.SensorData
 import com.fingerprintjs.android.fingerprint.info_providers.SensorDataSource
 import com.fingerprintjs.android.fingerprint.signal_providers.hardware.HardwareSignalGroupProvider
 import com.fingerprintjs.android.fingerprint.tools.hashers.EmptyHasher
+import com.fingerprintjs.android.fingerprint.info_providers.CpuInfo
 import junit.framework.Assert.assertEquals
 import org.junit.Test
 
@@ -36,88 +37,111 @@ class HardwareSignalGroupProviderTests {
             signalGroupProvider.fingerprint()
         )
     }
+
+    @Test
+    fun `HardwareFingerprinter v4 test - success`() {
+        val signalGroupProvider = prepareHardwareSignalGroupProvider(4)
+        assertEquals(
+            "manufacturermodel10241024${fakeCpuInfoSignalString}sensorNamevendorNameinputDeviceNamevendorNamegood37000frontalvertical1backhorizontal1.00armV78",
+            signalGroupProvider.fingerprint()
+        )
+    }
 }
 
-    private fun prepareHardwareSignalGroupProvider(version: Int): HardwareSignalGroupProvider {
+private val fakeCpuInfo = CpuInfo(
+    commonInfo = listOf(
+        "Processor" to "ARM"
+    ),
+    perProcessorInfo = listOf(
+        listOf(
+            "bogomips" to "7000",
+            "BogoMIPS" to "7000",
+            "cpu MHz" to "3593.843",
+        )
+    )
+)
+private const val fakeCpuInfoSignalString = "[(Processor, ARM)][[]]"
 
-        val cpuInfoProvider = object :
-            CpuInfoProvider {
-            override fun cpuInfo() = mapOf("cpu" to "intel")
-            override fun abiType() = "armV7"
+private fun prepareHardwareSignalGroupProvider(version: Int): HardwareSignalGroupProvider {
 
-            override fun coresCount() = 8
-        }
+    val cpuInfoProvider = object : CpuInfoProvider {
+        override fun cpuInfo() = mapOf("cpu" to "intel")
+        override fun cpuInfoV2() = fakeCpuInfo
+        override fun abiType() = "armV7"
 
-        val memInfoProvider = object :
-            MemInfoProvider {
-            override fun totalRAM() = 1024L
-            override fun totalInternalStorageSpace() = 1024L
-            override fun totalExternalStorageSpace() = 1024L
-        }
+        override fun coresCount() = 8
+    }
 
-        val osBuildInfoProvider = object :
-            OsBuildInfoProvider {
-            override fun modelName() = "model"
-            override fun manufacturerName() = "manufacturer"
-            override fun androidVersion() = "11"
+    val memInfoProvider = object :
+        MemInfoProvider {
+        override fun totalRAM() = 1024L
+        override fun totalInternalStorageSpace() = 1024L
+        override fun totalExternalStorageSpace() = 1024L
+    }
 
-            override fun sdkVersion() = "30"
+    val osBuildInfoProvider = object :
+        OsBuildInfoProvider {
+        override fun modelName() = "model"
+        override fun manufacturerName() = "manufacturer"
+        override fun androidVersion() = "11"
 
-            override fun kernelVersion() = "5.11"
+        override fun sdkVersion() = "30"
 
-            override fun fingerprint() = "fingerprint"
-        }
+        override fun kernelVersion() = "5.11"
 
-        val sensorDataSource = object :
-            SensorDataSource {
-            override fun sensors() = listOf(
-                SensorData(
-                    "sensorName",
-                    "vendorName"
-                )
+        override fun fingerprint() = "fingerprint"
+    }
+
+    val sensorDataSource = object :
+        SensorDataSource {
+        override fun sensors() = listOf(
+            SensorData(
+                "sensorName",
+                "vendorName"
             )
-        }
+        )
+    }
 
-        val inputDeviceDataSource = object :
-            InputDeviceDataSource {
-            override fun getInputDeviceData() = listOf(
-                InputDeviceData(
-                    "inputDeviceName",
-                    "vendorName"
-                )
+    val inputDeviceDataSource = object :
+        InputDeviceDataSource {
+        override fun getInputDeviceData() = listOf(
+            InputDeviceData(
+                "inputDeviceName",
+                "vendorName"
             )
-        }
+        )
+    }
 
-        val batteryInfoDataSource = object : BatteryInfoProvider {
-            override fun batteryHealth() = "good"
+    val batteryInfoDataSource = object : BatteryInfoProvider {
+        override fun batteryHealth() = "good"
 
-            override fun batteryTotalCapacity() = "3700"
+        override fun batteryTotalCapacity() = "3700"
 
-        }
+    }
 
-        val cameraInfoProvider = object : CameraInfoProvider {
-            override fun getCameraInfo() = listOf(
-                CameraInfo("0", "frontal", "vertical"),
-                CameraInfo("1", "back", "horizontal")
-            )
-
-        }
-
-        val gpuInfoProvider = object : GpuInfoProvider {
-            override fun glesVersion() = "1.00"
-        }
-
-        return HardwareSignalGroupProvider(
-            cpuInfoProvider = cpuInfoProvider,
-            memInfoProvider = memInfoProvider,
-            osBuildInfoProvider = osBuildInfoProvider,
-            sensorsDataSource = sensorDataSource,
-            inputDeviceDataSource = inputDeviceDataSource,
-            batteryInfoProvider = batteryInfoDataSource,
-            cameraInfoProvider = cameraInfoProvider,
-            gpuInfoProvider = gpuInfoProvider,
-            hasher = EmptyHasher(),
-            version = version
+    val cameraInfoProvider = object : CameraInfoProvider {
+        override fun getCameraInfo() = listOf(
+            CameraInfo("0", "frontal", "vertical"),
+            CameraInfo("1", "back", "horizontal")
         )
 
     }
+
+    val gpuInfoProvider = object : GpuInfoProvider {
+        override fun glesVersion() = "1.00"
+    }
+
+    return HardwareSignalGroupProvider(
+        cpuInfoProvider = cpuInfoProvider,
+        memInfoProvider = memInfoProvider,
+        osBuildInfoProvider = osBuildInfoProvider,
+        sensorsDataSource = sensorDataSource,
+        inputDeviceDataSource = inputDeviceDataSource,
+        batteryInfoProvider = batteryInfoDataSource,
+        cameraInfoProvider = cameraInfoProvider,
+        gpuInfoProvider = gpuInfoProvider,
+        hasher = EmptyHasher(),
+        version = version
+    )
+
+}

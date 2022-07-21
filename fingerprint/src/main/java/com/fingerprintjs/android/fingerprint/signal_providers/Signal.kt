@@ -5,6 +5,7 @@ import com.fingerprintjs.android.fingerprint.info_providers.CameraInfo
 import com.fingerprintjs.android.fingerprint.info_providers.InputDeviceData
 import com.fingerprintjs.android.fingerprint.info_providers.MediaCodecInfo
 import com.fingerprintjs.android.fingerprint.info_providers.SensorData
+import com.fingerprintjs.android.fingerprint.info_providers.CpuInfo
 
 
 abstract class Signal<T>(
@@ -82,6 +83,25 @@ abstract class IdentificationSignal<T>(
                 }
                 mapOf(
                     VALUE_KEY to listValue
+                )
+            }
+            is CpuInfo -> {
+                val commonProps = value.commonInfo
+                val procCount = value.perProcessorInfo.size
+                val perProcRepeatedProps = value.perProcessorInfo
+                    .flatten()
+                    .groupBy { it }
+                    .filter { it.value.size == procCount }
+                    .map { it.key }
+                val perProcRepeatedPropsKeys = perProcRepeatedProps.map { it.first }.toSet()
+                val perProcUniqueProps = value.perProcessorInfo
+                    .map { procInfo -> procInfo.filter { it.first !in perProcRepeatedPropsKeys } }
+                mapOf(
+                    VALUE_KEY to mapOf(
+                        "commonProps" to commonProps,
+                        "repeatedProps" to perProcRepeatedProps,
+                        "uniquePerCpuProps" to perProcUniqueProps,
+                    )
                 )
             }
             else -> {

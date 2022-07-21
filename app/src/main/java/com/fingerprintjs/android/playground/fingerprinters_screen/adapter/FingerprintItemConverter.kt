@@ -15,6 +15,7 @@ import com.fingerprintjs.android.fingerprint.signal_providers.device_state.Devic
 import com.fingerprintjs.android.fingerprint.signal_providers.hardware.HardwareSignalGroupProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.installed_apps.InstalledAppsSignalGroupProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.os_build.OsBuildSignalGroupProvider
+import com.fingerprintjs.android.fingerprint.info_providers.CpuInfo
 import java.io.File
 import java.util.LinkedList
 
@@ -248,6 +249,13 @@ class FingerprintItemConverterImpl : FingerprintItemConverter {
                             Pair(entry.key.toString(), entry.value.toString())
                         }
                         FingerprintSectionDescription(signal.displayName, list)
+                    }
+                    is CpuInfo -> {
+                        val commonInfoList = value.commonInfo
+                        val perProcessorList = value.perProcessorInfo.mapIndexed { index, list ->
+                            listOf("processor" to index.toString()) + list
+                        }.flatten()
+                        FingerprintSectionDescription(signal.displayName, commonInfoList + perProcessorList)
                     }
                     else -> {
                         FingerprintSectionDescription(

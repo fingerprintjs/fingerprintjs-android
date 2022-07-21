@@ -35,6 +35,7 @@ class HardwareSignalGroupProvider(
             memInfoProvider.totalRAM(),
             memInfoProvider.totalInternalStorageSpace(),
             cpuInfoProvider.cpuInfo(),
+            cpuInfoProvider.cpuInfoV2(),
             sensorsDataSource.sensors(),
             inputDeviceDataSource.getInputDeviceData(),
             batteryInfoProvider.batteryHealth(),
@@ -51,8 +52,8 @@ class HardwareSignalGroupProvider(
             combineSignals(
                 when (version) {
                     1 -> v1()
-                    2 -> v2()
-                    else -> v2()
+                    2, 3 -> v2()
+                    else -> rawData.signals(version, stabilityLevel)
                 }, stabilityLevel
             )
         )

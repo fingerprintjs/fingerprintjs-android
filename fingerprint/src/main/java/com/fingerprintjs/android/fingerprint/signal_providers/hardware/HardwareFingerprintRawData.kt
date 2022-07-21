@@ -7,6 +7,7 @@ import com.fingerprintjs.android.fingerprint.info_providers.SensorData
 import com.fingerprintjs.android.fingerprint.signal_providers.IdentificationSignal
 import com.fingerprintjs.android.fingerprint.signal_providers.RawData
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
+import com.fingerprintjs.android.fingerprint.info_providers.CpuInfo
 
 
 data class HardwareFingerprintRawData(
@@ -15,6 +16,7 @@ data class HardwareFingerprintRawData(
     val totalRAM: Long,
     val totalInternalStorageSpace: Long,
     val procCpuInfo: Map<String, String>,
+    val procCpuInfoV2: CpuInfo,
     val sensors: List<SensorData>,
     val inputDevices: List<InputDeviceData>,
     val batteryHealth: String,
@@ -31,6 +33,7 @@ data class HardwareFingerprintRawData(
         totalRAM(),
         totalInternalStorageSpace(),
         procCpuInfo(),
+        procCpuInfoV2(),
         sensors(),
         inputDevices(),
         batteryHealth(),
@@ -87,7 +90,7 @@ data class HardwareFingerprintRawData(
 
     fun procCpuInfo() = object : IdentificationSignal<Map<String, String>>(
         1,
-        null,
+        4,
         StabilityLevel.STABLE,
         CPU_INFO_KEY,
         CPU_INFO_DISPLAY_NAME,
@@ -99,6 +102,24 @@ data class HardwareFingerprintRawData(
                 sb.append(it.key).append(it.value)
             }
             return sb.toString()
+        }
+    }
+
+    fun procCpuInfoV2() = object : IdentificationSignal<CpuInfo>(
+        4,
+        null,
+        StabilityLevel.STABLE,
+        CPU_INFO_KEY,
+        CPU_INFO_DISPLAY_NAME,
+        procCpuInfoV2.copy(
+            commonInfo = procCpuInfoV2.commonInfo
+                .filter { it.first.lowercase() !in CPUINFO_IGNORED_COMMON_PROPS },
+            perProcessorInfo = procCpuInfoV2.perProcessorInfo
+                .map { procInfo -> procInfo.filter { it.first.lowercase() !in CPUINFO_IGNORED_PER_PROC_PROPS } },
+        ),
+    ) {
+        override fun toString(): String {
+            return value.commonInfo.toString() + value.perProcessorInfo.toString()
         }
     }
 
@@ -209,5 +230,16 @@ data class HardwareFingerprintRawData(
         coresCount
     ) {
         override fun toString() = coresCount.toString()
+    }
+
+    companion object {
+        private val CPUINFO_IGNORED_COMMON_PROPS = setOf<String>(
+            // nothing here for now
+        )
+
+        private val CPUINFO_IGNORED_PER_PROC_PROPS = setOf(
+            "bogomips",
+            "cpu mhz",
+        )
     }
 }
