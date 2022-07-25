@@ -1,7 +1,9 @@
 <p align="center">
-  <a href="https://fingerprintjs.com">
-    <img src="resources/logo.svg" alt="FingerprintJS" width="300px" />
-  </a>
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="resources/logo_light.svg" />
+      <source media="(prefers-color-scheme: light)" srcset="resources/logo_dark.svg" />
+      <img src="resources/logo_dark.svg" alt="Fingerprint logo" width="312px" />
+    </picture>
 </p>
 
 <p align="center">
