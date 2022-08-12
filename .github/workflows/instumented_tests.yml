@@ -1,0 +1,55 @@
+name: Instrumented tests
+
+on:
+  push:
+    branches:
+      - release/**
+    paths-ignore:
+      - '**.md'
+      - app/**
+  pull_request:
+    branches:
+      - release/**
+    paths-ignore:
+      - '**.md'
+      - app/**
+
+jobs:
+  instrumented_tests:
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        test_config: [
+          { api_level: 21, target: "default", description: "21_default" },
+          { api_level: 30, target: "default", description: "30_default" },
+          { api_level: 32, target: "google_apis", description: "32_google_apis" }
+        ]
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: Instrumented tests
+        id: instrumented_tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.test_config.api_level }}
+          target: ${{ matrix.test_config.target }}
+          arch: x86_64
+          profile: Nexus 6
+          script: |
+            adb logcat -c
+            touch emulator.log
+            chmod 777 emulator.log
+            adb logcat >> emulator.log &
+            ./gradlew :fingerprint:connectedCheck
+
+      - name: Save report if tests failed
+        if: always() && (steps.instrumented_tests.outcome == 'failure')
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ format('test_failed_report_{0}', matrix.test_config.description) }}
+          path: |
+            fingerprint/build/reports/androidTests/connected/
+            emulator.log
