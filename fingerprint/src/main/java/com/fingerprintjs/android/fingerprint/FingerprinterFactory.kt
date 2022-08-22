@@ -44,7 +44,7 @@ import com.fingerprintjs.android.fingerprint.tools.hashers.MurMur3x64x128Hasher
 
 object FingerprinterFactory {
 
-    private var configuration: Configuration = Configuration(version = 3)
+    private var configuration: Configuration = Configuration(version = 4)
     private var instance: Fingerprinter? = null
     private var hasher: Hasher = MurMur3x64x128Hasher()
 

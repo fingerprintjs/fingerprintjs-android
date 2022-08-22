@@ -80,7 +80,7 @@ dependencies {
   // Add this line only if you use this library with Java
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-  implementation "com.github.fingerprintjs:fingerprint-android:1.2.1"
+  implementation "com.github.fingerprintjs:fingerprint-android:1.3.0-rc1"
 }
 
 
@@ -119,7 +119,7 @@ Kotlin
 
 // Initialization
  val fingerprinter = FingerprinterFactory
-		.getInstance(applicationContext, Configuration(version = 3))
+		.getInstance(applicationContext, Configuration(version = 4))
 
 
 // Usage
@@ -140,7 +140,7 @@ Java
 
 // Initialization
 Fingerprinter fingerprinter = FingerprinterFactory
-				.getInstance(getApplicationContext(), new Configuration(3));
+				.getInstance(getApplicationContext(), new Configuration(4));
 
 
 // Usage
@@ -175,7 +175,7 @@ The `version` is set while the initialization of the library with `Configuration
 ```kotlin
 
 val fingerprinter = FingerprinterFactory
-		.getInstance(applicationContext, Configuration(version = 3))
+		.getInstance(applicationContext, Configuration(version = 4))
 
 ```
 
@@ -184,13 +184,6 @@ See full [Kotlin reference](docs/kotlin_reference.md)/[Java reference](docs/java
 ## Playground App
 
 Try all the library features in the [Playground App](https://github.com/fingerprintjs/fingerprint-android/releases/download/1.2/Playground-release-1.2.apk).
-
-
-<p align="center">
-  <a href="https://github.com/fingerprintjs/fingerprint-android/releases/download/1.2/Playground-release-1.2.apk">
-    <img src="resources/playground-1.2-QR.png" alt="PlaygroundApp" width="300px" />
-   </a>
-</p>			
 
 ## Android API support
 
