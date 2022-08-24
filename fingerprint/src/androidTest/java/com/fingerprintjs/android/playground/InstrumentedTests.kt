@@ -23,7 +23,7 @@ class InstrumentedTests {
     fun testFpAllResultsAvailable() {
         val fingerprinter = FingerprinterFactory.getInstance(
             context = context,
-            configuration = Configuration(version = 3),
+            configuration = Configuration(version = 4),
         )
 
         val deviceId = callbackToSync<DeviceIdResult> {
