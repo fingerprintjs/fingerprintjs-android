@@ -127,10 +127,6 @@ class PlaygroundPresenterImpl(
         fingerprintResult: FingerprintResult,
         items: List<FingerprinterItem>
     ) {
-        if (csvFilePath != null) {
-            return
-        }
-
         val deviceId = fingerprintResult.getSignalProvider(DeviceIdProvider::class.java)?.fingerprint()
 
         fingerprintResult.getSignalProvider(HardwareSignalGroupProvider::class.java)?.let {
