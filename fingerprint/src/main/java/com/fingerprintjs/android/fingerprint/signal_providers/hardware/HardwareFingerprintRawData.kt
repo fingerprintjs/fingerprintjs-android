@@ -36,6 +36,7 @@ data class HardwareFingerprintRawData(
         procCpuInfoV2(),
         sensors(),
         inputDevices(),
+        inputDevicesV2(),
         batteryHealth(),
         batteryFullCapacity(),
         cameraList(),
@@ -142,7 +143,7 @@ data class HardwareFingerprintRawData(
 
     fun inputDevices() = object : IdentificationSignal<List<InputDeviceData>>(
         1,
-        null,
+        4,
         StabilityLevel.STABLE,
         INPUT_DEVICES_KEY,
         INPUT_DEVICES_DISPLAY_NAME,
@@ -153,6 +154,25 @@ data class HardwareFingerprintRawData(
             value.forEach {
                 sb.append(it.name).append(it.vendor)
             }
+            return sb.toString()
+        }
+    }
+
+    // same as inputDevices(), but sorted
+    fun inputDevicesV2() = object : IdentificationSignal<List<InputDeviceData>>(
+        4,
+        null,
+        StabilityLevel.STABLE,
+        INPUT_DEVICES_KEY,
+        INPUT_DEVICES_DISPLAY_NAME,
+        inputDevices
+    ) {
+        override fun toString(): String {
+            val sb = StringBuilder()
+            value
+                .map { "${it.name}${it.vendor}" }
+                .sortedBy { it }
+                .forEach { sb.append(it) }
             return sb.toString()
         }
     }
