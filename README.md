@@ -183,7 +183,7 @@ See full [Kotlin reference](docs/kotlin_reference.md)/[Java reference](docs/java
 
 ## Playground App
 
-Try all the library features in the [Playground App](https://github.com/fingerprintjs/fingerprint-android/releases/download/1.2/Playground-release-1.2.apk).
+Try all the library features in the [Playground App](https://github.com/fingerprintjs/fingerprintjs-android/releases/download/1.3.0/Playground-release-1.3.0.apk).
 
 ## Android API support
 
