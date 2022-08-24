@@ -42,7 +42,7 @@ class HardwareSignalGroupProviderTests {
     fun `HardwareFingerprinter v4 test - success`() {
         val signalGroupProvider = prepareHardwareSignalGroupProvider(4)
         assertEquals(
-            "manufacturermodel10241024${fakeCpuInfoSignalString}sensorNamevendorNameinputDeviceNamevendorNamegood37000frontalvertical1backhorizontal1.00armV78",
+            "manufacturermodel10241024[(Hardware, Qualcomm Technologies, Inc SM6125)][[]]sensorNamevendorNameinputDeviceNamevendorNamegood37000frontalvertical1backhorizontal1.00armV78",
             signalGroupProvider.fingerprint()
         )
     }
@@ -50,7 +50,8 @@ class HardwareSignalGroupProviderTests {
 
 private val fakeCpuInfo = CpuInfo(
     commonInfo = listOf(
-        "Processor" to "ARM"
+        "Processor" to "ARM",
+        "Hardware" to "Qualcomm Technologies, Inc SM6125",
     ),
     perProcessorInfo = listOf(
         listOf(
@@ -60,7 +61,6 @@ private val fakeCpuInfo = CpuInfo(
         )
     )
 )
-private const val fakeCpuInfoSignalString = "[(Processor, ARM)][[]]"
 
 private fun prepareHardwareSignalGroupProvider(version: Int): HardwareSignalGroupProvider {
 

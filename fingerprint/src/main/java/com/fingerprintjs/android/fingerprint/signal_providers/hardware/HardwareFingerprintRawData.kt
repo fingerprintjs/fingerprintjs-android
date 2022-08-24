@@ -233,8 +233,8 @@ data class HardwareFingerprintRawData(
     }
 
     companion object {
-        private val CPUINFO_IGNORED_COMMON_PROPS = setOf<String>(
-            // nothing here for now
+        private val CPUINFO_IGNORED_COMMON_PROPS = setOf(
+            "processor",
         )
 
         private val CPUINFO_IGNORED_PER_PROC_PROPS = setOf(
