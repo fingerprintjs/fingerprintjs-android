@@ -28,6 +28,7 @@ class HardwareSignalGroupProvider(
 ) : SignalGroupProvider<HardwareFingerprintRawData>(
     version
 ) {
+    // everything is calculated, even though not all signals may be needed
     private val rawData by lazy {
         HardwareFingerprintRawData(
             osBuildInfoProvider.manufacturerName(),
@@ -60,6 +61,13 @@ class HardwareSignalGroupProvider(
     }
 
     private fun v1() = listOf(
+        // why not just use something like
+        // rawData.signals().filterByKey?
+        // this would make much more obvious what's happening
+
+        // or maybe rawData.signals(version, stab level)
+
+        // this "filtering" looks really weird
         rawData.manufacturerName(),
         rawData.modelName(),
         rawData.totalRAM(),

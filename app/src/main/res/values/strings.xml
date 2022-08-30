@@ -23,6 +23,7 @@
     <string name="toggle_button_optimal_text">Optimal</string>
     <string name="toggle_button_unique_text">Unique</string>
 
+<!--    why should we remember about this? why not just form this array dynamically based on actial values?-->
     <string-array name="versions">
         <item>v1</item>
         <item>v2</item>

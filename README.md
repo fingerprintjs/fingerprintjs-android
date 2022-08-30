@@ -164,7 +164,7 @@ fingerprinter.getDeviceId(new Function1<DeviceIdResult, Unit>() {
 
 `getFingerprint` and `getDeviceId` methods execute on a separate thread. Keep this in mind when using results on the main thread.
 
-Also the results are cached, so subsequent calls will be faster.
+Also the results are cached, so subsequent calls will be faster. TODO: this must be deleted.
 
 ## Versioning
 

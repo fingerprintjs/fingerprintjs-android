@@ -6,6 +6,7 @@ import android.os.StatFs
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
 
 
+// why public? same for other sources
 interface MemInfoProvider {
     fun totalRAM(): Long
     fun totalInternalStorageSpace(): Long

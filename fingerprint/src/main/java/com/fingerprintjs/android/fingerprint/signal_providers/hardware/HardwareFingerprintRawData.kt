@@ -11,6 +11,7 @@ import com.fingerprintjs.android.fingerprint.info_providers.CpuInfo
 
 
 data class HardwareFingerprintRawData(
+    // why not private?
     val manufacturerName: String,
     val modelName: String,
     val totalRAM: Long,

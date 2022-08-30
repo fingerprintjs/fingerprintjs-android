@@ -57,6 +57,7 @@ internal class FingerprinterImpl(
         stabilityLevel: StabilityLevel,
         listener: (FingerprintResult) -> Unit
     ) {
+        // this looks like a bug
         fingerprintResult?.let {
             listener.invoke(it)
             return
