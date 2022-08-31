@@ -54,6 +54,11 @@ android {
     }
 }
 
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
+    if (!it.name.contains("Test")) {
+        kotlinOptions.freeCompilerArgs += "-Xexplicit-api=warning"
+    }
+}
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])

@@ -44,10 +44,6 @@ internal class FingerprinterImpl(
         }
     }
 
-    override fun getFingerprint(listener: (FingerprintResult) -> Unit) {
-        getFingerprint(StabilityLevel.OPTIMAL, listener)
-    }
-
     override fun getFingerprint(
         stabilityLevel: StabilityLevel,
         listener: (FingerprintResult) -> Unit

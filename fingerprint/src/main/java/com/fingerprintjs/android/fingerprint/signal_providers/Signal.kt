@@ -6,6 +6,7 @@ import com.fingerprintjs.android.fingerprint.info_providers.InputDeviceData
 import com.fingerprintjs.android.fingerprint.info_providers.MediaCodecInfo
 import com.fingerprintjs.android.fingerprint.info_providers.SensorData
 import com.fingerprintjs.android.fingerprint.info_providers.CpuInfo
+import kotlin.reflect.KClass
 
 
 // maybe get rid of this class? it's not used in the library
