@@ -127,6 +127,7 @@ abstract class Signal<T>(
 //    }
 
 
+// out T
 abstract class IdentificationSignal<T>(
     // why in constructor? same signal cannot have different versions
     val addedInVersion: Int,
