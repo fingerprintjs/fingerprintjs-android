@@ -1,5 +1,6 @@
 package com.fingerprintjs.android.fingerprint.public_api
 
+import com.fingerprintjs.android.fingerprint.IdentificationApiFactoryImpl
 import com.fingerprintjs.android.fingerprint.public_api.extended.IdentificationExtendedApi
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
@@ -33,5 +34,8 @@ public abstract class IdentificationApi internal constructor() {
     }
 
     public abstract fun getExtendedApi(): IdentificationExtendedApi
-}
 
+    public companion object {
+        public fun Factory(): IdentificationApiFactory = IdentificationApiFactoryImpl()
+    }
+}
