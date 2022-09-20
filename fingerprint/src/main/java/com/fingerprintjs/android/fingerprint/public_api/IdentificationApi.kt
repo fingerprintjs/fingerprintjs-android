@@ -1,7 +1,9 @@
 package com.fingerprintjs.android.fingerprint.public_api
 
 import com.fingerprintjs.android.fingerprint.IdentificationApiFactoryImpl
-import com.fingerprintjs.android.fingerprint.public_api.extended.IdentificationExtendedApi
+import com.fingerprintjs.android.fingerprint.public_api.extended.DeviceIdProvider
+import com.fingerprintjs.android.fingerprint.public_api.extended.SignalsProvider
+import com.fingerprintjs.android.fingerprint.public_api.extended.signals.IdentificationSignalV2
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 import com.fingerprintjs.android.fingerprint.tools.hashers.MurMur3x64x128Hasher
@@ -16,24 +18,30 @@ public abstract class IdentificationApi internal constructor() {
         stabilityLevel: StabilityLevel = StabilityLevel.OPTIMAL,
         hasher: Hasher = MurMur3x64x128Hasher(),
     ): String {
-        return with(getExtendedApi()) {
-            getSignalsProvider()
-                .getSignalsFor(version, stabilityLevel)
-                .getFingerprint(hasher)
-        }
+        return getFingerprint(
+            signals = getSignalsProvider().getSignalsMatching(version, stabilityLevel)
+        )
+    }
+
+    public fun getFingerprint(
+        signals: List<IdentificationSignalV2>,
+    ): String {
+        return TODO()
     }
 
     // same concerns
     public fun getDeviceId(
-        @IdentificationVersionRange(from = IdentificationVersion.V_1) version: Int
+        @IdentificationVersionRange(from = IdentificationVersion.V_1) version: IdentificationVersion
     ): String {
-        return with(getExtendedApi()) {
-            getDeviceIdProvider()
-                .getDeviceIdFor(version)
-        }
+        return getDeviceIdProvider().getDeviceIdMatching(version)
     }
 
-    public abstract fun getExtendedApi(): IdentificationExtendedApi
+    public abstract fun List<IdentificationSignalV2>.getFingerprint(
+        hasher: Hasher = MurMur3x64x128Hasher()
+    ): String
+
+    public abstract fun getDeviceIdProvider(): DeviceIdProvider
+    public abstract fun getSignalsProvider(): SignalsProvider
 
     public companion object {
         public fun Factory(): IdentificationApiFactory = IdentificationApiFactoryImpl()
