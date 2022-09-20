@@ -25,7 +25,7 @@ public abstract class IdentificationApi internal constructor() {
 
     // same concerns
     public fun getDeviceId(
-        @IdentificationVersionRange(from = IdentificationVersion.V_5) version: Int
+        @IdentificationVersionRange(from = IdentificationVersion.V_1) version: Int
     ): String {
         return with(getExtendedApi()) {
             getDeviceIdProvider()
