@@ -10,7 +10,7 @@ public sealed class IdentificationSignalV2() {
     public abstract fun getHashableString(): String
 }
 
-public interface FingerprintingInfo {
+public sealed interface FingerprintingInfo {
     public val addedInVersion: Int
     public val stabilityLevel: StabilityLevel
 }
