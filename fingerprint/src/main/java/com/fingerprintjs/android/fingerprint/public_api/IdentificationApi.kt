@@ -23,6 +23,7 @@ public abstract class IdentificationApi internal constructor() {
 
     public fun getFingerprint(
         signals: List<FingerprintingSignal>,
+        hasher: Hasher = MurMur3x64x128Hasher(),
     ): String {
         return TODO()
     }
@@ -33,10 +34,6 @@ public abstract class IdentificationApi internal constructor() {
     ): String {
         return getDeviceIdProvider().getDeviceIdMatching(version)
     }
-
-    public abstract fun List<FingerprintingSignal>.getFingerprint(
-        hasher: Hasher = MurMur3x64x128Hasher()
-    ): String
 
     public abstract fun getDeviceIdProvider(): DeviceIdProvider
     public abstract fun getSignalsProvider(): FingerprintingSignalsProvider
