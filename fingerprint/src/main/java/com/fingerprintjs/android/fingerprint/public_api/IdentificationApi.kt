@@ -1,9 +1,7 @@
 package com.fingerprintjs.android.fingerprint.public_api
 
 import com.fingerprintjs.android.fingerprint.IdentificationApiFactoryImpl
-import com.fingerprintjs.android.fingerprint.public_api.extended.DeviceIdProvider
-import com.fingerprintjs.android.fingerprint.public_api.extended.FingerprintingSignalsProvider
-import com.fingerprintjs.android.fingerprint.public_api.extended.signals.FingerprintingSignal
+import com.fingerprintjs.android.fingerprint.public_api.signals.FingerprintingSignal
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 import com.fingerprintjs.android.fingerprint.tools.hashers.MurMur3x64x128Hasher

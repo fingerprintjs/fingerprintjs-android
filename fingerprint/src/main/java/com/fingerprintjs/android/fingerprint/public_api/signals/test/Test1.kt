@@ -1,6 +1,6 @@
 @file:Suppress("PackageDirectoryMismatch")
 
-package com.fingerprintjs.android.fingerprint.public_api.extended.signals
+package com.fingerprintjs.android.fingerprint.public_api.signals
 
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 

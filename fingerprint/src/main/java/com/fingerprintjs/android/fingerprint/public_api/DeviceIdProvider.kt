@@ -1,4 +1,4 @@
-package com.fingerprintjs.android.fingerprint.public_api.extended
+package com.fingerprintjs.android.fingerprint.public_api
 
 import com.fingerprintjs.android.fingerprint.public_api.IdentificationVersion
 import com.fingerprintjs.android.fingerprint.public_api.IdentificationVersionRange

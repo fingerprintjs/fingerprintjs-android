@@ -1,9 +1,7 @@
-package com.fingerprintjs.android.fingerprint.public_api.extended
+package com.fingerprintjs.android.fingerprint.public_api
 
-import com.fingerprintjs.android.fingerprint.public_api.IdentificationVersion
-import com.fingerprintjs.android.fingerprint.public_api.IdentificationVersionRange
-import com.fingerprintjs.android.fingerprint.public_api.extended.signals.FingerprintingSignal
-import com.fingerprintjs.android.fingerprint.public_api.extended.signals.Test1
+import com.fingerprintjs.android.fingerprint.public_api.signals.FingerprintingSignal
+import com.fingerprintjs.android.fingerprint.public_api.signals.Test1
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 
 public abstract class FingerprintingSignalsProvider internal constructor() {
