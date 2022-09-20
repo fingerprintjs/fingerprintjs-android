@@ -17,7 +17,7 @@ public abstract class IdentificationApi internal constructor() {
         hasher: Hasher = MurMur3x64x128Hasher(),
     ): String {
         return getFingerprint(
-            signals = getSignalsProvider().getSignalsMatching(version, stabilityLevel)
+            signals = getFingerprintingSignalsProvider().getSignalsMatching(version, stabilityLevel)
         )
     }
 
@@ -36,7 +36,7 @@ public abstract class IdentificationApi internal constructor() {
     }
 
     public abstract fun getDeviceIdProvider(): DeviceIdProvider
-    public abstract fun getSignalsProvider(): FingerprintingSignalsProvider
+    public abstract fun getFingerprintingSignalsProvider(): FingerprintingSignalsProvider
 
     public companion object {
         public fun Factory(): IdentificationApiFactory = IdentificationApiFactoryImpl()
