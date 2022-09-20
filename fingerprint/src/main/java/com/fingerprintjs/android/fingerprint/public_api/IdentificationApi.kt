@@ -18,7 +18,7 @@ public abstract class IdentificationApi internal constructor() {
     )
 
     public abstract fun getFingerprint(
-        signals: List<FingerprintingSignal>,
+        signals: List<FingerprintingSignal<*>>,
         hasher: Hasher = MurMur3x64x128Hasher(),
     )
 
@@ -30,7 +30,7 @@ public abstract class IdentificationApi internal constructor() {
     )
 
     public abstract fun getFingerprintAsync(
-        signals: List<FingerprintingSignal>,
+        signals: List<FingerprintingSignal<*>>,
         hasher: Hasher = MurMur3x64x128Hasher(),
         listener: (String) -> Unit,
     )
