@@ -2,8 +2,8 @@ package com.fingerprintjs.android.fingerprint.public_api
 
 import com.fingerprintjs.android.fingerprint.IdentificationApiFactoryImpl
 import com.fingerprintjs.android.fingerprint.public_api.extended.DeviceIdProvider
-import com.fingerprintjs.android.fingerprint.public_api.extended.SignalsProvider
-import com.fingerprintjs.android.fingerprint.public_api.extended.signals.IdentificationSignalV2
+import com.fingerprintjs.android.fingerprint.public_api.extended.FingerprintingSignalsProvider
+import com.fingerprintjs.android.fingerprint.public_api.extended.signals.FingerprintingSignal
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 import com.fingerprintjs.android.fingerprint.tools.hashers.MurMur3x64x128Hasher
@@ -24,7 +24,7 @@ public abstract class IdentificationApi internal constructor() {
     }
 
     public fun getFingerprint(
-        signals: List<IdentificationSignalV2>,
+        signals: List<FingerprintingSignal>,
     ): String {
         return TODO()
     }
@@ -36,12 +36,12 @@ public abstract class IdentificationApi internal constructor() {
         return getDeviceIdProvider().getDeviceIdMatching(version)
     }
 
-    public abstract fun List<IdentificationSignalV2>.getFingerprint(
+    public abstract fun List<FingerprintingSignal>.getFingerprint(
         hasher: Hasher = MurMur3x64x128Hasher()
     ): String
 
     public abstract fun getDeviceIdProvider(): DeviceIdProvider
-    public abstract fun getSignalsProvider(): SignalsProvider
+    public abstract fun getSignalsProvider(): FingerprintingSignalsProvider
 
     public companion object {
         public fun Factory(): IdentificationApiFactory = IdentificationApiFactoryImpl()
