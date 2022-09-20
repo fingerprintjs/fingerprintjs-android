@@ -22,7 +22,9 @@ public interface IdentificationApi {
     }
 
     // same concerns
-    public fun getDeviceId(version: Int): String {
+    public fun getDeviceId(
+        @IdentificationVersionRange(from = IdentificationVersion.V_5) version: Int
+    ): String {
         return with(getExtendedApi()) {
             getDeviceIdProvider()
                 .getDeviceId(version)
