@@ -5,6 +5,7 @@ import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 import com.fingerprintjs.android.fingerprint.tools.hashers.MurMur3x64x128Hasher
 
+// maybe make it class? as well as other classes
 public interface IdentificationApi {
     // interop with java?
     // maybe also provide async api? but we won't want to do so inside interface
