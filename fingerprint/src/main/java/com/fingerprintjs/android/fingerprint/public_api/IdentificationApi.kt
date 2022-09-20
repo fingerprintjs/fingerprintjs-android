@@ -18,7 +18,7 @@ public abstract class IdentificationApi internal constructor() {
     ): String {
         return with(getExtendedApi()) {
             getSignalsProvider()
-                .getSpecificSignals(version, stabilityLevel)
+                .getSignalsFor(version, stabilityLevel)
                 .getFingerprint(hasher)
         }
     }
@@ -29,7 +29,7 @@ public abstract class IdentificationApi internal constructor() {
     ): String {
         return with(getExtendedApi()) {
             getDeviceIdProvider()
-                .getDeviceId(version)
+                .getDeviceIdFor(version)
         }
     }
 

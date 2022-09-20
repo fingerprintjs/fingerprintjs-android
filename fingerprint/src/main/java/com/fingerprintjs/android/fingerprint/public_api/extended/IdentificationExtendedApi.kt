@@ -10,11 +10,11 @@ public interface IdentificationExtendedApi {
     public fun getDeviceIdProvider(): DeviceIdProvider
     public fun getSignalsProvider(): SignalsProvider
 
-    public fun DeviceIdProvider.getDeviceId(
+    public fun DeviceIdProvider.getDeviceIdFor(
         version: Int,
     ): String
 
-    public fun SignalsProvider.getSpecificSignals(
+    public fun SignalsProvider.getSignalsFor(
         version: IdentificationVersion,
         stabilityLevel: StabilityLevel,
     ): List<IdentificationSignalV2>
