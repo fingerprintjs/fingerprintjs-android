@@ -6,7 +6,7 @@ import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 import com.fingerprintjs.android.fingerprint.tools.hashers.MurMur3x64x128Hasher
 
 // maybe make it class? as well as other classes
-public interface IdentificationApi {
+public abstract class IdentificationApi internal constructor() {
     // interop with java?
     // maybe also provide async api? but we won't want to do so inside interface
     // but maybe using class in enough for this thing
@@ -32,6 +32,6 @@ public interface IdentificationApi {
         }
     }
 
-    public fun getExtendedApi(): IdentificationExtendedApi
+    public abstract fun getExtendedApi(): IdentificationExtendedApi
 }
 
