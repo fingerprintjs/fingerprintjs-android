@@ -2,14 +2,16 @@ package com.fingerprintjs.android.fingerprint.info_providers
 
 
 import android.hardware.input.InputManager
+import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
 
 
-interface InputDeviceDataSource {
-    fun getInputDeviceData(): List<InputDeviceData>
+@Deprecated(message = DeprecationMessages.UNREACHABLE_SYMBOL_UNINTENDED_PUBLIC_API)
+public interface InputDeviceDataSource {
+    public fun getInputDeviceData(): List<InputDeviceData>
 }
 
-data class InputDeviceData(
+public data class InputDeviceData(
     val name: String,
     val vendor: String
 )

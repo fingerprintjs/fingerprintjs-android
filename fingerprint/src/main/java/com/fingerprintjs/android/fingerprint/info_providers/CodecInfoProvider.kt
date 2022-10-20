@@ -2,16 +2,18 @@ package com.fingerprintjs.android.fingerprint.info_providers
 
 
 import android.media.MediaCodecList
+import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
 
 
-data class MediaCodecInfo(
+public data class MediaCodecInfo(
         val name: String,
         val capabilities: List<String>
 )
 
-interface CodecInfoProvider {
-    fun codecsList(): List<MediaCodecInfo>
+@Deprecated(message = DeprecationMessages.UNREACHABLE_SYMBOL_UNINTENDED_PUBLIC_API)
+public interface CodecInfoProvider {
+    public fun codecsList(): List<MediaCodecInfo>
 }
 
 internal class CodecInfoProviderImpl(

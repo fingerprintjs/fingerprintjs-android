@@ -18,5 +18,6 @@ class HashTests {
         assertEquals("6bb34d81f9326054ef413d0a9621e518", hasher.hash(stringInput1))
         assertEquals("577a312a8a9b4a14a3800c2677233fde", hasher.hash(stringInput2))
         assertEquals("d7e561fb98ef89fb5753c60c611a9ea5", hasher.hash(stringInput1 + stringInput2))
+        assertEquals("00", hasher.hash(""))
     }
 }

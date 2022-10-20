@@ -7,10 +7,12 @@ import com.fingerprintjs.android.fingerprint.info_providers.FingerprintSensorInf
 import com.fingerprintjs.android.fingerprint.info_providers.SettingsDataSource
 import com.fingerprintjs.android.fingerprint.signal_providers.SignalGroupProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
+import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
 import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 
 
-class DeviceStateSignalGroupProvider(
+@Deprecated(message = DeprecationMessages.DEPRECATED_SYMBOL)
+public class DeviceStateSignalGroupProvider(
     settingsDataSource: SettingsDataSource,
     devicePersonalizationInfoProvider: DevicePersonalizationInfoProvider,
     deviceSecurityInfoProvider: DeviceSecurityInfoProvider,
@@ -59,7 +61,7 @@ class DeviceStateSignalGroupProvider(
         )
     }
 
-    override fun rawData() = rawData
+    override fun rawData(): DeviceStateRawData = rawData
 
     private fun v1() = listOf(
         rawData.adbEnabled(),

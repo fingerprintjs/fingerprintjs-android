@@ -6,7 +6,7 @@ import java.nio.ByteOrder
 
 
 // Converted to Kotlin from https://github.com/sangupta/murmur/blob/master/src/main/java/com/sangupta/murmur/Murmur3.java
-class MurMur3x64x128Hasher :
+public class MurMur3x64x128Hasher :
     Hasher {
     override fun hash(data: String): String {
         val hashResult = hash_x64_128(data.toByteArray(Charsets.US_ASCII), data.length)

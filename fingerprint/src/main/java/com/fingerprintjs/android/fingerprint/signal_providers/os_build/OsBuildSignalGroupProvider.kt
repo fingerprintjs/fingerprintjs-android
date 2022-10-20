@@ -6,10 +6,12 @@ import com.fingerprintjs.android.fingerprint.info_providers.DeviceSecurityInfoPr
 import com.fingerprintjs.android.fingerprint.info_providers.OsBuildInfoProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.SignalGroupProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
+import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
 import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 
 
-class OsBuildSignalGroupProvider(
+@Deprecated(message = DeprecationMessages.DEPRECATED_SYMBOL)
+public class OsBuildSignalGroupProvider(
     osBuildInfoProvider: OsBuildInfoProvider,
     codecInfoProvider: CodecInfoProvider?,
     deviceSecurityInfoProvider: DeviceSecurityInfoProvider,
@@ -42,7 +44,7 @@ class OsBuildSignalGroupProvider(
 
     }
 
-    override fun rawData() = rawData
+    override fun rawData(): OsBuildRawData = rawData
 
     private fun v1() = listOf(
         rawData.fingerprint()

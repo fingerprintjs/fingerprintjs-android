@@ -3,13 +3,15 @@ package com.fingerprintjs.android.fingerprint.device_id_providers
 
 import android.media.MediaDrm
 import android.os.Build
+import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
 import java.security.MessageDigest
 import java.util.UUID
 
 
-class MediaDrmIdProvider {
-    fun getMediaDrmId() = executeSafe({
+@Deprecated(message = DeprecationMessages.UNREACHABLE_SYMBOL_UNINTENDED_PUBLIC_API)
+public class MediaDrmIdProvider {
+    public fun getMediaDrmId(): String? = executeSafe({
         mediaDrmId()
     }, null)
 

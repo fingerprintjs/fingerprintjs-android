@@ -3,13 +3,15 @@ package com.fingerprintjs.android.fingerprint.info_providers
 
 import android.app.ActivityManager
 import android.os.StatFs
+import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
 
 
-interface MemInfoProvider {
-    fun totalRAM(): Long
-    fun totalInternalStorageSpace(): Long
-    fun totalExternalStorageSpace(): Long
+@Deprecated(message = DeprecationMessages.UNREACHABLE_SYMBOL_UNINTENDED_PUBLIC_API)
+public interface MemInfoProvider {
+    public fun totalRAM(): Long
+    public fun totalInternalStorageSpace(): Long
+    public fun totalExternalStorageSpace(): Long
 }
 
 internal class MemInfoProviderImpl(

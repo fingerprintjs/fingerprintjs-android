@@ -3,14 +3,16 @@ package com.fingerprintjs.android.fingerprint.device_id_providers
 
 import android.content.ContentResolver
 import android.net.Uri
+import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
 
 
-class GsfIdProvider(
+@Deprecated(message = DeprecationMessages.UNREACHABLE_SYMBOL_UNINTENDED_PUBLIC_API)
+public class GsfIdProvider(
     private val contentResolver: ContentResolver
 ) {
 
-    fun getGsfAndroidId(): String? {
+    public fun getGsfAndroidId(): String? {
         return executeSafe(
             { getGsfId() }, ""
         )

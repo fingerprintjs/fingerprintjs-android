@@ -6,9 +6,11 @@ import com.fingerprintjs.android.fingerprint.device_id_providers.GsfIdProvider
 import com.fingerprintjs.android.fingerprint.device_id_providers.MediaDrmIdProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.SignalGroupProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
+import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
 
 
-class DeviceIdProvider(
+@Deprecated(message = DeprecationMessages.DEPRECATED_SYMBOL)
+public class DeviceIdProvider(
     gsfIdProvider: GsfIdProvider,
     androidIdProvider: AndroidIdProvider,
     mediaDrmIdProvider: MediaDrmIdProvider,
@@ -23,9 +25,9 @@ class DeviceIdProvider(
         )
     }
 
-    override fun rawData() = rawData
+    override fun rawData(): DeviceIdRawData = rawData
 
-    override fun fingerprint(stabilityLevel: StabilityLevel) = when (version) {
+    override fun fingerprint(stabilityLevel: StabilityLevel): String = when (version) {
         1 -> v1()
         2 -> v1()
         3 -> v3()

@@ -19,10 +19,3 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
-
--keep public class com.fingerprintjs.android.fingerprint.Fingerprinter
--keep public class com.fingerprintjs.android.fingerprint.Configuration
--keep public class com.fingerprintjs.android.fingerprint.FingerprinterFactory
--keep public class com.fingerprintjs.android.fingerprint.device_id_providers.*
--keep public class com.fingerprintjs.android.fingerprint.fingerprinters.*
--keep public class com.fingerprintjs.android.fingerprint.tools.hashers.*

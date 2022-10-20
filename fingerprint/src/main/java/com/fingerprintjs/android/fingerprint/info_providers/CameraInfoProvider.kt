@@ -2,19 +2,21 @@ package com.fingerprintjs.android.fingerprint.info_providers
 
 
 import android.hardware.Camera
+import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
 import com.fingerprintjs.android.fingerprint.tools.await
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
 import java.util.LinkedList
 
 
-data class CameraInfo(
+public data class CameraInfo(
     val cameraName: String,
     val cameraType: String,
     val cameraOrientation: String
 )
 
-interface CameraInfoProvider {
-    fun getCameraInfo(): List<CameraInfo>
+@Deprecated(message = DeprecationMessages.UNREACHABLE_SYMBOL_UNINTENDED_PUBLIC_API)
+public interface CameraInfoProvider {
+    public fun getCameraInfo(): List<CameraInfo>
 }
 
 @Suppress("DEPRECATION")

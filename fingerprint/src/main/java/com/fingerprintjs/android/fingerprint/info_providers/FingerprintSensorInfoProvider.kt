@@ -3,11 +3,13 @@ package com.fingerprintjs.android.fingerprint.info_providers
 
 import android.os.Build
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
+import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
 
 
-interface FingerprintSensorInfoProvider {
-    fun getStatus(): FingerprintSensorStatus
+@Deprecated(message = DeprecationMessages.UNREACHABLE_SYMBOL_UNINTENDED_PUBLIC_API)
+public interface FingerprintSensorInfoProvider {
+    public fun getStatus(): FingerprintSensorStatus
 }
 
 internal class FingerprintSensorInfoProviderImpl(
@@ -32,8 +34,9 @@ internal class FingerprintSensorInfoProviderImpl(
 }
 
 
-enum class FingerprintSensorStatus(
-    val stringDescription: String
+@Deprecated(message = DeprecationMessages.UNREACHABLE_SYMBOL_UNINTENDED_PUBLIC_API)
+public enum class FingerprintSensorStatus(
+    public val stringDescription: String
 ) {
     NOT_SUPPORTED("not_supported"),
     SUPPORTED("supported"),

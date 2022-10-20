@@ -6,29 +6,32 @@ import com.fingerprintjs.android.fingerprint.info_providers.InputDeviceData
 import com.fingerprintjs.android.fingerprint.info_providers.MediaCodecInfo
 import com.fingerprintjs.android.fingerprint.info_providers.SensorData
 import com.fingerprintjs.android.fingerprint.info_providers.CpuInfo
+import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
 
 
-abstract class Signal<T>(
-    val name: String,
-    val value: T
+@Deprecated(message = DeprecationMessages.DEPRECATED_SYMBOL)
+public abstract class Signal<T>(
+    public val name: String,
+    public val value: T
 ) {
-    abstract fun toMap(): Map<String, Any>
+    public abstract fun toMap(): Map<String, Any>
 }
 
 
-abstract class IdentificationSignal<T>(
-    val addedInVersion: Int,
-    val removedInVersion: Int?,
-    val stabilityLevel: StabilityLevel,
+@Deprecated(message = DeprecationMessages.DEPRECATED_SYMBOL)
+public abstract class IdentificationSignal<T>(
+    public val addedInVersion: Int,
+    public val removedInVersion: Int?,
+    public val stabilityLevel: StabilityLevel,
     name: String,
-    val displayName: String,
+    public val displayName: String,
     value: T
     ) : Signal<T>(
     name, value
 ) {
     abstract override fun toString(): String
 
-    override fun toMap() = wrapSignalToMap(this)
+    override fun toMap(): Map<String, Any> = wrapSignalToMap(this)
 
     private fun wrapSignalToMap(signal: Signal<*>): Map<String, Any> {
         return when (val value = signal.value ?: emptyMap<String, Any>()) {
