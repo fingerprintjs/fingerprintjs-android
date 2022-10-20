@@ -1,17 +1,14 @@
 package com.fingerprintjs.android.fingerprint.signal_providers
 
+import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
 
-enum class StabilityLevel {
-    STABLE,
-    OPTIMAL,
-    UNIQUE
-}
 
-abstract class SignalGroupProvider<out T : RawData>(
-    val version: Int
+@Deprecated(message = DeprecationMessages.DEPRECATED_SYMBOL)
+public abstract class SignalGroupProvider<out T : RawData>(
+    public val version: Int
 ) {
-    abstract fun fingerprint(stabilityLevel: StabilityLevel = StabilityLevel.OPTIMAL): String
-    abstract fun rawData(): T
+    public abstract fun fingerprint(stabilityLevel: StabilityLevel = StabilityLevel.OPTIMAL): String
+    public abstract fun rawData(): T
 
     protected fun combineSignals(
         signals: List<IdentificationSignal<*>>,

@@ -6,12 +6,14 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
+import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
 
 
-interface BatteryInfoProvider {
-    fun batteryHealth(): String
-    fun batteryTotalCapacity(): String
+@Deprecated(message = DeprecationMessages.UNREACHABLE_SYMBOL_UNINTENDED_PUBLIC_API)
+public interface BatteryInfoProvider {
+    public fun batteryHealth(): String
+    public fun batteryTotalCapacity(): String
 }
 
 internal class BatteryInfoProviderImpl(

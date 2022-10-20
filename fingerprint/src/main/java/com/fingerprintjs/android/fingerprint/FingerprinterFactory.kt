@@ -17,22 +17,9 @@ import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 import com.fingerprintjs.android.fingerprint.device_id_providers.AndroidIdProvider
 import com.fingerprintjs.android.fingerprint.device_id_providers.GsfIdProvider
 import com.fingerprintjs.android.fingerprint.device_id_providers.MediaDrmIdProvider
-import com.fingerprintjs.android.fingerprint.info_providers.BatteryInfoProviderImpl
-import com.fingerprintjs.android.fingerprint.info_providers.CameraInfoProvider
-import com.fingerprintjs.android.fingerprint.info_providers.CameraInfoProviderImpl
-import com.fingerprintjs.android.fingerprint.info_providers.CodecInfoProviderImpl
-import com.fingerprintjs.android.fingerprint.info_providers.CpuInfoProviderImpl
-import com.fingerprintjs.android.fingerprint.info_providers.DevicePersonalizationInfoProviderImpl
-import com.fingerprintjs.android.fingerprint.info_providers.DeviceSecurityInfoProviderImpl
-import com.fingerprintjs.android.fingerprint.info_providers.FingerprintSensorInfoProviderImpl
-import com.fingerprintjs.android.fingerprint.info_providers.GpuInfoProviderImpl
-import com.fingerprintjs.android.fingerprint.info_providers.InputDevicesDataSourceImpl
-import com.fingerprintjs.android.fingerprint.info_providers.MemInfoProvider
-import com.fingerprintjs.android.fingerprint.info_providers.MemInfoProviderImpl
-import com.fingerprintjs.android.fingerprint.info_providers.OsBuildInfoProviderImpl
-import com.fingerprintjs.android.fingerprint.info_providers.PackageManagerDataSourceImpl
-import com.fingerprintjs.android.fingerprint.info_providers.SensorDataSourceImpl
-import com.fingerprintjs.android.fingerprint.info_providers.SettingsDataSourceImpl
+import com.fingerprintjs.android.fingerprint.device_id_signals.DeviceIdSignalsProvider
+import com.fingerprintjs.android.fingerprint.fingerprinting_signals.FingerprintingSignalsProvider
+import com.fingerprintjs.android.fingerprint.info_providers.*
 import com.fingerprintjs.android.fingerprint.signal_providers.device_id.DeviceIdProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.device_state.DeviceStateSignalGroupProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.hardware.HardwareSignalGroupProvider
@@ -42,17 +29,45 @@ import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 import com.fingerprintjs.android.fingerprint.tools.hashers.MurMur3x64x128Hasher
 
 
-object FingerprinterFactory {
+/**
+ * A factory for [Fingerprinter] class.
+ */
+public object FingerprinterFactory {
 
-    private var configuration: Configuration = Configuration(version = 4)
+    private var configuration: Configuration = Configuration(version = IdentificationVersion.fingerprintingGroupedSignalsLastVersion.intValue)
     private var instance: Fingerprinter? = null
     private var hasher: Hasher = MurMur3x64x128Hasher()
 
+    /**
+     * A factory method for [Fingerprinter] class. Consecutive calls to this method with the same [configuration] will return
+     * the same instance.
+     *
+     * This method has been deprecated for multiple reasons:
+     * - [Configuration] is not needed for the newer API. Check [Fingerprinter]'s getFingerprint(stabilityLevel, listener) method
+     * for an explanation.
+     * - This method does not allow to reinstantiate [Fingerprinter] with the same [Configuration], which could be useful
+     * if you ever wanted to re-run fingerprint or device id evaluation for some reason.
+     *
+     * @param context Android context.
+     * @param configuration [Configuration] for [Fingerprinter]
+     * @throws [IllegalArgumentException] if [Configuration.version] is higher than [IdentificationVersion.fingerprintingGroupedSignalsLastVersion]
+     */
     @JvmStatic
-    fun getInstance(
+    @Deprecated(message = """
+        This method has been deprecated in favor of create(context) method. Check out method doc for details.
+    """)
+    @Throws(IllegalArgumentException::class)
+    public fun getInstance(
         context: Context,
         configuration: Configuration
     ): Fingerprinter {
+        if (configuration.version > IdentificationVersion.fingerprintingGroupedSignalsLastVersion.intValue) {
+            throw IllegalArgumentException(
+                "Version must be in " +
+                        "${IdentificationVersion.V_1.intValue} .. ${IdentificationVersion.fingerprintingGroupedSignalsLastVersion.intValue} range"
+            )
+        }
+
         if (this.configuration != configuration) {
             instance = null
         }
@@ -60,7 +75,7 @@ object FingerprinterFactory {
         if (instance == null) {
             synchronized(FingerprinterFactory::class.java) {
                 if (instance == null) {
-                    instance = initializeFingerprinter(context, configuration)
+                    instance = createLegacyFingerprinter(context, configuration)
                 }
             }
         }
@@ -68,20 +83,46 @@ object FingerprinterFactory {
         return instance!!
     }
 
-    private fun initializeFingerprinter(
+    /**
+     * A factory method for [Fingerprinter] class.
+     *
+     * @param context Android context.
+     */
+    @JvmStatic
+    public fun create(
+        context: Context,
+    ): Fingerprinter {
+        return createFingerprinter(context)
+    }
+
+    private fun createLegacyFingerprinter(
         context: Context,
         configuration: Configuration
     ): Fingerprinter {
         this.configuration = configuration
         this.hasher = configuration.hasher
 
-        return FingerprinterImpl(
-            createHardwareSignalGroupProvider(context),
-            createOsBuildInfoSignalGroupProvider(context),
-            createDeviceIdProvider(context),
-            createInstalledApplicationsSignalGroupProvider(context),
-            createDeviceStateSignalGroupProvider(context),
-            configuration
+        return Fingerprinter(
+            legacyArgs = Fingerprinter.LegacyArgs(
+                hardwareSignalProvider = createHardwareSignalGroupProvider(context),
+                osBuildSignalProvider = createOsBuildInfoSignalGroupProvider(context),
+                deviceIdProvider = createDeviceIdProvider(context),
+                installedAppsSignalProvider = createInstalledApplicationsSignalGroupProvider(context),
+                deviceStateSignalProvider = createDeviceStateSignalGroupProvider(context),
+                configuration = configuration,
+            ),
+            fpSignalsProvider = createFingerprintingSignalsProvider(context),
+            deviceIdSignalsProvider = createDeviceIdSignalsProvider(context),
+        )
+    }
+
+    private fun createFingerprinter(
+        context: Context,
+    ): Fingerprinter {
+        return Fingerprinter(
+            legacyArgs = null,
+            fpSignalsProvider = createFingerprintingSignalsProvider(context),
+            deviceIdSignalsProvider = createDeviceIdSignalsProvider(context),
         )
     }
 
@@ -215,6 +256,37 @@ object FingerprinterFactory {
 
     private fun createGpuInfoProvider(context: Context) =
         GpuInfoProviderImpl(context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager)
+
+    //endregion
+
+    //region: Signal providers
+
+    private fun createFingerprintingSignalsProvider(context: Context): FingerprintingSignalsProvider {
+        return FingerprintingSignalsProvider(
+            cpuInfoProvider = createCpuInfoProvider(),
+            memInfoProvider = createMemoryInfoProvider(context),
+            sensorsDataSource = createSensorDataSource(context),
+            inputDeviceDataSource = createInputDevicesDataSource(context),
+            batteryInfoProvider = createBatteryInfoDataSource(context),
+            cameraInfoProvider = createCameraInfoProvider(),
+            gpuInfoProvider = createGpuInfoProvider(context),
+            osBuildInfoProvider = createOsBuildInfoProvider(),
+            codecInfoProvider = createCodecInfoProvider(),
+            deviceSecurityInfoProvider = createDeviceSecurityProvider(context),
+            packageManagerDataSource = createPackageManagerDataSource(context),
+            settingsDataSource = createSettingsDataSource(context),
+            devicePersonalizationInfoProvider = createDevicePersonalizationDataSource(context),
+            fingerprintSensorInfoProvider = createFingerprintSensorStatusProvider(context),
+        )
+    }
+
+    private fun createDeviceIdSignalsProvider(context: Context): DeviceIdSignalsProvider {
+        return DeviceIdSignalsProvider(
+            gsfIdProvider = createGsfIdProvider(context),
+            androidIdProvider = createAndroidIdProvider(context),
+            mediaDrmIdProvider = createMediaDrmProvider(),
+        )
+    }
 
     //endregion
 }

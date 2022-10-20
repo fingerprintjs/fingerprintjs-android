@@ -5,9 +5,11 @@ import com.fingerprintjs.android.fingerprint.info_providers.MediaCodecInfo
 import com.fingerprintjs.android.fingerprint.signal_providers.IdentificationSignal
 import com.fingerprintjs.android.fingerprint.signal_providers.RawData
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
+import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
 
 
-data class OsBuildRawData(
+@Deprecated(message = DeprecationMessages.DEPRECATED_SYMBOL)
+public data class OsBuildRawData(
     val fingerprint: String,
     val androidVersion: String,
     val sdkVersion: String,
@@ -17,7 +19,7 @@ data class OsBuildRawData(
     val securityProvidersData: List<Pair<String, String>>
 ) : RawData() {
 
-    override fun signals() = listOf(
+    override fun signals(): List<IdentificationSignal<out Any>> = listOf(
         fingerprint(),
         androidVersion(),
         sdkVersion(),
@@ -27,7 +29,7 @@ data class OsBuildRawData(
         securityProviders()
     )
 
-    fun fingerprint() = object : IdentificationSignal<String>(
+    public fun fingerprint(): IdentificationSignal<String> = object : IdentificationSignal<String>(
         1,
         2,
         StabilityLevel.OPTIMAL,
@@ -38,7 +40,7 @@ data class OsBuildRawData(
         override fun toString() = fingerprint
     }
 
-    fun androidVersion() = object : IdentificationSignal<String>(
+    public fun androidVersion(): IdentificationSignal<String> = object : IdentificationSignal<String>(
         2,
         null,
         StabilityLevel.OPTIMAL,
@@ -49,7 +51,7 @@ data class OsBuildRawData(
         override fun toString() = androidVersion
     }
 
-    fun sdkVersion() = object : IdentificationSignal<String>(
+    public fun sdkVersion(): IdentificationSignal<String> = object : IdentificationSignal<String>(
         2,
         null,
         StabilityLevel.OPTIMAL,
@@ -60,7 +62,7 @@ data class OsBuildRawData(
         override fun toString() = sdkVersion
     }
 
-    fun kernelVersion() = object : IdentificationSignal<String>(
+    public fun kernelVersion(): IdentificationSignal<String> = object : IdentificationSignal<String>(
         2,
         null,
         StabilityLevel.OPTIMAL,
@@ -71,7 +73,7 @@ data class OsBuildRawData(
         override fun toString() = kernelVersion
     }
 
-    fun encryptionStatus() = object : IdentificationSignal<String>(
+    public fun encryptionStatus(): IdentificationSignal<String> = object : IdentificationSignal<String>(
         2,
         null,
         StabilityLevel.OPTIMAL,
@@ -82,7 +84,7 @@ data class OsBuildRawData(
         override fun toString() = encryptionStatus
     }
 
-    fun codecList() = object : IdentificationSignal<List<MediaCodecInfo>>(
+    public fun codecList(): IdentificationSignal<List<MediaCodecInfo>> = object : IdentificationSignal<List<MediaCodecInfo>>(
         2,
         null,
         StabilityLevel.OPTIMAL,
@@ -104,7 +106,7 @@ data class OsBuildRawData(
         }
     }
 
-    fun securityProviders() = object : IdentificationSignal<List<Pair<String, String>>>(
+    public fun securityProviders(): IdentificationSignal<List<Pair<String, String>>> = object : IdentificationSignal<List<Pair<String, String>>>(
         2,
         null,
         StabilityLevel.OPTIMAL,

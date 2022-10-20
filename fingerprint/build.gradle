@@ -6,19 +6,19 @@ plugins {
 
 group='com.github.fingerprintjs'
 
-android {
-    compileSdkVersion 33
-
-    publishing {
-        publications {
-            mavenJava(MavenPublication) {
-                groupId = 'com.github.fingerprintjs'
-                artifactId = "fingerprint-android"
-                version = '1.3.0'
-                artifact("$buildDir/outputs/aar/fingerprint-android-1.3.0-release.aar")
-            }
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = 'com.github.fingerprintjs'
+            artifactId = "fingerprint-android"
+            version = '1.3.0'
+            artifact("$buildDir/outputs/aar/fingerprint-android-1.3.0-release.aar")
         }
     }
+}
+
+android {
+    compileSdkVersion 33
 
     defaultConfig {
         minSdkVersion 21
@@ -53,6 +53,11 @@ android {
     }
 }
 
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
+    if (!it.name.contains("Test")) {
+        kotlinOptions.freeCompilerArgs += "-Xexplicit-api=warning"
+    }
+}
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])

@@ -2,16 +2,18 @@ package com.fingerprintjs.android.fingerprint.info_providers
 
 
 import android.os.Build
+import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
 
 
-interface OsBuildInfoProvider {
-    fun modelName(): String
-    fun manufacturerName(): String
-    fun androidVersion(): String
-    fun sdkVersion(): String
-    fun kernelVersion(): String
-    fun fingerprint(): String
+@Deprecated(message = DeprecationMessages.UNREACHABLE_SYMBOL_UNINTENDED_PUBLIC_API)
+public interface OsBuildInfoProvider {
+    public fun modelName(): String
+    public fun manufacturerName(): String
+    public fun androidVersion(): String
+    public fun sdkVersion(): String
+    public fun kernelVersion(): String
+    public fun fingerprint(): String
 }
 
 internal class OsBuildInfoProviderImpl :

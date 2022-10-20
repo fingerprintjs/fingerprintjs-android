@@ -11,10 +11,12 @@ import com.fingerprintjs.android.fingerprint.info_providers.OsBuildInfoProvider
 import com.fingerprintjs.android.fingerprint.info_providers.SensorDataSource
 import com.fingerprintjs.android.fingerprint.signal_providers.SignalGroupProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
+import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
 import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 
 
-class HardwareSignalGroupProvider(
+@Deprecated(message = DeprecationMessages.DEPRECATED_SYMBOL)
+public class HardwareSignalGroupProvider(
     cpuInfoProvider: CpuInfoProvider,
     memInfoProvider: MemInfoProvider,
     osBuildInfoProvider: OsBuildInfoProvider,
@@ -85,5 +87,5 @@ class HardwareSignalGroupProvider(
         rawData.cameraList()
     )
 
-    override fun rawData() = rawData
+    override fun rawData(): HardwareFingerprintRawData = rawData
 }

@@ -3,14 +3,16 @@ package com.fingerprintjs.android.fingerprint.info_providers
 
 import android.app.KeyguardManager
 import android.app.admin.DevicePolicyManager
+import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
 import java.security.Security
 
 
-interface DeviceSecurityInfoProvider {
-    fun encryptionStatus(): String
-    fun securityProvidersData(): List<Pair<String, String>>
-    fun isPinSecurityEnabled(): Boolean
+@Deprecated(message = DeprecationMessages.UNREACHABLE_SYMBOL_UNINTENDED_PUBLIC_API)
+public interface DeviceSecurityInfoProvider {
+    public fun encryptionStatus(): String
+    public fun securityProvidersData(): List<Pair<String, String>>
+    public fun isPinSecurityEnabled(): Boolean
 }
 
 internal class DeviceSecurityInfoProviderImpl(

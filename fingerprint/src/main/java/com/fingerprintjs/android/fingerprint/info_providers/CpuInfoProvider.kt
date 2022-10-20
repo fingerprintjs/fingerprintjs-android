@@ -2,30 +2,32 @@ package com.fingerprintjs.android.fingerprint.info_providers
 
 
 import android.os.Build
+import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
 import com.fingerprintjs.android.fingerprint.tools.parsers.parseCpuInfo
 import java.io.File
 import java.util.Scanner
 
 
-data class CpuInfo(
+public data class CpuInfo(
     val commonInfo: List<Pair<String, String>>,
     // except processor : x pairs. index in list may be considered as an index of a processor.
     val perProcessorInfo: List<List<Pair<String, String>>>,
 ) {
-    companion object {
-        val EMPTY = CpuInfo(
+    public companion object {
+        public val EMPTY: CpuInfo = CpuInfo(
             commonInfo = emptyList(),
             perProcessorInfo = emptyList(),
         )
     }
 }
 
-interface CpuInfoProvider {
-    fun cpuInfo(): Map<String, String>
-    fun cpuInfoV2(): CpuInfo
-    fun abiType(): String
-    fun coresCount(): Int
+@Deprecated(message = DeprecationMessages.UNREACHABLE_SYMBOL_UNINTENDED_PUBLIC_API)
+public interface CpuInfoProvider {
+    public fun cpuInfo(): Map<String, String>
+    public fun cpuInfoV2(): CpuInfo
+    public fun abiType(): String
+    public fun coresCount(): Int
 }
 
 internal class CpuInfoProviderImpl :

@@ -3,15 +3,17 @@ package com.fingerprintjs.android.fingerprint.info_providers
 
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
 
 
-interface PackageManagerDataSource {
-    fun getApplicationsList(): List<PackageInfo>
-    fun getSystemApplicationsList(): List<PackageInfo>
+@Deprecated(message = DeprecationMessages.UNREACHABLE_SYMBOL_UNINTENDED_PUBLIC_API)
+public interface PackageManagerDataSource {
+    public fun getApplicationsList(): List<PackageInfo>
+    public fun getSystemApplicationsList(): List<PackageInfo>
 }
 
-data class PackageInfo(
+public data class PackageInfo(
     val packageName: String
 ) {
     override fun toString(): String {

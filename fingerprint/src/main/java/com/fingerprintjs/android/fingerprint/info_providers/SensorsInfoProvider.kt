@@ -3,16 +3,18 @@ package com.fingerprintjs.android.fingerprint.info_providers
 
 import android.hardware.Sensor
 import android.hardware.SensorManager
+import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
 
 
-data class SensorData(
-    val sensorName: String,
-    val vendorName: String
+public class SensorData(
+    public val sensorName: String,
+    public val vendorName: String
 )
 
-interface SensorDataSource {
-    fun sensors(): List<SensorData>
+@Deprecated(message = DeprecationMessages.UNREACHABLE_SYMBOL_UNINTENDED_PUBLIC_API)
+public interface SensorDataSource {
+    public fun sensors(): List<SensorData>
 }
 
 internal class SensorDataSourceImpl(

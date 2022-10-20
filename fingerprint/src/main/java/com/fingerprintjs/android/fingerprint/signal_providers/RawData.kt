@@ -1,16 +1,20 @@
 package com.fingerprintjs.android.fingerprint.signal_providers
 
+import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
 
-abstract class RawData {
-    abstract fun signals(): List<IdentificationSignal<*>>
-    fun signals(version: Int, stabilityLevel: StabilityLevel) = signals()
+
+@Deprecated(message = DeprecationMessages.DEPRECATED_SYMBOL)
+public abstract class RawData {
+    public abstract fun signals(): List<IdentificationSignal<*>>
+    public fun signals(version: Int, stabilityLevel: StabilityLevel): List<IdentificationSignal<*>> = signals()
         .filterByStabilityLevel(
             stabilityLevel
         )
         .filterByVersion(version)
 }
 
-fun List<IdentificationSignal<*>>.filterByStabilityLevel(stabilityLevel: StabilityLevel): List<IdentificationSignal<*>> {
+@Deprecated(message = DeprecationMessages.DEPRECATED_SYMBOL)
+public fun List<IdentificationSignal<*>>.filterByStabilityLevel(stabilityLevel: StabilityLevel): List<IdentificationSignal<*>> {
     return this.filter {
         when (stabilityLevel) {
             StabilityLevel.STABLE -> {
@@ -26,7 +30,8 @@ fun List<IdentificationSignal<*>>.filterByStabilityLevel(stabilityLevel: Stabili
     }
 }
 
-fun List<IdentificationSignal<*>>.filterByVersion(version: Int): List<IdentificationSignal<*>> {
+@Deprecated(message = DeprecationMessages.DEPRECATED_SYMBOL)
+public fun List<IdentificationSignal<*>>.filterByVersion(version: Int): List<IdentificationSignal<*>> {
     return this.filter {
         val isNotRemoved =
             ((it.removedInVersion == null) || ((it.removedInVersion > version)))

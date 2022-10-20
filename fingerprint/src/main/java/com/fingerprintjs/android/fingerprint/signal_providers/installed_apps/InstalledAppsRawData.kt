@@ -5,19 +5,21 @@ import com.fingerprintjs.android.fingerprint.info_providers.PackageInfo
 import com.fingerprintjs.android.fingerprint.signal_providers.IdentificationSignal
 import com.fingerprintjs.android.fingerprint.signal_providers.RawData
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
+import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
 
 
-data class InstalledAppsRawData(
+@Deprecated(message = DeprecationMessages.DEPRECATED_SYMBOL)
+public data class InstalledAppsRawData(
     val applicationsNamesList: List<PackageInfo>,
     val systemApplicationsList: List<PackageInfo>
 ) : RawData() {
 
-    override fun signals() = listOf(
+    override fun signals(): List<IdentificationSignal<List<PackageInfo>>> = listOf(
         applicationsList(),
         systemApplicationsList()
     )
 
-    fun applicationsList() = object : IdentificationSignal<List<PackageInfo>>(
+    public fun applicationsList(): IdentificationSignal<List<PackageInfo>> = object : IdentificationSignal<List<PackageInfo>>(
         1,
         null,
         StabilityLevel.UNIQUE,
@@ -36,7 +38,7 @@ data class InstalledAppsRawData(
         }
     }
 
-    fun systemApplicationsList() = object : IdentificationSignal<List<PackageInfo>>(
+    public fun systemApplicationsList(): IdentificationSignal<List<PackageInfo>> = object : IdentificationSignal<List<PackageInfo>>(
         2,
         null,
         StabilityLevel.OPTIMAL,

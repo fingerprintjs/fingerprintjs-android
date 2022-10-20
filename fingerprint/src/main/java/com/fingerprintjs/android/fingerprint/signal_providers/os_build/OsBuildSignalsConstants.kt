@@ -1,26 +1,44 @@
 package com.fingerprintjs.android.fingerprint.signal_providers.os_build
 
+import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
 
-const val FINGERPRINT_KEY = "fingerprint"
-const val FINGERPRINT_DISPLAY_NAME = "Fingerprint"
 
-const val ANDROID_VERSION_KEY = "androidVersion"
-const val ANDROID_VERSION_DISPLAY_NAME = "Android version"
+@Deprecated(message = DeprecationMessages.DEPRECATED_SYMBOL)
+public const val FINGERPRINT_KEY: String = "fingerprint"
+@Deprecated(message = DeprecationMessages.DEPRECATED_SYMBOL)
+public const val FINGERPRINT_DISPLAY_NAME: String = "Fingerprint"
 
-const val SDK_VERSION_KEY = "sdkVersion"
-const val SDK_VERSION_DISPLAY_NAME = "SDK version"
+@Deprecated(message = DeprecationMessages.DEPRECATED_SYMBOL)
+public const val ANDROID_VERSION_KEY: String = "androidVersion"
+@Deprecated(message = DeprecationMessages.DEPRECATED_SYMBOL)
+public const val ANDROID_VERSION_DISPLAY_NAME: String = "Android version"
 
-const val KERNEL_VERSION_KEY = "kernelVersion"
-const val KERNEL_VERSION_DISPLAY_NAME = "Kernel version"
+@Deprecated(message = DeprecationMessages.DEPRECATED_SYMBOL)
+public const val SDK_VERSION_KEY: String = "sdkVersion"
+@Deprecated(message = DeprecationMessages.DEPRECATED_SYMBOL)
+public const val SDK_VERSION_DISPLAY_NAME: String = "SDK version"
 
-const val CODEC_LIST_KEY = "codecsList"
-const val CODEC_LIST_DISPLAY_NAME = "Codecs list"
+@Deprecated(message = DeprecationMessages.DEPRECATED_SYMBOL)
+public const val KERNEL_VERSION_KEY: String = "kernelVersion"
+@Deprecated(message = DeprecationMessages.DEPRECATED_SYMBOL)
+public const val KERNEL_VERSION_DISPLAY_NAME: String = "Kernel version"
 
-const val CODEC_NAME_KEY = "codecName"
-const val CODEC_CAPABILITIES_KEY = "codecCapabilities"
+@Deprecated(message = DeprecationMessages.DEPRECATED_SYMBOL)
+public const val CODEC_LIST_KEY: String = "codecsList"
+@Deprecated(message = DeprecationMessages.DEPRECATED_SYMBOL)
+public const val CODEC_LIST_DISPLAY_NAME: String = "Codecs list"
 
-const val ENCRYPTION_STATUS_KEY = "encryptionStatus"
-const val ENCRYPTION_STATUS_DISPLAY_NAME = "Encryption status"
+@Deprecated(message = DeprecationMessages.DEPRECATED_SYMBOL)
+public const val CODEC_NAME_KEY: String = "codecName"
+@Deprecated(message = DeprecationMessages.DEPRECATED_SYMBOL)
+public const val CODEC_CAPABILITIES_KEY: String = "codecCapabilities"
 
-const val SECURITY_PROVIDERS_DATA_KEY = "securityProviders"
-const val SECURITY_PROVIDERS_DATA_DISPLAY_NAME = "Security providers"
+@Deprecated(message = DeprecationMessages.DEPRECATED_SYMBOL)
+public const val ENCRYPTION_STATUS_KEY: String = "encryptionStatus"
+@Deprecated(message = DeprecationMessages.DEPRECATED_SYMBOL)
+public const val ENCRYPTION_STATUS_DISPLAY_NAME: String = "Encryption status"
+
+@Deprecated(message = DeprecationMessages.DEPRECATED_SYMBOL)
+public const val SECURITY_PROVIDERS_DATA_KEY: String = "securityProviders"
+@Deprecated(message = DeprecationMessages.DEPRECATED_SYMBOL)
+public const val SECURITY_PROVIDERS_DATA_DISPLAY_NAME: String = "Security providers"

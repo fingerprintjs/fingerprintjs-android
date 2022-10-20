@@ -4,17 +4,19 @@ package com.fingerprintjs.android.fingerprint.info_providers
 import android.content.res.AssetManager
 import android.content.res.Configuration
 import android.media.RingtoneManager
+import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
 import java.util.Locale
 import java.util.TimeZone
 
 
-interface DevicePersonalizationInfoProvider {
-    fun ringtoneSource(): String
-    fun availableLocales(): Array<String>
-    fun regionCountry(): String
-    fun defaultLanguage(): String
-    fun timezone(): String
+@Deprecated(message = DeprecationMessages.UNREACHABLE_SYMBOL_UNINTENDED_PUBLIC_API)
+public interface DevicePersonalizationInfoProvider {
+    public fun ringtoneSource(): String
+    public fun availableLocales(): Array<String>
+    public fun regionCountry(): String
+    public fun defaultLanguage(): String
+    public fun timezone(): String
 }
 
 internal class DevicePersonalizationInfoProviderImpl(

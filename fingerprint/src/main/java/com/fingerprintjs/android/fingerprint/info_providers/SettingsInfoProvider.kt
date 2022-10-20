@@ -4,32 +4,34 @@ package com.fingerprintjs.android.fingerprint.info_providers
 import android.content.ContentResolver
 import android.os.Build
 import android.provider.Settings
+import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
 
 
-interface SettingsDataSource {
-    fun adbEnabled(): String
-    fun developmentSettingsEnabled(): String
-    fun httpProxy(): String
-    fun transitionAnimationScale(): String
-    fun windowAnimationScale(): String
+@Deprecated(message = DeprecationMessages.UNREACHABLE_SYMBOL_UNINTENDED_PUBLIC_API)
+public interface SettingsDataSource {
+    public fun adbEnabled(): String
+    public fun developmentSettingsEnabled(): String
+    public fun httpProxy(): String
+    public fun transitionAnimationScale(): String
+    public fun windowAnimationScale(): String
 
     // Secure
-    fun dataRoamingEnabled(): String
-    fun accessibilityEnabled(): String
-    fun defaultInputMethod(): String
-    fun rttCallingMode(): String
-    fun touchExplorationEnabled(): String
+    public fun dataRoamingEnabled(): String
+    public fun accessibilityEnabled(): String
+    public fun defaultInputMethod(): String
+    public fun rttCallingMode(): String
+    public fun touchExplorationEnabled(): String
 
     // System
-    fun alarmAlertPath(): String
-    fun dateFormat(): String
-    fun endButtonBehaviour(): String
-    fun fontScale(): String
-    fun screenOffTimeout(): String
-    fun textAutoReplaceEnable(): String
-    fun textAutoPunctuate(): String
-    fun time12Or24(): String
+    public fun alarmAlertPath(): String
+    public fun dateFormat(): String
+    public fun endButtonBehaviour(): String
+    public fun fontScale(): String
+    public fun screenOffTimeout(): String
+    public fun textAutoReplaceEnable(): String
+    public fun textAutoPunctuate(): String
+    public fun time12Or24(): String
 }
 
 internal class SettingsDataSourceImpl(

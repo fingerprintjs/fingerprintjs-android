@@ -8,9 +8,11 @@ import com.fingerprintjs.android.fingerprint.signal_providers.IdentificationSign
 import com.fingerprintjs.android.fingerprint.signal_providers.RawData
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 import com.fingerprintjs.android.fingerprint.info_providers.CpuInfo
+import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
 
 
-data class HardwareFingerprintRawData(
+@Deprecated(message = DeprecationMessages.DEPRECATED_SYMBOL)
+public data class HardwareFingerprintRawData(
     val manufacturerName: String,
     val modelName: String,
     val totalRAM: Long,
@@ -27,7 +29,7 @@ data class HardwareFingerprintRawData(
     val coresCount: Int
 ) : RawData() {
 
-    override fun signals() = listOf(
+    override fun signals(): List<IdentificationSignal<out Any>> = listOf(
         manufacturerName(),
         modelName(),
         totalRAM(),
@@ -45,7 +47,7 @@ data class HardwareFingerprintRawData(
         coresCount()
     )
 
-    fun manufacturerName() = object : IdentificationSignal<String>(
+    public fun manufacturerName(): IdentificationSignal<String> = object : IdentificationSignal<String>(
         1,
         null,
         StabilityLevel.STABLE,
@@ -56,7 +58,7 @@ data class HardwareFingerprintRawData(
         override fun toString() = manufacturerName
     }
 
-    fun modelName() = object : IdentificationSignal<String>(
+    public fun modelName(): IdentificationSignal<String> = object : IdentificationSignal<String>(
         1,
         null,
         StabilityLevel.STABLE,
@@ -67,7 +69,7 @@ data class HardwareFingerprintRawData(
         override fun toString() = modelName
     }
 
-    fun totalRAM() = object : IdentificationSignal<Long>(
+    public fun totalRAM(): IdentificationSignal<Long> = object : IdentificationSignal<Long>(
         1,
         null,
         StabilityLevel.STABLE,
@@ -78,7 +80,7 @@ data class HardwareFingerprintRawData(
         override fun toString() = totalRAM.toString()
     }
 
-    fun totalInternalStorageSpace() = object : IdentificationSignal<Long>(
+    public fun totalInternalStorageSpace(): IdentificationSignal<Long> = object : IdentificationSignal<Long>(
         1,
         null,
         StabilityLevel.STABLE,
@@ -89,7 +91,7 @@ data class HardwareFingerprintRawData(
         override fun toString() = totalInternalStorageSpace.toString()
     }
 
-    fun procCpuInfo() = object : IdentificationSignal<Map<String, String>>(
+    public fun procCpuInfo(): IdentificationSignal<Map<String, String>> = object : IdentificationSignal<Map<String, String>>(
         1,
         4,
         StabilityLevel.STABLE,
@@ -106,7 +108,7 @@ data class HardwareFingerprintRawData(
         }
     }
 
-    fun procCpuInfoV2() = object : IdentificationSignal<CpuInfo>(
+    public fun procCpuInfoV2(): IdentificationSignal<CpuInfo> = object : IdentificationSignal<CpuInfo>(
         4,
         null,
         StabilityLevel.STABLE,
@@ -124,7 +126,7 @@ data class HardwareFingerprintRawData(
         }
     }
 
-    fun sensors() = object : IdentificationSignal<List<SensorData>>(
+    public fun sensors(): IdentificationSignal<List<SensorData>> = object : IdentificationSignal<List<SensorData>>(
         1,
         null,
         StabilityLevel.STABLE,
@@ -141,7 +143,7 @@ data class HardwareFingerprintRawData(
         }
     }
 
-    fun inputDevices() = object : IdentificationSignal<List<InputDeviceData>>(
+    public fun inputDevices(): IdentificationSignal<List<InputDeviceData>> = object : IdentificationSignal<List<InputDeviceData>>(
         1,
         4,
         StabilityLevel.STABLE,
@@ -159,7 +161,7 @@ data class HardwareFingerprintRawData(
     }
 
     // same as inputDevices(), but sorted
-    fun inputDevicesV2() = object : IdentificationSignal<List<InputDeviceData>>(
+    public fun inputDevicesV2(): IdentificationSignal<List<InputDeviceData>> = object : IdentificationSignal<List<InputDeviceData>>(
         4,
         null,
         StabilityLevel.STABLE,
@@ -177,7 +179,7 @@ data class HardwareFingerprintRawData(
         }
     }
 
-    fun batteryHealth() = object : IdentificationSignal<String>(
+    public fun batteryHealth(): IdentificationSignal<String> = object : IdentificationSignal<String>(
         2,
         null,
         StabilityLevel.OPTIMAL,
@@ -188,7 +190,7 @@ data class HardwareFingerprintRawData(
         override fun toString() = batteryHealth
     }
 
-    fun batteryFullCapacity() = object : IdentificationSignal<String>(
+    public fun batteryFullCapacity(): IdentificationSignal<String> = object : IdentificationSignal<String>(
         2,
         null,
         StabilityLevel.STABLE,
@@ -199,7 +201,7 @@ data class HardwareFingerprintRawData(
         override fun toString() = batteryFullCapacity
     }
 
-    fun cameraList() = object : IdentificationSignal<List<CameraInfo>>(
+    public fun cameraList(): IdentificationSignal<List<CameraInfo>> = object : IdentificationSignal<List<CameraInfo>>(
         2,
         null,
         StabilityLevel.STABLE,
@@ -219,7 +221,7 @@ data class HardwareFingerprintRawData(
         }
     }
 
-    fun glesVersion() = object : IdentificationSignal<String>(
+    public fun glesVersion(): IdentificationSignal<String> = object : IdentificationSignal<String>(
         2,
         null,
         StabilityLevel.STABLE,
@@ -230,7 +232,7 @@ data class HardwareFingerprintRawData(
         override fun toString() = glesVersion
     }
 
-    fun abiType() = object : IdentificationSignal<String>(
+    public fun abiType(): IdentificationSignal<String> = object : IdentificationSignal<String>(
         2,
         null,
         StabilityLevel.STABLE,
@@ -241,7 +243,7 @@ data class HardwareFingerprintRawData(
         override fun toString() = abiType
     }
 
-    fun coresCount() = object : IdentificationSignal<Int>(
+    public fun coresCount(): IdentificationSignal<Int> = object : IdentificationSignal<Int>(
         2,
         null,
         StabilityLevel.STABLE,
@@ -252,7 +254,7 @@ data class HardwareFingerprintRawData(
         override fun toString() = coresCount.toString()
     }
 
-    companion object {
+    private companion object {
         private val CPUINFO_IGNORED_COMMON_PROPS = setOf(
             "processor",
         )
