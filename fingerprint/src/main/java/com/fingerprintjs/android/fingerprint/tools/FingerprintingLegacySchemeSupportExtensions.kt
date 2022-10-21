@@ -1,6 +1,6 @@
 package com.fingerprintjs.android.fingerprint.tools
 
-import com.fingerprintjs.android.fingerprint.*
+import com.fingerprintjs.android.fingerprint.IdentificationVersion
 import com.fingerprintjs.android.fingerprint.fingerprinting_signals.*
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 
@@ -12,14 +12,6 @@ internal object FingerprintingLegacySchemeSupportExtensions {
         signalFingerprintingInfo: FingerprintingSignal.Info,
         signalFactory: () -> T,
     ): T? {
-
-        fun IdentificationVersion.inRange(
-            added: IdentificationVersion,
-            removed: IdentificationVersion?,
-        ): Boolean {
-            return this.intValue >= added.intValue &&
-                    this.intValue < (removed?.intValue ?: (IdentificationVersion.latest.intValue + 1))
-        }
 
         return if (
             signalFingerprintingInfo.stabilityLevel.atLeastAsStableAs(requiredStabilityLevel)

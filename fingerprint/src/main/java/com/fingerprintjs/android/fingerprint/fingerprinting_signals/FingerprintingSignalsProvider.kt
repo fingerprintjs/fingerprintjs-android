@@ -4,6 +4,7 @@ import androidx.annotation.WorkerThread
 import com.fingerprintjs.android.fingerprint.IdentificationVersion
 import com.fingerprintjs.android.fingerprint.info_providers.*
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
+import com.fingerprintjs.android.fingerprint.tools.inRange
 
 /**
  * A class that provides signals used in [Fingerprinter's][com.fingerprintjs.android.fingerprint.Fingerprinter]
@@ -37,14 +38,6 @@ public class FingerprintingSignalsProvider internal constructor(
         signalFingerprintingInfo: FingerprintingSignal.Info,
         signalFactory: () -> T,
     ): T? {
-        fun IdentificationVersion.inRange(
-            added: IdentificationVersion,
-            removed: IdentificationVersion?,
-        ): Boolean {
-            return this.intValue >= added.intValue &&
-                    this.intValue < (removed?.intValue ?: (IdentificationVersion.latest.intValue + 1))
-        }
-
         return if (
             signalFingerprintingInfo.stabilityLevel.atLeastAsStableAs(requiredStabilityLevel)
             && requiredVersion.inRange(signalFingerprintingInfo.addedInVersion, signalFingerprintingInfo.removedInVersion)
