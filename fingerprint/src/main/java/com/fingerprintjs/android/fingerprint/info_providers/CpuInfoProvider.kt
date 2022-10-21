@@ -48,11 +48,7 @@ internal class CpuInfoProviderImpl :
     @Suppress("DEPRECATION")
     override fun abiType(): String {
         return executeSafe({
-            if (Build.VERSION.SDK_INT >= 21) {
-                Build.SUPPORTED_ABIS[0]
-            } else {
-                Build.CPU_ABI
-            }
+            Build.SUPPORTED_ABIS[0]
         }, "")
     }
 
