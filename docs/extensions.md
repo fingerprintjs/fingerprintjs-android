@@ -5,17 +5,19 @@ Copy extensions in the project and use as shown below.
 ```kotlin
 
 fun Fingerprinter.fingerprintObservable(
-        stabilityLevel: StabilityLevel = StabilityLevel.OPTIMAL
-) = Observable.create(ObservableOnSubscribe<FingerprintResult> { emitter ->
-    this.getFingerprint(stabilityLevel) { fingerprintResult ->
-        emitter.onNext(fingerprintResult)
+    version: IdentificationVersion,
+    stabilityLevel: StabilityLevel = StabilityLevel.OPTIMAL,
+    hasher: Hasher = MurMur3x64x128Hasher()
+) = Observable.create(ObservableOnSubscribe<String> { emitter ->
+    this.getFingerprint(version, stabilityLevel, hasher) { fingerprint->
+        emitter.onNext(fingerprint)
         emitter.onComplete()
     }
 })
 
-fun Fingerprinter.deviceIdObservable() = Observable
+fun Fingerprinter.deviceIdObservable(version: IdentificationVersion) = Observable
 	.create(ObservableOnSubscribe<DeviceIdResult> { emitter ->
-    this.getDeviceId { deviceIdResult ->
+    this.getDeviceId(version) { deviceIdResult ->
         emitter.onNext(deviceIdResult)
         emitter.onComplete()
     }
@@ -27,19 +29,19 @@ Usage:
 
 ```kotlin
 
-val fingerprinter = FingerprinterFactory
-                .getInstance(this, Configuration(version = 2))
-
-fingerprinter.fingerprintObservable()
-        .subscribe { fingerprintResult ->
-            val fingerprint = fingerprintResult.fingerprint
-        }
-
+val fingerprinter = FingerprinterFactory.create(context)
 
 fingerprinter
-        .deviceIdObservable()
+        .fingerprintObservable(version = IdentificationVersion.V_5)
+        .subscribe { fingerprint ->
+            // Your code
+        }
+
+fingerprinter
+        .deviceIdObservable(version = IdentificationVersion.V_5)
         .subscribe { deviceIdResult ->
             val deviceId = deviceIdResult.deviceId
+            // Your code
         }
 
 
@@ -49,17 +51,21 @@ fingerprinter
 
 ```kotlin
 
-suspend fun Fingerprinter.fingerprint(stabilityLevel: StabilityLevel = StabilityLevel.OPTIMAL): FingerprintResult {
+suspend fun Fingerprinter.fingerprint(
+    version: IdentificationVersion,
+    stabilityLevel: StabilityLevel = StabilityLevel.OPTIMAL,
+    hasher: Hasher = MurMur3x64x128Hasher()
+): String {
     return suspendCancellableCoroutine { continuation ->
-        getFingerprint(stabilityLevel) { fingerprintResult ->
-            continuation.resume(fingerprintResult)
+        getFingerprint(version, stabilityLevel, hasher) { fingerprint->
+            continuation.resume(fingerprint)
         }
     }
 }
 
-suspend fun Fingerprinter.deviceId(): DeviceIdResult {
+suspend fun Fingerprinter.deviceId(version: IdentificationVersion): DeviceIdResult {
     return suspendCancellableCoroutine { continuation ->
-        getDeviceId { deviceIdResult ->
+        getDeviceId(version) { deviceIdResult ->
             continuation.resume(deviceIdResult)
         }
     }
@@ -72,14 +78,13 @@ Usage:
 
 ```kotlin
 
-val fingerprinter = FingerprinterFactory
-                .getInstance(this, Configuration(version = 2))
+val fingerprinter = FingerprinterFactory.create(context)
 
 ...
 
 launch {
-    val fingerprint = fingerprinter.fingerprint().fingerprint
-    val deviceId = fingerprinter.deviceId().deviceId
+    val fingerprint = fingerprinter.fingerprint(IdentificationVersion.V_5)
+    val deviceId = fingerprinter.deviceId(IdentificationVersion.V_5).deviceId
 }
 
 ```
