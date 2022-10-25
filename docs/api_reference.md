@@ -11,6 +11,7 @@ By default, the library calculates a fingerprint with `StabilityLevel.OPTIMAL` a
 You can use `FingerprintingSignalsProvider` to access raw signals used for fingerprinting.
 You can also calculate a fingerprint based only on the signals you want using `Fingerprinter.getFingerprint(fingerprintingSignals, hasher)` method:
 
+Kotlin:
 ```kotlin
 // call this method from some worker thread
 @WorkerThread
@@ -27,6 +28,20 @@ fun buildCustomFingerprint(fingerprinter: Fingerprinter): String {
     )
 }
 ```
+Java:
+```java
+// call this method from some worker thread
+@WorkerThread
+String buildCustomFingerprint(Fingerprinter fingerprinter) {
+    FingerprintingSignalsProvider signalsProvider = fingerprinter.getFingerprintingSignalsProvider();
+    List<FingerprintingSignal<?>> neededSignals = new ArrayList<>();
+    neededSignals.add(signalsProvider.getDevelopmentSettingsEnabledSignal());
+    neededSignals.add(signalsProvider.getProcCpuInfoV2Signal());
+    neededSignals.add(signalsProvider.getDateFormatSignal());
+
+    return fingerprinter.getFingerprint(neededSignals);
+}
+```
 
 Note that this API is intentionally left synchronous, because it only provides the building blocks for you to build your fingerprint, leaving
 you in a full control of this process.
@@ -39,6 +54,7 @@ If this hash function does not work for you, you can change it to a different on
 
 In order to do it, implement your own hasher, and pass it as a `hasher` parameter like shown below:
 
+Kotlin:
 ``` kotlin
 fun someFunc(fingerprinter: Fingerprinter) {
     val hasher = object : Hasher {
@@ -55,11 +71,29 @@ fun someFunc(fingerprinter: Fingerprinter) {
     }
 }
 ```
+Java:
+```java
+void someFunc(Fingerprinter fingerprinter) {
+    Hasher hasher = new Hasher() {
+        @NonNull
+        @Override
+        public String hash(@NonNull String data) {
+            // Implement your own hashing logic, e.g. call SHA256 here
+        }
+    };
+
+    fingerprinter.getFingerprint(IdentificationVersion.V_5, StabilityLevel.OPTIMAL, hasher, fingerprint -> {
+        // Do something with fingerprint
+        return null;
+    });
+}
+```
 
 ### Backward compatibility
 
 If you want to get a newer version of fingerprint, but also want to keep the old one for backward compatibility, you can get them both as shown below:
 
+Kotlin:
 ```kotlin
 fun useMultipleVersions() {
     val fingerprinter = FingerprinterFactory.create(context)
@@ -71,6 +105,23 @@ fun useMultipleVersions() {
     fingerprinter.getFingerprint(version = IdentificationVersion.V_5) { fingerprintV5 ->
         // Do something
     }
+}
+```
+Java:
+```java
+void useMultipleVersions() {
+    Fingerprinter fingerprinter = FingerprinterFactory.create(context);
+    
+    fingerprinter.getFingerprint(IdentificationVersion.V_4, fingerprintV4 -> {
+        // Do something
+        return null;
+    });
+
+
+    fingerprinter.getFingerprint(IdentificationVersion.V_5, fingerprintV5 -> {
+        // Do something
+        return null;
+    });
 }
 ```
 
