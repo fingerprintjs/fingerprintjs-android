@@ -214,6 +214,7 @@ public class Fingerprinter internal constructor(
      * @return Device fingerpint.
      */
     @WorkerThread
+    @JvmOverloads
     public fun getFingerprint(
         fingerprintingSignals: List<FingerprintingSignal<*>>,
         hasher: Hasher = MurMur3x64x128Hasher(),
