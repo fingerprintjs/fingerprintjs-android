@@ -161,7 +161,7 @@ Also the results are cached, so subsequent calls will be faster.
 
 `fingerprint` is versioned incrementally; the version should be set explicitly to avoid unexpected `fingerprint` changes when updating the library.
 
-See full [Kotlin reference](docs/kotlin_reference.md)/[Java reference](docs/java_reference.md).
+See full [API reference](docs/api_reference.md).
 
 ## Migration from 1.\*.\* library versions
 
