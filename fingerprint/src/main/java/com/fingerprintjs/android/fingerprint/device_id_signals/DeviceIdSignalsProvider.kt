@@ -1,6 +1,6 @@
 package com.fingerprintjs.android.fingerprint.device_id_signals
 
-import com.fingerprintjs.android.fingerprint.IdentificationVersion
+import com.fingerprintjs.android.fingerprint.Fingerprinter
 import com.fingerprintjs.android.fingerprint.device_id_providers.AndroidIdProvider
 import com.fingerprintjs.android.fingerprint.device_id_providers.GsfIdProvider
 import com.fingerprintjs.android.fingerprint.device_id_providers.MediaDrmIdProvider
@@ -11,9 +11,9 @@ internal class DeviceIdSignalsProvider(
     private val mediaDrmIdProvider: MediaDrmIdProvider,
 ) {
 
-    fun getSignalMatching(version: IdentificationVersion): DeviceIdSignal<*> {
+    fun getSignalMatching(version: Fingerprinter.Version): DeviceIdSignal<*> {
         return when(version) {
-            in IdentificationVersion.V_1..IdentificationVersion.V_2 -> {
+            in Fingerprinter.Version.V_1..Fingerprinter.Version.V_2 -> {
                 gsfIdSignal.takeIf { it.value.isNotEmpty() }
                     ?: androidIdSignal
             }

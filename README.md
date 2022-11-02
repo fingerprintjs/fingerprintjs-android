@@ -121,11 +121,11 @@ Kotlin
  val fingerprinter = FingerprinterFactory.create(context)
 
 // Usage
-fingerprinter.getFingerprint(version = IdentificationVersion.V_5) { fingerprint ->
+fingerprinter.getFingerprint(version = Fingerprinter.Version.V_5) { fingerprint ->
     // Use fingerprint
 }
 
-fingerprinter.getDeviceId(version = IdentificationVersion.V_5) { result ->
+fingerprinter.getDeviceId(version = Fingerprinter.Version.V_5) { result ->
     val deviceId = result.deviceId
     // Use deviceId
 }
@@ -140,12 +140,12 @@ Java
 Fingerprinter fingerprinter = FingerprinterFactory.create(context);
 
 // Usage
-fingerprinter.getFingerprint(IdentificationVersion.V_5, fingerprint-> {
+fingerprinter.getFingerprint(Fingerprinter.Version.V_5, fingerprint-> {
     // use fingerprint
     return null;
 });
 
-fingerprinter.getDeviceId(IdentificationVersion.V_5, deviceIdResult-> {
+fingerprinter.getDeviceId(Fingerprinter.Version.V_5, deviceIdResult-> {
     String deviceId = deviceIdResult.getDeviceId();
     // use deviceId
     return null;

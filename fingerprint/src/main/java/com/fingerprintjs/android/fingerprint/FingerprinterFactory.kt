@@ -34,7 +34,7 @@ import com.fingerprintjs.android.fingerprint.tools.hashers.MurMur3x64x128Hasher
  */
 public object FingerprinterFactory {
 
-    private var configuration: Configuration = Configuration(version = IdentificationVersion.fingerprintingGroupedSignalsLastVersion.intValue)
+    private var configuration: Configuration = Configuration(version = Fingerprinter.Version.fingerprintingGroupedSignalsLastVersion.intValue)
     private var instance: Fingerprinter? = null
     private var hasher: Hasher = MurMur3x64x128Hasher()
 
@@ -50,7 +50,7 @@ public object FingerprinterFactory {
      *
      * @param context Android context.
      * @param configuration [Configuration] for [Fingerprinter]
-     * @throws [IllegalArgumentException] if [Configuration.version] is higher than [IdentificationVersion.fingerprintingGroupedSignalsLastVersion]
+     * @throws [IllegalArgumentException] if [Configuration.version] is higher than [Fingerprinter.Version.fingerprintingGroupedSignalsLastVersion]
      */
     @JvmStatic
     @Deprecated(message = """
@@ -61,10 +61,10 @@ public object FingerprinterFactory {
         context: Context,
         configuration: Configuration
     ): Fingerprinter {
-        if (configuration.version > IdentificationVersion.fingerprintingGroupedSignalsLastVersion.intValue) {
+        if (configuration.version > Fingerprinter.Version.fingerprintingGroupedSignalsLastVersion.intValue) {
             throw IllegalArgumentException(
                 "Version must be in " +
-                        "${IdentificationVersion.V_1.intValue} .. ${IdentificationVersion.fingerprintingGroupedSignalsLastVersion.intValue} range"
+                        "${Fingerprinter.Version.V_1.intValue} .. ${Fingerprinter.Version.fingerprintingGroupedSignalsLastVersion.intValue} range"
             )
         }
 

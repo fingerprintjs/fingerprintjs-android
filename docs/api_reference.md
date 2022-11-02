@@ -64,7 +64,7 @@ fun someFunc(fingerprinter: Fingerprinter) {
     }
 
     fingerprinter.getFingerprint(
-        version = IdentificationVersion.V_5,
+        version = Fingerprinter.Version.V_5,
         hasher = hasher
     ) { fingerprint ->
         // Do something with fingerprint
@@ -82,7 +82,7 @@ void someFunc(Fingerprinter fingerprinter) {
         }
     };
 
-    fingerprinter.getFingerprint(IdentificationVersion.V_5, StabilityLevel.OPTIMAL, hasher, fingerprint -> {
+    fingerprinter.getFingerprint(Fingerprinter.Version.V_5, StabilityLevel.OPTIMAL, hasher, fingerprint -> {
         // Do something with fingerprint
         return null;
     });
@@ -98,11 +98,11 @@ Kotlin:
 fun useMultipleVersions() {
     val fingerprinter = FingerprinterFactory.create(context)
 
-    fingerprinter.getFingerprint(version = IdentificationVersion.V_4) { fingerprintV4 ->
+    fingerprinter.getFingerprint(version = Fingerprinter.Version.V_4) { fingerprintV4 ->
         // Do something
     }
 
-    fingerprinter.getFingerprint(version = IdentificationVersion.V_5) { fingerprintV5 ->
+    fingerprinter.getFingerprint(version = Fingerprinter.Version.V_5) { fingerprintV5 ->
         // Do something
     }
 }
@@ -112,13 +112,13 @@ Java:
 void useMultipleVersions() {
     Fingerprinter fingerprinter = FingerprinterFactory.create(context);
     
-    fingerprinter.getFingerprint(IdentificationVersion.V_4, fingerprintV4 -> {
+    fingerprinter.getFingerprint(Fingerprinter.Version.V_4, fingerprintV4 -> {
         // Do something
         return null;
     });
 
 
-    fingerprinter.getFingerprint(IdentificationVersion.V_5, fingerprintV5 -> {
+    fingerprinter.getFingerprint(Fingerprinter.Version.V_5, fingerprintV5 -> {
         // Do something
         return null;
     });

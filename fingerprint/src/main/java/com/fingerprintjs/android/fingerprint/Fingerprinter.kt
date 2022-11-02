@@ -1,5 +1,6 @@
 package com.fingerprintjs.android.fingerprint
 
+import androidx.annotation.Discouraged
 import androidx.annotation.WorkerThread
 import com.fingerprintjs.android.fingerprint.device_id_signals.DeviceIdSignalsProvider
 import com.fingerprintjs.android.fingerprint.fingerprinting_signals.FingerprintingSignal
@@ -77,10 +78,10 @@ public class Fingerprinter internal constructor(
      * If you suddenly want to re-evaluate device id completely from scratch, you should reinitialize [Fingerprinter] using
      * [FingerprinterFactory.create] method.
      *
-     * @param version identification version. Check out [IdentificationVersion] for details.
+     * @param version identification version. Check out [Version] for details.
      * @param listener device ID listener.
      */
-    public fun getDeviceId(version: IdentificationVersion, listener: (DeviceIdResult) -> Unit) {
+    public fun getDeviceId(version: Version, listener: (DeviceIdResult) -> Unit) {
         executor.execute {
             listener.invoke(
                 DeviceIdResult(
@@ -164,21 +165,21 @@ public class Fingerprinter internal constructor(
      * If you suddenly want to re-evaluate fingerprint completely from scratch, you should reinitialize [Fingerprinter] using
      * [FingerprinterFactory.create] method.
      *
-     * @param version identification version. Check out [IdentificationVersion] for details.
+     * @param version identification version. Check out [Version] for details.
      * @param stabilityLevel stability level. Check out [StabilityLevel] for details.
      * @param hasher hash implementation. Check out [Hasher] for details.
      * @param listener listener for device fingerprint.
      */
     @JvmOverloads
     public fun getFingerprint(
-        version: IdentificationVersion,
+        version: Version,
         stabilityLevel: StabilityLevel = StabilityLevel.OPTIMAL,
         hasher: Hasher = MurMur3x64x128Hasher(),
         listener: (String) -> (Unit),
     ) {
         executor.execute {
 
-            val result = if (version < IdentificationVersion.fingerprintingFlattenedSignalsFirstVersion) {
+            val result = if (version < Version.fingerprintingFlattenedSignalsFirstVersion) {
                 val joinedHashes = with(FingerprintingLegacySchemeSupportExtensions) {
                     listOf(
                         hasher.hash(fpSignalsProvider.getHardwareSignals(version, stabilityLevel)),
@@ -233,6 +234,39 @@ public class Fingerprinter internal constructor(
      */
     public fun getFingerprintingSignalsProvider(): FingerprintingSignalsProvider {
         return fpSignalsProvider
+    }
+
+    /**
+     * This class represents the version of the logic provided by [Fingerprinter] API.
+     * Whenever we implement new signals (completely new or just more stable variants of existing ones)
+     * for device ID or fingerprint, the version is incremented.
+     * Please keep in mind that changing [Version] leads to changing device id
+     * and/or fingerprint returned by [Fingerprinter] API.
+     */
+    public enum class Version(
+        internal val intValue: Int
+    ) {
+        V_1(intValue = 1),
+        V_2(intValue = 2),
+        V_3(intValue = 3),
+        V_4(intValue = 4),
+        V_5(intValue = 5);
+
+        public companion object {
+            @get:Discouraged(
+                message = "Use this value with a great caution. Since it will change over time " +
+                        "with the library updates, using it as a parameter to the library API may lead " +
+                        "to unintended change of the results of this API."
+            )
+            public val latest: Version
+                get() = values().last()
+
+            internal val fingerprintingFlattenedSignalsFirstVersion: Version
+                get() = V_5
+
+            internal val fingerprintingGroupedSignalsLastVersion: Version
+                get() = V_4
+        }
     }
 
     internal data class LegacyArgs(

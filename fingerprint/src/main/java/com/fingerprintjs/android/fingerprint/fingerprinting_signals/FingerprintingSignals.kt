@@ -1,6 +1,6 @@
 package com.fingerprintjs.android.fingerprint.fingerprinting_signals
 
-import com.fingerprintjs.android.fingerprint.IdentificationVersion
+import com.fingerprintjs.android.fingerprint.Fingerprinter
 import com.fingerprintjs.android.fingerprint.info_providers.*
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 
@@ -19,7 +19,7 @@ public class ManufacturerNameSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_1,
+            addedInVersion = Fingerprinter.Version.V_1,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.STABLE,
         )
@@ -38,7 +38,7 @@ public class ModelNameSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_1,
+            addedInVersion = Fingerprinter.Version.V_1,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.STABLE,
         )
@@ -57,7 +57,7 @@ public class TotalRamSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_1,
+            addedInVersion = Fingerprinter.Version.V_1,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.STABLE,
         )
@@ -76,7 +76,7 @@ public class TotalInternalStorageSpaceSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_1,
+            addedInVersion = Fingerprinter.Version.V_1,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.STABLE,
         )
@@ -99,8 +99,8 @@ public class ProcCpuInfoSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_1,
-            removedInVersion = IdentificationVersion.V_4,
+            addedInVersion = Fingerprinter.Version.V_1,
+            removedInVersion = Fingerprinter.Version.V_4,
             stabilityLevel = StabilityLevel.STABLE,
         )
     }
@@ -126,7 +126,7 @@ public class ProcCpuInfoV2Signal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_4,
+            addedInVersion = Fingerprinter.Version.V_4,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.STABLE,
         )
@@ -158,7 +158,7 @@ public class SensorsSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_1,
+            addedInVersion = Fingerprinter.Version.V_1,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.STABLE,
         )
@@ -181,8 +181,8 @@ public class InputDevicesSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_1,
-            removedInVersion = IdentificationVersion.V_4,
+            addedInVersion = Fingerprinter.Version.V_1,
+            removedInVersion = Fingerprinter.Version.V_4,
             stabilityLevel = StabilityLevel.STABLE,
         )
     }
@@ -205,7 +205,7 @@ public class InputDevicesV2Signal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_4,
+            addedInVersion = Fingerprinter.Version.V_4,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.STABLE,
         )
@@ -224,7 +224,7 @@ public class BatteryHealthSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_2,
+            addedInVersion = Fingerprinter.Version.V_2,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.OPTIMAL,
         )
@@ -243,7 +243,7 @@ public class BatteryFullCapacitySignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_2,
+            addedInVersion = Fingerprinter.Version.V_2,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.STABLE,
         )
@@ -269,7 +269,7 @@ public class CameraListSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_2,
+            addedInVersion = Fingerprinter.Version.V_2,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.STABLE,
         )
@@ -288,7 +288,7 @@ public class GlesVersionSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_2,
+            addedInVersion = Fingerprinter.Version.V_2,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.STABLE,
         )
@@ -307,7 +307,7 @@ public class AbiTypeSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_2,
+            addedInVersion = Fingerprinter.Version.V_2,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.STABLE,
         )
@@ -326,7 +326,7 @@ public class CoresCountSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_2,
+            addedInVersion = Fingerprinter.Version.V_2,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.STABLE,
         )
@@ -349,8 +349,8 @@ public class FingerprintSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_1,
-            removedInVersion = IdentificationVersion.V_2,
+            addedInVersion = Fingerprinter.Version.V_1,
+            removedInVersion = Fingerprinter.Version.V_2,
             stabilityLevel = StabilityLevel.OPTIMAL,
         )
     }
@@ -368,7 +368,7 @@ public class AndroidVersionSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_2,
+            addedInVersion = Fingerprinter.Version.V_2,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.OPTIMAL,
         )
@@ -387,7 +387,7 @@ public class SdkVersionSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_2,
+            addedInVersion = Fingerprinter.Version.V_2,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.OPTIMAL,
         )
@@ -406,7 +406,7 @@ public class KernelVersionSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_2,
+            addedInVersion = Fingerprinter.Version.V_2,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.OPTIMAL,
         )
@@ -425,7 +425,7 @@ public class EncryptionStatusSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_2,
+            addedInVersion = Fingerprinter.Version.V_2,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.OPTIMAL,
         )
@@ -453,7 +453,7 @@ public class CodecListSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_2,
+            addedInVersion = Fingerprinter.Version.V_2,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.OPTIMAL,
         )
@@ -480,7 +480,7 @@ public class SecurityProvidersSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_2,
+            addedInVersion = Fingerprinter.Version.V_2,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.OPTIMAL,
         )
@@ -509,7 +509,7 @@ public class ApplicationsListSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_1,
+            addedInVersion = Fingerprinter.Version.V_1,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.UNIQUE,
         )
@@ -534,7 +534,7 @@ public class SystemApplicationsListSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_2,
+            addedInVersion = Fingerprinter.Version.V_2,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.OPTIMAL,
         )
@@ -556,7 +556,7 @@ public class AdbEnabledSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_1,
+            addedInVersion = Fingerprinter.Version.V_1,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.OPTIMAL,
         )
@@ -575,7 +575,7 @@ public class DevelopmentSettingsEnabledSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_1,
+            addedInVersion = Fingerprinter.Version.V_1,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.OPTIMAL,
         )
@@ -594,7 +594,7 @@ public class HttpProxySignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_1,
+            addedInVersion = Fingerprinter.Version.V_1,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.UNIQUE,
         )
@@ -613,7 +613,7 @@ public class TransitionAnimationScaleSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_1,
+            addedInVersion = Fingerprinter.Version.V_1,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.OPTIMAL,
         )
@@ -632,7 +632,7 @@ public class WindowAnimationScaleSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_1,
+            addedInVersion = Fingerprinter.Version.V_1,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.OPTIMAL,
         )
@@ -651,7 +651,7 @@ public class DataRoamingEnabledSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_1,
+            addedInVersion = Fingerprinter.Version.V_1,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.UNIQUE,
         )
@@ -670,7 +670,7 @@ public class AccessibilityEnabledSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_1,
+            addedInVersion = Fingerprinter.Version.V_1,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.OPTIMAL,
         )
@@ -689,7 +689,7 @@ public class DefaultInputMethodSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_1,
+            addedInVersion = Fingerprinter.Version.V_1,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.OPTIMAL,
         )
@@ -708,8 +708,8 @@ public class RttCallingModeSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_1,
-            removedInVersion = IdentificationVersion.V_2,
+            addedInVersion = Fingerprinter.Version.V_1,
+            removedInVersion = Fingerprinter.Version.V_2,
             stabilityLevel = StabilityLevel.OPTIMAL,
         )
     }
@@ -727,7 +727,7 @@ public class TouchExplorationEnabledSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_1,
+            addedInVersion = Fingerprinter.Version.V_1,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.OPTIMAL,
         )
@@ -746,7 +746,7 @@ public class AlarmAlertPathSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_1,
+            addedInVersion = Fingerprinter.Version.V_1,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.OPTIMAL,
         )
@@ -765,7 +765,7 @@ public class DateFormatSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_1,
+            addedInVersion = Fingerprinter.Version.V_1,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.OPTIMAL,
         )
@@ -784,7 +784,7 @@ public class EndButtonBehaviourSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_1,
+            addedInVersion = Fingerprinter.Version.V_1,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.OPTIMAL,
         )
@@ -803,7 +803,7 @@ public class FontScaleSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_1,
+            addedInVersion = Fingerprinter.Version.V_1,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.OPTIMAL,
         )
@@ -822,7 +822,7 @@ public class ScreenOffTimeoutSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_1,
+            addedInVersion = Fingerprinter.Version.V_1,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.OPTIMAL,
         )
@@ -841,8 +841,8 @@ public class TextAutoReplaceEnabledSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_1,
-            removedInVersion = IdentificationVersion.V_2,
+            addedInVersion = Fingerprinter.Version.V_1,
+            removedInVersion = Fingerprinter.Version.V_2,
             stabilityLevel = StabilityLevel.OPTIMAL,
         )
     }
@@ -860,8 +860,8 @@ public class TextAutoPunctuateSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_1,
-            removedInVersion = IdentificationVersion.V_2,
+            addedInVersion = Fingerprinter.Version.V_1,
+            removedInVersion = Fingerprinter.Version.V_2,
             stabilityLevel = StabilityLevel.OPTIMAL,
         )
     }
@@ -879,7 +879,7 @@ public class Time12Or24Signal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_1,
+            addedInVersion = Fingerprinter.Version.V_1,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.OPTIMAL,
         )
@@ -898,7 +898,7 @@ public class IsPinSecurityEnabledSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_1,
+            addedInVersion = Fingerprinter.Version.V_1,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.OPTIMAL,
         )
@@ -917,7 +917,7 @@ public class FingerprintSensorStatusSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_1,
+            addedInVersion = Fingerprinter.Version.V_1,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.OPTIMAL,
         )
@@ -936,7 +936,7 @@ public class RingtoneSourceSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_1,
+            addedInVersion = Fingerprinter.Version.V_1,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.OPTIMAL,
         )
@@ -959,7 +959,7 @@ public class AvailableLocalesSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_1,
+            addedInVersion = Fingerprinter.Version.V_1,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.OPTIMAL,
         )
@@ -978,7 +978,7 @@ public class RegionCountrySignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_2,
+            addedInVersion = Fingerprinter.Version.V_2,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.OPTIMAL,
         )
@@ -997,7 +997,7 @@ public class DefaultLanguageSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_2,
+            addedInVersion = Fingerprinter.Version.V_2,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.OPTIMAL,
         )
@@ -1016,7 +1016,7 @@ public class TimezoneSignal(
 
     public companion object {
         public val info: Info = Info(
-            addedInVersion = IdentificationVersion.V_2,
+            addedInVersion = Fingerprinter.Version.V_2,
             removedInVersion = null,
             stabilityLevel = StabilityLevel.OPTIMAL,
         )

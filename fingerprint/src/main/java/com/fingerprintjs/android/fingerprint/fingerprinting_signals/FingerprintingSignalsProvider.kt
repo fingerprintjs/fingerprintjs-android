@@ -1,7 +1,7 @@
 package com.fingerprintjs.android.fingerprint.fingerprinting_signals
 
 import androidx.annotation.WorkerThread
-import com.fingerprintjs.android.fingerprint.IdentificationVersion
+import com.fingerprintjs.android.fingerprint.Fingerprinter
 import com.fingerprintjs.android.fingerprint.info_providers.*
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 import com.fingerprintjs.android.fingerprint.tools.inRange
@@ -33,7 +33,7 @@ public class FingerprintingSignalsProvider internal constructor(
 ) {
 
     private fun <T : FingerprintingSignal<*>> createSignalIfNeeded(
-        requiredVersion: IdentificationVersion,
+        requiredVersion: Fingerprinter.Version,
         requiredStabilityLevel: StabilityLevel,
         signalFingerprintingInfo: FingerprintingSignal.Info,
         signalFactory: () -> T,
@@ -51,18 +51,18 @@ public class FingerprintingSignalsProvider internal constructor(
      * Shorthand method returning the subset of signals listed below in this class
      * with respect to provided parameters.
      *
-     * Starting from [IdentificationVersion.fingerprintingFlattenedSignalsFirstVersion], calculating
+     * Starting from [Fingerprinter.Version.fingerprintingFlattenedSignalsFirstVersion], calculating
      * a device fingerprint via [Fingerprinter's][com.fingerprintjs.android.fingerprint.Fingerprinter]
      * getFingerprint(fingerprintingSignals, hasher)  method using signals returned from this method will result
      * in exactly the same fingerprint as when using [Fingerprinter's][com.fingerprintjs.android.fingerprint.Fingerprinter]
      * getFingerprint(version, stabilityLevel, hasher, listener) method with the same parameters.
      *
-     * @param version identification version. Check out [IdentificationVersion] for details.
+     * @param version identification version. Check out [Fingerprinter.Version] for details.
      * @param stabilityLevel stability level. Check out [StabilityLevel] for details.
      */
     @WorkerThread
     public fun getSignalsMatching(
-        version: IdentificationVersion,
+        version: Fingerprinter.Version,
         stabilityLevel: StabilityLevel
     ): List<FingerprintingSignal<*>> {
         return listOf(
