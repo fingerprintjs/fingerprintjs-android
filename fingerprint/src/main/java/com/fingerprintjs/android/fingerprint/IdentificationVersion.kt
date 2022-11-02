@@ -4,7 +4,7 @@ import androidx.annotation.Discouraged
 
 /**
  * This class represents the version of the logic provided by [Fingerprinter] API.
- * Whenever we implement new signals (completely new or just more stable variants of existing)
+ * Whenever we implement new signals (completely new or just more stable variants of existing ones)
  * for device ID or fingerprint, the version is incremented.
  * Please keep in mind that changing [IdentificationVersion] leads to changing device id
  * and/or fingerprint returned by [Fingerprinter] API.
