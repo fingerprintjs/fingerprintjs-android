@@ -1,13 +1,13 @@
 package com.fingerprintjs.android.fingerprint.tools
 
-import com.fingerprintjs.android.fingerprint.IdentificationVersion
+import com.fingerprintjs.android.fingerprint.Fingerprinter
 import com.fingerprintjs.android.fingerprint.fingerprinting_signals.*
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 
 internal object FingerprintingLegacySchemeSupportExtensions {
 
     private fun <T: FingerprintingSignal<*>>createSignalIfNeeded(
-        requiredVersion: IdentificationVersion,
+        requiredVersion: Fingerprinter.Version,
         requiredStabilityLevel: StabilityLevel,
         signalFingerprintingInfo: FingerprintingSignal.Info,
         signalFactory: () -> T,
@@ -23,12 +23,12 @@ internal object FingerprintingLegacySchemeSupportExtensions {
     }
 
     fun FingerprintingSignalsProvider.getHardwareSignals(
-        version: IdentificationVersion,
+        version: Fingerprinter.Version,
         stabilityLevel: StabilityLevel,
     ): List<FingerprintingSignal<*>> {
-        require(version < IdentificationVersion.fingerprintingFlattenedSignalsFirstVersion)
+        require(version < Fingerprinter.Version.fingerprintingFlattenedSignalsFirstVersion)
         return when (version) {
-            IdentificationVersion.V_1 -> {
+            Fingerprinter.Version.V_1 -> {
                 listOf(
                     ManufacturerNameSignal.info to { manufacturerNameSignal },
                     ModelNameSignal.info to { modelNameSignal },
@@ -39,7 +39,7 @@ internal object FingerprintingLegacySchemeSupportExtensions {
                     InputDevicesSignal.info to { inputDevicesSignal },
                 )
             }
-            in IdentificationVersion.V_2..IdentificationVersion.V_3 -> {
+            in Fingerprinter.Version.V_2..Fingerprinter.Version.V_3 -> {
                 listOf(
                     ManufacturerNameSignal.info to { manufacturerNameSignal },
                     ModelNameSignal.info to { modelNameSignal },
@@ -86,12 +86,12 @@ internal object FingerprintingLegacySchemeSupportExtensions {
     }
 
     fun FingerprintingSignalsProvider.getOsBuildSignals(
-        version: IdentificationVersion,
+        version: Fingerprinter.Version,
         stabilityLevel: StabilityLevel,
     ): List<FingerprintingSignal<*>> {
-        require(version < IdentificationVersion.fingerprintingFlattenedSignalsFirstVersion)
+        require(version < Fingerprinter.Version.fingerprintingFlattenedSignalsFirstVersion)
         return when (version) {
-            IdentificationVersion.V_1 -> {
+            Fingerprinter.Version.V_1 -> {
                 listOf(
                     FingerprintSignal.info to { fingerprintSignal },
                 )
@@ -117,16 +117,16 @@ internal object FingerprintingLegacySchemeSupportExtensions {
     }
 
     fun FingerprintingSignalsProvider.getDeviceStateSignals(
-        version: IdentificationVersion,
+        version: Fingerprinter.Version,
         stabilityLevel: StabilityLevel,
     ): List<FingerprintingSignal<*>> {
-        require(version < IdentificationVersion.fingerprintingFlattenedSignalsFirstVersion)
+        require(version < Fingerprinter.Version.fingerprintingFlattenedSignalsFirstVersion)
         val overriddenStabilityLevel = when(version) {
-            IdentificationVersion.V_1 -> StabilityLevel.UNIQUE
+            Fingerprinter.Version.V_1 -> StabilityLevel.UNIQUE
             else ->stabilityLevel
         }
         return when (version) {
-            IdentificationVersion.V_1 -> {
+            Fingerprinter.Version.V_1 -> {
                 listOf(
                     AdbEnabledSignal.info to { adbEnabledSignal },
                     DevelopmentSettingsEnabledSignal.info to { developmentSettingsEnabledSignal },
@@ -189,16 +189,16 @@ internal object FingerprintingLegacySchemeSupportExtensions {
     }
 
     fun FingerprintingSignalsProvider.getInstalledAppsSignals(
-        version: IdentificationVersion,
+        version: Fingerprinter.Version,
         stabilityLevel: StabilityLevel,
     ): List<FingerprintingSignal<*>> {
-        require(version < IdentificationVersion.fingerprintingFlattenedSignalsFirstVersion)
+        require(version < Fingerprinter.Version.fingerprintingFlattenedSignalsFirstVersion)
         val overriddenStabilityLevel = when(version) {
-            IdentificationVersion.V_1 -> StabilityLevel.UNIQUE
+            Fingerprinter.Version.V_1 -> StabilityLevel.UNIQUE
             else ->stabilityLevel
         }
         return when (version) {
-            IdentificationVersion.V_1 -> {
+            Fingerprinter.Version.V_1 -> {
                 listOf(
                     ApplicationsListSignal.info to { applicationsListSignal },
                 )

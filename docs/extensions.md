@@ -5,7 +5,7 @@ Copy extensions in the project and use as shown below.
 ```kotlin
 
 fun Fingerprinter.fingerprintObservable(
-    version: IdentificationVersion,
+    version: Fingerprinter.Version,
     stabilityLevel: StabilityLevel = StabilityLevel.OPTIMAL,
     hasher: Hasher = MurMur3x64x128Hasher()
 ) = Observable.create(ObservableOnSubscribe<String> { emitter ->
@@ -15,7 +15,7 @@ fun Fingerprinter.fingerprintObservable(
     }
 })
 
-fun Fingerprinter.deviceIdObservable(version: IdentificationVersion) = Observable
+fun Fingerprinter.deviceIdObservable(version: Fingerprinter.Version) = Observable
 	.create(ObservableOnSubscribe<DeviceIdResult> { emitter ->
     this.getDeviceId(version) { deviceIdResult ->
         emitter.onNext(deviceIdResult)
@@ -32,13 +32,13 @@ Usage:
 val fingerprinter = FingerprinterFactory.create(context)
 
 fingerprinter
-        .fingerprintObservable(version = IdentificationVersion.V_5)
+        .fingerprintObservable(version = Fingerprinter.Version.V_5)
         .subscribe { fingerprint ->
             // Your code
         }
 
 fingerprinter
-        .deviceIdObservable(version = IdentificationVersion.V_5)
+        .deviceIdObservable(version = Fingerprinter.Version.V_5)
         .subscribe { deviceIdResult ->
             val deviceId = deviceIdResult.deviceId
             // Your code
@@ -52,7 +52,7 @@ fingerprinter
 ```kotlin
 
 suspend fun Fingerprinter.fingerprint(
-    version: IdentificationVersion,
+    version: Fingerprinter.Version,
     stabilityLevel: StabilityLevel = StabilityLevel.OPTIMAL,
     hasher: Hasher = MurMur3x64x128Hasher()
 ): String {
@@ -63,7 +63,7 @@ suspend fun Fingerprinter.fingerprint(
     }
 }
 
-suspend fun Fingerprinter.deviceId(version: IdentificationVersion): DeviceIdResult {
+suspend fun Fingerprinter.deviceId(version: Fingerprinter.Version): DeviceIdResult {
     return suspendCancellableCoroutine { continuation ->
         getDeviceId(version) { deviceIdResult ->
             continuation.resume(deviceIdResult)
@@ -83,8 +83,8 @@ val fingerprinter = FingerprinterFactory.create(context)
 ...
 
 launch {
-    val fingerprint = fingerprinter.fingerprint(IdentificationVersion.V_5)
-    val deviceId = fingerprinter.deviceId(IdentificationVersion.V_5).deviceId
+    val fingerprint = fingerprinter.fingerprint(Fingerprinter.Version.V_5)
+    val deviceId = fingerprinter.deviceId(Fingerprinter.Version.V_5).deviceId
 }
 
 ```

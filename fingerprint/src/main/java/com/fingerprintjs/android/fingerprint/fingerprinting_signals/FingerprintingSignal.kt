@@ -1,6 +1,6 @@
 package com.fingerprintjs.android.fingerprint.fingerprinting_signals
 
-import com.fingerprintjs.android.fingerprint.IdentificationVersion
+import com.fingerprintjs.android.fingerprint.Fingerprinter
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 
 /**
@@ -22,8 +22,8 @@ public sealed class FingerprintingSignal<out T> {
     public abstract fun getHashableString(): String
 
     public data class Info(
-        public val addedInVersion: IdentificationVersion,
-        public val removedInVersion: IdentificationVersion?,
+        public val addedInVersion: Fingerprinter.Version,
+        public val removedInVersion: Fingerprinter.Version?,
         public val stabilityLevel: StabilityLevel,
     )
 }
