@@ -39,7 +39,7 @@ public object FingerprinterFactory {
     private var hasher: Hasher = MurMur3x64x128Hasher()
 
     /**
-     * A factory method for [Fingerprinter] class. Consecutive calls to this method with the same [configuration] will return
+     * A factory method for the [Fingerprinter] class. Consecutive calls to this method with the same [configuration] will return
      * the same instance.
      *
      * This method has been deprecated for multiple reasons:
@@ -84,7 +84,7 @@ public object FingerprinterFactory {
     }
 
     /**
-     * A factory method for [Fingerprinter] class.
+     * A factory method for the [Fingerprinter] class.
      *
      * @param context Android context.
      */

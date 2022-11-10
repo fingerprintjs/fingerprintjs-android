@@ -7,13 +7,13 @@ import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 import com.fingerprintjs.android.fingerprint.tools.inRange
 
 /**
- * A class that provides signals used in [Fingerprinter's][com.fingerprintjs.android.fingerprint.Fingerprinter]
+ * A class that provides signals used in the [Fingerprinter's][com.fingerprintjs.android.fingerprint.Fingerprinter]
  * getFingerprint(fingerprintingSignals, hashed) method.
- * You can get an instance of this class using
+ * You can get an instance of this class using the
  * [getFingerprintingSignalsProvider][com.fingerprintjs.android.fingerprint.Fingerprinter.getFingerprintingSignalsProvider]
  * method.
  *
- * All signals in this class are cached.
+ * All the signals in this class are cached.
  */
 public class FingerprintingSignalsProvider internal constructor(
     private val cpuInfoProvider: CpuInfoProvider,
@@ -48,13 +48,13 @@ public class FingerprintingSignalsProvider internal constructor(
     }
 
     /**
-     * Shorthand method returning the subset of signals listed below in this class
+     * A shorthand method returning the subset of signals listed below in the class
      * with respect to provided parameters.
      *
      * Starting from [Fingerprinter.Version.fingerprintingFlattenedSignalsFirstVersion], calculating
-     * a device fingerprint via [Fingerprinter's][com.fingerprintjs.android.fingerprint.Fingerprinter]
-     * getFingerprint(fingerprintingSignals, hasher)  method using signals returned from this method will result
-     * in exactly the same fingerprint as when using [Fingerprinter's][com.fingerprintjs.android.fingerprint.Fingerprinter]
+     * a device fingerprint via the [Fingerprinter's][com.fingerprintjs.android.fingerprint.Fingerprinter]
+     * getFingerprint(fingerprintingSignals, hasher) method using signals returned from this method will result
+     * in exactly the same fingerprint as when using the [Fingerprinter's][com.fingerprintjs.android.fingerprint.Fingerprinter]
      * getFingerprint(version, stabilityLevel, hasher, listener) method with the same parameters.
      *
      * @param version identification version. Check out [Fingerprinter.Version] for details.

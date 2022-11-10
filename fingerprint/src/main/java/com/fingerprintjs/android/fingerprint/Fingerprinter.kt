@@ -32,12 +32,12 @@ public class Fingerprinter internal constructor(
     private var fingerprintResult: FingerprintResult? = null
 
     /**
-     * Retrieve device ID information.
+     * Retrieve the device ID information.
      *
-     * Subsequent calls will return the cached result.
+     * Subsequent calls will return cached results.
      *
-     * This method and [Configuration] class are now deprecated in favor of getDeviceId(version, listener)
-     * which gives an ability to get device id with different parameters without reinstantiation of the whole [Fingerprinter] class.
+     * This method and the [Configuration] class are now deprecated in favor of the getDeviceId(version, listener) method
+     * which gives an ability to get a device ID with different parameters without reinstantiation of the whole [Fingerprinter] class.
      *
      * @param listener device ID listener.
      * @throws IllegalStateException if [Fingerprinter] was retrieved via [FingerprinterFactory.create] method.
@@ -72,10 +72,10 @@ public class Fingerprinter internal constructor(
     }
 
     /**
-     * Retrieve device ID information.
+     * Retrieve the device ID information.
      *
      * Device IDs are cached internally, so it makes no sense to call this method more than once with the same [version].
-     * If you suddenly want to re-evaluate device id completely from scratch, you should reinitialize [Fingerprinter] using
+     * If you want to re-evaluate a device ID value, you should reinitialize [Fingerprinter] using the
      * [FingerprinterFactory.create] method.
      *
      * @param version identification version. Check out [Version] for details.
@@ -95,17 +95,17 @@ public class Fingerprinter internal constructor(
     }
 
     /**
-     * Retrieve device fingerprint information.
+     * Retrieve the device fingerprint information.
+
+     * This method and the [Configuration] class are now deprecated in favor of getFingerprint(version,stabilityLevel, hasher, listener)
+     * which gives an ability to get fingerprints with different parameters without reinstantiation of the whole [Fingerprinter] class.
+     * Check the [FingerprintResult] documentation on how it's properties can be replaced with the newer API.
      *
      * Fingerprinting signals are cached internally, so it makes no sense to call this method more than once with the same [stabilityLevel].
      *
-     * This method and [Configuration] class are now deprecated in favor of getFingerprint(version,stabilityLevel, hasher, listener)
-     * which gives an ability to get fingerprint with different parameters without reinstantiation of the whole [Fingerprinter] class.
-     * Check [FingerprintResult] documentation on how it's properties can be replaced with the newer API.
-     *
      * @param stabilityLevel stability level. Check out [StabilityLevel] for details.
      * @param listener listener for [FingerprintResult].
-     * @throws IllegalStateException if [Fingerprinter] was retrieved via [FingerprinterFactory.create] method.
+     * @throws IllegalStateException if [Fingerprinter] was retrieved via the [FingerprinterFactory.create] method.
      */
     @Deprecated("""
         This method is deprecated in favor of getFingerprint(version,stabilityLevel, hasher, listener)
@@ -159,11 +159,12 @@ public class Fingerprinter internal constructor(
     }
 
     /**
-     * Retrieve device fingerprint information. This is the most convenient method to simply get device fingerprint.
+     * Retrieve the device fingerprint information. This is the most convenient method to get device fingerprints.
      *
-     * Fingerprinting signals are cached internally, so it makes no sense to call this method more than once with the same parameters.
-     * If you suddenly want to re-evaluate fingerprint completely from scratch, you should reinitialize [Fingerprinter] using
+     * If you want to re-evaluate fingerprint, you should reinitialize [Fingerprinter] using the
      * [FingerprinterFactory.create] method.
+     *
+     * Signals for fingerprinting are cached internally, so it makes no sense to call this method more than once with the same parameters.
      *
      * @param version identification version. Check out [Version] for details.
      * @param stabilityLevel stability level. Check out [StabilityLevel] for details.
@@ -203,7 +204,7 @@ public class Fingerprinter internal constructor(
 
     /**
      * A method for retrieving a custom fingerprint using only provided [fingerprintingSignals].
-     * The signals are supposed to be retrieved using [FingerprintingSignalsProvider], which in turn is retrieved
+     * The signals are supposed to be retrieved using [FingerprintingSignalsProvider], which is retrieved
      * via [getFingerprintingSignalsProvider].
      *
      * Note that if you use this method (along with [FingerprintingSignalsProvider's][FingerprintingSignalsProvider]
@@ -230,18 +231,19 @@ public class Fingerprinter internal constructor(
     }
 
     /**
-     * @return [FingerprintingSignalsProvider] which is useful in conjunction with getFingerprint(signals, hasher) method.
+     * @return [FingerprintingSignalsProvider] which is useful in conjunction with the getFingerprint(signals, hasher) method.
      */
     public fun getFingerprintingSignalsProvider(): FingerprintingSignalsProvider {
         return fpSignalsProvider
     }
 
     /**
-     * This class represents the version of the logic provided by [Fingerprinter] API.
+     * This class represents the version of the logic provided by the [Fingerprinter] API.
      * Whenever we implement new signals (completely new or just more stable variants of existing ones)
-     * for device ID or fingerprint, the version is incremented.
-     * Please keep in mind that changing [Version] leads to changing device id
-     * and/or fingerprint returned by [Fingerprinter] API.
+     * for device ID or fingerprinting, the version is incremented.
+     *
+     * Note that changing [Version] leads to changing device id
+     * and/or fingerprint returned by the [Fingerprinter] API.
      */
     public enum class Version(
         internal val intValue: Int
@@ -280,22 +282,22 @@ public class Fingerprinter internal constructor(
 }
 
 /**
- * Represents device fingerprint information.
+ * Represents the device fingerprint information.
  *
- * This class is deprecated along with [Fingerprinter's][Fingerprinter] getFingerprint(stabilityLevel, listener) method.
+ * This class is deprecated along with the [Fingerprinter's][Fingerprinter] getFingerprint(stabilityLevel, listener) method.
  * Rules for migrating to newer APIs are listed below.
  *
- * If you relied only on [fingerprint] property, you can easily retrieve it using the new
+ * If you relied only on the [fingerprint] property, you can retrieve it using the new
  * getFingerprint(version, stabilityLevel, hasher, listener) method.
  *
- * If you relied on [SignalGroupProvider.rawData] to retrieve any specific signals, you can now retrieve them
- * using [FingerprintingSignalsProvider]. [FingerprintingSignalsProvider] makes it easier, because it represents all
+ * If you relied on [SignalGroupProvider.rawData] to retrieve any specific signals, you can do it
+ * using [FingerprintingSignalsProvider]. The [FingerprintingSignalsProvider] class makes it easier, because it represents all the
  * signals in one place, so there is no more need to access different signals via different [SignalGroupProvider]s.
  *
  * Lastly, if you relied on [SignalGroupProvider.fingerprint] which essentially returned a fingerprint of a whole
  * *group* of signals, then there is no any one-line alternative in the newer API, because we intentionally removed the
  * *grouping* of signals and made signal's hierarchy flat. That means that now you will have to pick a set of signals by yourself
- * via [FingerprintingSignalsProvider] and pass them to [Fingerprinter]'s getFingerprint(fingerprintingSignals, hasher) method.
+ * via [FingerprintingSignalsProvider] and pass them to the [Fingerprinter]'s getFingerprint(fingerprintingSignals, hasher) method.
  */
 @Deprecated(message = DeprecationMessages.DEPRECATED_SYMBOL)
 public interface FingerprintResult {
@@ -304,8 +306,8 @@ public interface FingerprintResult {
 }
 
 /**
- * Represents device ID information.
- * @property deviceId This is the one of the IDs listed below – the one that we consider the most appropriate
+ * Represents the device ID information.
+ * @property deviceId This is the one of the IDs listed below – the one is considered the most appropriate
  * as a default device identifier.
  * @property gsfId GSF ID.
  * @property androidId Android ID.
