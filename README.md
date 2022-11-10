@@ -38,11 +38,11 @@
 
 Lightweight library for device identification and fingerprinting.
 
-Fully written in Kotlin. **100% Crash-free**. 
+Fully written in Kotlin. **100% Crash-free**.
 
 Creates a device identifier from all available platform signals.
-									     								     
-The identifier is fully stateless and will remain the same after reinstalling or clearing application data. 
+
+The identifier is fully stateless and will remain the same after reinstalling or clearing application data.
 
 [Check the FingeprintJS iOS](https://github.com/fingerprintjs/fingerprintjs-ios) – an iOS library for device fingerprinting.
 
@@ -89,13 +89,13 @@ dependencies {
 
 #### deviceId vs fingerprint
 
-The library operates with two entities. 
+The library operates with two entities.
 
 1. `deviceId` - is a random and unique device identifier.
 
 Can be used by developers to identify devices to deliver personalized content, detect suspicious activity, and perform fraud detection.
-Internally it will use Google Service Framework ID, Media DRM ID or Android ID depending on which one is available.
-This identifier is stable, i.e. it will remain the same even after reinstalling your app. 
+Internally it will use Google Service Framework ID if it's available and ANDROID_ID, if GSF ID is not available.
+This identifier is stable, i.e. it will remain the same even after reinstalling your app.
 But it will be different after factory reset of the device.
 
 2. `fingerprint` is a digital device fingerprint. It works by combining all available device signals and attributes into a single identifier. There is a probability that two identical devices will have the same `fingerprint`.
@@ -118,17 +118,19 @@ Kotlin
 ```kotlin
 
 // Initialization
- val fingerprinter = FingerprinterFactory.create(context)
+ val fingerprinter = FingerprinterFactory
+		.getInstance(applicationContext, Configuration(version = 4))
+
 
 // Usage
-fingerprinter.getFingerprint(version = Fingerprinter.Version.V_5) { fingerprint ->
-    // Use fingerprint
+fingerprinter.getFingerprint { fingerprintResult ->
+  val fingerprint = fingerprintResult.fingerprint
 }
 
-fingerprinter.getDeviceId(version = Fingerprinter.Version.V_5) { result ->
-    val deviceId = result.deviceId
-    // Use deviceId
+fingerprinter.getDeviceId { result ->
+  val deviceId = result.deviceId
 }
+
 
 ```
 
@@ -137,50 +139,58 @@ Java
 ```java
 
 // Initialization
-Fingerprinter fingerprinter = FingerprinterFactory.create(context);
+Fingerprinter fingerprinter = FingerprinterFactory
+				.getInstance(getApplicationContext(), new Configuration(4));
+
 
 // Usage
-fingerprinter.getFingerprint(Fingerprinter.Version.V_5, fingerprint-> {
-    // use fingerprint
-    return null;
-});
-
-fingerprinter.getDeviceId(Fingerprinter.Version.V_5, deviceIdResult-> {
-    String deviceId = deviceIdResult.getDeviceId();
-    // use deviceId
-    return null;
-});
+fingerprinter.getFingerprint(new Function1<FingerprintResult, Unit>() {
+        @Override
+        public Unit invoke(FingerprintResult fingerprintResult) {
+        	String fingerprint = fingerprintResult.getFingerprint();
+        	    return null;
+            }
+        });
+        
+fingerprinter.getDeviceId(new Function1<DeviceIdResult, Unit>() {
+            @Override
+            public Unit invoke(DeviceIdResult deviceIdResult) {
+            	String deviceId = deviceIdResult.getDeviceId();
+                return null;
+            }
+        });
 
 ```
 
-`getFingerprint` and `getDeviceId` methods execute on a separate thread, as well as the lambda you pass to them, so don't forget to post the work to the main thread when needed.
+`getFingerprint` and `getDeviceId` methods execute on a separate thread. Keep this in mind when using results on the main thread.
 
 Also the results are cached, so subsequent calls will be faster.
 
 ## Versioning
 
-`fingerprint` is versioned incrementally; the version should be set explicitly to avoid unexpected `fingerprint` changes when updating the library.
+`fingerprint` is versioned incrementatlly; the version should be set explicitly to avoid unexpected `fingerprint` changes when updating the library.
 
-See full [API reference](docs/api_reference.md).
+The `version` is set while the initialization of the library with `Configuration` class.
 
-## Migration from 1.\*.\* library versions
+```kotlin
 
-The library API has undergone some changes in the major version 2. The older APIs are left as deprecated for now, but are planned to be removed in the future releases.
-We believe that for the vast majority of library usage scenarios the migration process will be fast and almost effortless.
+val fingerprinter = FingerprinterFactory
+		.getInstance(applicationContext, Configuration(version = 4))
 
-Check out [Migration to V2](docs/migration_to_v2.md) for migration steps and the motivation behind the changes to the API.
+```
+
+See full [Kotlin reference](docs/kotlin_reference.md)/[Java reference](docs/java_reference.md).
 
 ## Playground App
 
-Try the library features in the [Playground App](https://github.com/fingerprintjs/fingerprintjs-android/releases/download/1.3.0/Playground-release-1.3.0.apk).
-As for now, the app showcases only the features introduced in the major version 1 of the library. Updating the app to showcase V2 features is also a task in our todo list.
+Try all the library features in the [Playground App](https://github.com/fingerprintjs/fingerprintjs-android/releases/download/1.3.0/Playground-release-1.3.0.apk).
 
 ## Android API support
 
 fingerprint-android supports API versions from 21 (Android 5.0) and higher.
 
-## Contributing
 
+## Contributing
 Feel free to ask questions and request features.
 Just create an issue with a clear explanation of what you'd like to have in the library.
 For code contributions, please see the [contributing guideline](docs/contributing.md).
@@ -197,4 +207,3 @@ For code contributions, please see the [contributing guideline](docs/contributin
 
 This library is MIT licensed.
 Copyright FingerprintJS, Inc. 2020-2022.
-
