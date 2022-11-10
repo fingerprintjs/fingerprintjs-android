@@ -66,5 +66,5 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
     androidTestImplementation'androidx.test.ext:junit-ktx:1.1.4'
-    androidTestImplementation 'androidx.test:runner:1.4.1'
+    androidTestImplementation 'androidx.test:runner:1.5.1'
 }
