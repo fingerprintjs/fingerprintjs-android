@@ -6,13 +6,17 @@ plugins {
 
 group='com.github.fingerprintjs'
 
+def libraryOutputName(String variantName) {
+    "fingerprint-android-${project.VERSION_NAME}-${variantName}.aar"
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
             groupId = 'com.github.fingerprintjs'
             artifactId = "fingerprint-android"
-            version = '2.0.0'
-            artifact("$buildDir/outputs/aar/fingerprint-android-2.0.0-release.aar")
+            version = project.VERSION_NAME
+            artifact("$buildDir/outputs/aar/${libraryOutputName('release')}")
         }
     }
 }
@@ -23,15 +27,13 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode Integer.parseInt(project.VERSION_CODE)
-        versionName project.VERSION_NAME
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
 
 
-    lintOptions {
+    lint {
         abortOnError true
         warningsAsErrors true
     }
@@ -44,10 +46,12 @@ android {
         }
     }
 
+    namespace 'com.fingerprintjs.android.fingerprint'
+
     libraryVariants.all { variant ->
         variant.outputs.all { output ->
-            if (outputFile != null && outputFileName.endsWith('.aar')) {
-                outputFileName = "fingerprint-android-${defaultConfig.versionName}-${variant.name}.aar"
+            if (outputFileName.endsWith('.aar')) {
+                outputFileName = libraryOutputName(variant.name)
             }
         }
     }

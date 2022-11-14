@@ -1,33 +1,3 @@
 <resources>
     <string name="app_name">Playground</string>
-    <string name="checkbox_hardware_fingerprint_text">Hardware fingerprint</string>
-    <string name="checkbox_osbuild_fingerprint_text">OsBuild fingerprint</string>
-    <string name="checkbox_device_state_fingerprint_text">Device state fingerprint</string>
-    <string name="checkbox_installed_applications_fingerprint_text">Installed applications fingerprint</string>
-    <string name="custom_fingerprint_heading">%s device fingerprint v%s</string>
-    <string name="about_ok_button_text">Got it</string>
-    <string name="about_text">The application shows you all the features of the Fingerprint-Android library. There are a few signal providers and deviceId providers with all their underlying data, and public method, that allows you to calculate a custom fingerprint.\n\nBy changing the list of signal-providers, you can make a fingerprint that works for your requirements of stability and uniqueness.\n\nWhen you share raw data via mailing apps, the address of developers substitutes automatically. This is for developers\' convenience in the testing process. If you would like to share your results with developers - you are welcome. It will help improve the quality of the library.</string>
-    <string name="about_dialog_title">About</string>
-    <string name="share_via_email_title">Send data to developers?</string>
-    <string name="share_via_email_text">Would you like to share the data with developers to improve quality of the library?</string>
-    <string name="share_via_email_positive_button_text">Yes</string>
-    <string name="share_via_email_negative_button_text">No, I\'d like to send it to myself</string>
-
-    <string name="stable_fingerprint_mode_text">Stable</string>
-    <string name="optimal_fingerprint_mode_text">Optimal</string>
-    <string name="unique_fingerprint_mode_text">Unique</string>
-
-    <string name="menu_about">About</string>
-    <string name="menu_share">Share</string>
-    <string name="toggle_button_stable_text">Stable</string>
-    <string name="toggle_button_optimal_text">Optimal</string>
-    <string name="toggle_button_unique_text">Unique</string>
-
-    <string-array name="versions">
-        <item>v1</item>
-        <item>v2</item>
-        <item>v3</item>
-        <item>v4</item>
-    </string-array>
-
 </resources>
