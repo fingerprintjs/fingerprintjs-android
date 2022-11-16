@@ -29,6 +29,8 @@
  		<img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="240px/>
  	</a>
  </p>
+ 
+<p align="center"></p>
 
 <p align="center">
   <img src="resources/fingerprint-demo-1.png" width="195">
@@ -83,36 +85,11 @@ dependencies {
   // Add this line only if you use this library with Java
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-  implementation "com.github.fingerprintjs:fingerprint-android:1.3.0"
+  implementation "com.github.fingerprintjs:fingerprint-android:2.0.0"
 }
 
 
 ```
-
-
-#### deviceId vs fingerprint
-
-The library operates with two entities.
-
-1. `deviceId` - is a random and unique device identifier.
-
-Can be used by developers to identify devices to deliver personalized content, detect suspicious activity, and perform fraud detection.
-Internally it will use Google Service Framework ID, Media DRM ID or Android ID depending on which one is available.
-This identifier is stable, i.e. it will remain the same even after reinstalling your app.
-But it will be different after factory reset of the device.
-
-2. `fingerprint` is a digital device fingerprint. It works by combining all available device signals and attributes into a single identifier. There is a probability that two identical devices will have the same `fingerprint`.
-
-
-#### Which one should I use?
-
-`deviceId` is guaranteed to be random and should be your first choice for device identification. This identifier can be spoofed though and shouldn't be used in security-focused or fraud detection scenarios.
-
-`fingerprint` is much harder to spoof and is a safer choice in security-focused use cases.
-
-See the [table](docs/stability.md) about stability of each.
-
-
 
 ### 3. Get deviceIDs and fingerprints
 
@@ -156,9 +133,32 @@ fingerprinter.getDeviceId(Fingerprinter.Version.V_5, deviceIdResult-> {
 
 ```
 
-`getFingerprint` and `getDeviceId` methods execute on a separate thread, as well as the lambda you pass to them, so don't forget to post the work to the main thread when needed.
+`getFingerprint` and `getDeviceId` methods execute on a worker thread, as well as the lambda you pass to them, so don't forget to post the work to the main thread when needed.
 
 Also the results are cached, so subsequent calls will be faster.
+
+#### deviceId vs fingerprint
+
+The library operates with two entities.
+
+1. `deviceId` - is a random and unique device identifier.
+
+Can be used by developers to identify devices to deliver personalized content, detect suspicious activity, and perform fraud detection.
+Internally it will use Google Service Framework ID, Media DRM ID or Android ID depending on which one is available.
+This identifier is stable, i.e. it will remain the same even after reinstalling your app.
+But it will be different after factory reset of the device.
+
+2. `fingerprint` is a digital device fingerprint. It works by combining all available device signals and attributes into a single identifier. There is a probability that two identical devices will have the same `fingerprint`.
+
+
+#### Which one should I use?
+
+`deviceId` is guaranteed to be random and should be your first choice for device identification. This identifier can be spoofed though and shouldn't be used in security-focused or fraud detection scenarios.
+
+`fingerprint` is much harder to spoof and is a safer choice in security-focused use cases.
+
+See the [table](docs/stability.md) about stability of each.
+
 
 ## Versioning
 
@@ -169,13 +169,13 @@ See full [API reference](docs/api_reference.md).
 ## Migration from 1.\*.\* library versions
 
 The library API has undergone some changes in the major version 2. The older APIs are left as deprecated for now, but are planned to be removed in the future releases.
-We believe that for the vast majority of library usage scenarios the migration process will be fast and almost effortless.
+For the vast majority of library usage scenarios the migration process will be fast and almost effortless.
 
 Check out [Migration to V2](docs/migration_to_v2.md) for migration steps and the motivation behind the changes to the API.
 
-## Playground App
+## Fingerprint Android Demo App
 
-Try the library features in the [Playground App](https://github.com/fingerprintjs/fingerprintjs-android/releases/download/1.3.0/Playground-release-1.3.0.apk).
+Try the library features in the [Fingerprint Android Demo App](https://github.com/fingerprintjs/fingerprintjs-android/releases/download/2.0.0/Playground-release-2.0.0.apk).
 
 ## Android API support
 
