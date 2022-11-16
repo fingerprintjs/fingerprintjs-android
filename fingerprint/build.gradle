@@ -11,8 +11,8 @@ publishing {
         mavenJava(MavenPublication) {
             groupId = 'com.github.fingerprintjs'
             artifactId = "fingerprint-android"
-            version = '1.3.0'
-            artifact("$buildDir/outputs/aar/fingerprint-android-1.3.0-release.aar")
+            version = '2.0.0'
+            artifact("$buildDir/outputs/aar/fingerprint-android-2.0.0-release.aar")
         }
     }
 }
