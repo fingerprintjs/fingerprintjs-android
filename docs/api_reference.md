@@ -1,4 +1,64 @@
-## Advanced usage
+## API Reference
+
+This is an API reference for versions 2.0 and later. If you haven't migrated from v1.* to v2.* please check the [migration guide](docs/migration_to_v2.md).
+
+### Public API
+
+The full Public API looks as following:
+```kotlin
+
+public class Fingerprinter {
+
+    public fun getDeviceId(version: Version, listener: (DeviceIdResult) -> Unit) { ... }
+
+    @JvmOverloads
+    public fun getFingerprint(
+        version: Version,
+        stabilityLevel: StabilityLevel = StabilityLevel.OPTIMAL,
+        hasher: Hasher = MurMur3x64x128Hasher(),
+        listener: (String) -> (Unit),
+    ) { ... }
+
+    @WorkerThread
+    @JvmOverloads
+    public fun getFingerprint(
+        fingerprintingSignals: List<FingerprintingSignal<*>>,
+        hasher: Hasher = MurMur3x64x128Hasher(),
+    ): String { ... }
+
+
+    public fun getFingerprintingSignalsProvider(): FingerprintingSignalsProvider { ... }
+
+    public enum class Version(
+        internal val intValue: Int
+    ) {
+        V_1(intValue = 1),
+        V_2(intValue = 2),
+        V_3(intValue = 3),
+        V_4(intValue = 4),
+        V_5(intValue = 5);
+
+        public companion object {
+            public val latest: Version
+                get() = values().last()
+
+            internal val fingerprintingFlattenedSignalsFirstVersion: Version
+                get() = V_5
+
+            internal val fingerprintingGroupedSignalsLastVersion: Version
+                get() = V_4
+        }
+    }
+}
+
+public data class DeviceIdResult(
+    val deviceId: String,
+    val gsfId: String,
+    val androidId: String,
+    val mediaDrmId: String,
+)
+
+```
 
 ### Increasing the uniqueness of fingerprints
 
