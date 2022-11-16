@@ -1,13 +1,13 @@
 ## Changes in major version 2
 
 ### Ditching global `Configuration` class
-In the major version 1 of the library, the configuration was passed to the factory method `FingerprinterFactory.getInstance(context, configuration)`.
-This meant that if you wanted to get multiple fingerprints of different versions, say, in order to migrate to the newer version of fingerprint, you had to call `getInstance` method twice, which is both ineffective and inconvenient.
+In the major version 1.* of the library, the configuration was passed to the factory method `FingerprinterFactory.getInstance(context, configuration)`.
+Then if you wanted to get multiple fingerprints of different versions (e.g. in order to migrate to the newer version of fingerprints) you had to call `getInstance` method twice making it both ineffective and inconvenient.
 
 In the major version 2, the version is passed to `getDeviceId(..)` and `getFingerprint(..)` methods.
 
 ### Ditching `SignalGroupProvider` class
-In the major version 1 of the library, if you wanted to retrieve any particular signal involved in fingerprinting, you had to do the following:
+In the major version 1.* of the library, if you wanted to retrieve any particular signal involved in fingerprinting, you had to do the following:
 1. Call `Fingerprinter.getFingerprint(stabilityLevel, listener)` to retrieve `FingerprintResult`
 2. Call  `FingerprintResult.getSignalProvider` to retrieve a signal provider a signal belongs to, e.g., `HardwareSignalGroupProvider`
 3. Get `RawData` from that particular signal provider, e.g., `HardwareFingerprintRawData`
@@ -17,15 +17,16 @@ To do the same thing in major version 2, you have to do the following:
 1. Call `Fingerprinter.getFingerprintingSignalsProvider()`
 2. Call `fingerprintingSignalsProvider.manufacturerNameSignal`
 
-This approach requires less code and does not involve unnecessary fingerprint calculation.
+This approach requires less code and does not involve unnecessary fingerprints calculation.
 Also, it allows to reduce the complexity of the code base by making signal's hierarchy *flat*, i.e. not dividing signals into different signal groups based on their nature.
 
 ### Introducing API for custom fingerprinting
-The new method `Fingerprinter.getFingerprint(fingerprintingSignals, hasher)` allows you to create fingerprints based on whatever signals you want. In order to get signals first, use `FingerprintingSignalsProvider` class.
+The new method `Fingerprinter.getFingerprint(fingerprintingSignals, hasher)` allows you to create fingerprints based on whatever signals you want. In order to get signals first, use `FingerprintingSignalsProvider` class. See the example in the [Full API reference](api_reference.md)
 
 ### Changing behaviour of the factory method
-Not only we have removed `configuration` parameter from the factory method, but also changed it's behaviour. This is why now we have `FingerprinterFactory.create(context)` method instead of `FingerprinterFactory.getInstance(context, configuration)` method.
-Whereas the latter method always returned the same instance given the same `configuration`, the former always returns a new instance of `Fingerprinter`. This may be useful if you want to calculate the fingerprint from scratch multiple times. This cannot be possible with a reinstantiation of `Fingerprinter`, because fingerprinting signals inside it are cached internally.
+We have removed `configuration` parameter from the factory method and changed it's behaviour. This is why now we have `FingerprinterFactory.create(context)` method instead of `FingerprinterFactory.getInstance(context, configuration)` method.
+
+Whereas the latter method always returned the same instance given the same `configuration`, the former always returns a new instance of `Fingerprinter`. This may be useful if you want to calculate the fingerprint from scratch multiple times. 
 
 ### Caveats
 Even though all the changes listed above are aimed towards making the API both more flexible and more convenient at the same time, there is one scenario of the API v1 usage that cannot be easily migrated to API v2.
