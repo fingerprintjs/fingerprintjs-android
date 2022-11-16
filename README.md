@@ -30,6 +30,8 @@
  	</a>
  </p>
 
+<p align="center"></p>
+
 <p align="center">
   <img src="resources/fingerprint-demo-1.png" width="195">
   <img src="resources/fingerprint-demo-2.png" width="195">
