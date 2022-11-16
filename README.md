@@ -31,8 +31,11 @@
  </p>
 
 <p align="center">
-    <img src="resources/playground-app.png" alt="PlaygroundApp" width="780px" />
-</p>			
+  <img src="resources/fingerprint-demo-1.png" width="195">
+  <img src="resources/fingerprint-demo-2.png" width="195">
+  <img src="resources/fingerprint-demo-3.png" width="195">
+  <img src="resources/fingerprint-demo-4.png" width="195">
+</p>
 
 # FingerprintJS Android
 
