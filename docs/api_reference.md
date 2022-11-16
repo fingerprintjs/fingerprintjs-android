@@ -1,6 +1,6 @@
 ## API Reference
 
-This is an API reference for versions 2.0 and later. If you haven't migrated from v1.* to v2.* please check the [migration guide](docs/migration_to_v2.md).
+This is an API reference for versions 2.0 and later. If you haven't migrated from v1.* to v2.* please check the [migration guide](migration_to_v2.md).
 
 ### Public API
 
