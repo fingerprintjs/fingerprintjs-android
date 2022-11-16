@@ -2,7 +2,7 @@
 
 ### Ditching global `Configuration` class
 In the major version 1.* of the library, the configuration was passed to the factory method `FingerprinterFactory.getInstance(context, configuration)`.
-Then if you wanted to get multiple fingerprints of different versions (e.g. in order to migrate to the newer version of fingerprints) you had to call `getInstance` method twice making it both ineffective and inconvenient.
+Then if you wanted to get multiple fingerprints of different versions (e.g. in order to migrate to a newer version of fingerprint) you had to call `getInstance` method twice making it both ineffective and inconvenient.
 
 In the major version 2, the version is passed to `getDeviceId(..)` and `getFingerprint(..)` methods.
 
