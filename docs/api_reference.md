@@ -1,4 +1,59 @@
-## Advanced usage
+## API Reference
+
+The following API reference corresponds to versions 2.0.0 and above. If you update from 1.* please follow the [migration guide](migration_to_v2.md).
+
+### Public API
+
+```kotlin
+public class Fingerprinter internal constructor(
+    ...
+) {
+
+
+    public fun getDeviceId(version: Version, listener: (DeviceIdResult) -> Unit) { ... }
+
+    @JvmOverloads
+    public fun getFingerprint(
+        version: Version,
+        stabilityLevel: StabilityLevel = StabilityLevel.OPTIMAL,
+        hasher: Hasher = MurMur3x64x128Hasher(),
+        listener: (String) -> (Unit),
+    ) { ... }
+
+    @WorkerThread
+    @JvmOverloads
+    public fun getFingerprint(
+        fingerprintingSignals: List<FingerprintingSignal<*>>,
+        hasher: Hasher = MurMur3x64x128Hasher(),
+    ): String { ... }
+
+
+    public fun getFingerprintingSignalsProvider(): FingerprintingSignalsProvider { ... }
+
+    public enum class Version(
+        internal val intValue: Int
+    ) {
+        V_1(intValue = 1),
+        V_2(intValue = 2),
+        V_3(intValue = 3),
+        V_4(intValue = 4),
+        V_5(intValue = 5);
+
+        public companion object {
+            public val latest: Version
+                get() = values().last()
+        }
+    }
+}
+
+public data class DeviceIdResult(
+    val deviceId: String,
+    val gsfId: String,
+    val androidId: String,
+    val mediaDrmId: String,
+)
+
+```
 
 ### Increasing the uniqueness of fingerprints
 
