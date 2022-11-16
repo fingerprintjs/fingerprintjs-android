@@ -94,7 +94,7 @@ The library operates with two entities.
 1. `deviceId` - is a random and unique device identifier.
 
 Can be used by developers to identify devices to deliver personalized content, detect suspicious activity, and perform fraud detection.
-Internally it will use Google Service Framework ID if it's available and ANDROID_ID, if GSF ID is not available.
+Internally it will use Google Service Framework ID, Media DRM ID or Android ID depending on which one is available.
 This identifier is stable, i.e. it will remain the same even after reinstalling your app.
 But it will be different after factory reset of the device.
 
@@ -118,19 +118,17 @@ Kotlin
 ```kotlin
 
 // Initialization
- val fingerprinter = FingerprinterFactory
-		.getInstance(applicationContext, Configuration(version = 4))
-
+ val fingerprinter = FingerprinterFactory.create(context)
 
 // Usage
-fingerprinter.getFingerprint { fingerprintResult ->
-  val fingerprint = fingerprintResult.fingerprint
+fingerprinter.getFingerprint(version = Fingerprinter.Version.V_5) { fingerprint ->
+    // Use fingerprint
 }
 
-fingerprinter.getDeviceId { result ->
-  val deviceId = result.deviceId
+fingerprinter.getDeviceId(version = Fingerprinter.Version.V_5) { result ->
+    val deviceId = result.deviceId
+    // Use deviceId
 }
-
 
 ```
 
@@ -139,69 +137,46 @@ Java
 ```java
 
 // Initialization
-Fingerprinter fingerprinter = FingerprinterFactory
-				.getInstance(getApplicationContext(), new Configuration(4));
-
+Fingerprinter fingerprinter = FingerprinterFactory.create(context);
 
 // Usage
-fingerprinter.getFingerprint(new Function1<FingerprintResult, Unit>() {
-        @Override
-        public Unit invoke(FingerprintResult fingerprintResult) {
-        	String fingerprint = fingerprintResult.getFingerprint();
-        	    return null;
-            }
-        });
-        
-fingerprinter.getDeviceId(new Function1<DeviceIdResult, Unit>() {
-            @Override
-            public Unit invoke(DeviceIdResult deviceIdResult) {
-            	String deviceId = deviceIdResult.getDeviceId();
-                return null;
-            }
-        });
+fingerprinter.getFingerprint(Fingerprinter.Version.V_5, fingerprint-> {
+    // use fingerprint
+    return null;
+});
+
+fingerprinter.getDeviceId(Fingerprinter.Version.V_5, deviceIdResult-> {
+    String deviceId = deviceIdResult.getDeviceId();
+    // use deviceId
+    return null;
+});
 
 ```
 
-`getFingerprint` and `getDeviceId` methods execute on a separate thread. Keep this in mind when using results on the main thread.
+`getFingerprint` and `getDeviceId` methods execute on a separate thread, as well as the lambda you pass to them, so don't forget to post the work to the main thread when needed.
 
 Also the results are cached, so subsequent calls will be faster.
 
 ## Versioning
 
-`fingerprint` is versioned incrementatlly; the version should be set explicitly to avoid unexpected `fingerprint` changes when updating the library.
+`fingerprint` is versioned incrementally; the version should be set explicitly to avoid unexpected `fingerprint` changes when updating the library.
 
-The `version` is set while the initialization of the library with `Configuration` class.
+See full [API reference](docs/api_reference.md).
 
-```kotlin
+## Migration from 1.\*.\* library versions
 
-val fingerprinter = FingerprinterFactory
-		.getInstance(applicationContext, Configuration(version = 4))
+The library API has undergone some changes in the major version 2. The older APIs are left as deprecated for now, but are planned to be removed in the future releases.
+We believe that for the vast majority of library usage scenarios the migration process will be fast and almost effortless.
 
-```
-
-See full [Kotlin reference](docs/kotlin_reference.md)/[Java reference](docs/java_reference.md).
+Check out [Migration to V2](docs/migration_to_v2.md) for migration steps and the motivation behind the changes to the API.
 
 ## Playground App
 
-Try all the library features in the [Playground App](https://github.com/fingerprintjs/fingerprintjs-android/releases/download/1.3.0/Playground-release-1.3.0.apk).
+Try the library features in the [Playground App](https://github.com/fingerprintjs/fingerprintjs-android/releases/download/1.3.0/Playground-release-1.3.0.apk).
 
 ## Android API support
 
 fingerprint-android supports API versions from 21 (Android 5.0) and higher.
-
-
-## Contributing
-Feel free to ask questions and request features.
-Just create an issue with a clear explanation of what you'd like to have in the library.
-For code contributions, please see the [contributing guideline](docs/contributing.md).
-
-## Testimonials
-
->Just tested on HUAWEI Y6p, with factory reset, we can retrieve the same result with `StabilityLevel.STABLE` setting.
->
->Thank you
->
-> **_GitHub user_**
 
 ## License
 
