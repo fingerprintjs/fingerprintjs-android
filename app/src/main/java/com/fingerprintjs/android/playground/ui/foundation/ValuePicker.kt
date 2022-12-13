@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.fingerprintjs.android.fingerprint.Fingerprinter
 import com.fingerprintjs.android.playground.ui.foundation.theme.AppTheme
@@ -49,35 +50,39 @@ fun <T> ValuePicker(
         modifier = modifier.wrapContentSize(),
         contentColor = AppTheme.extendedColorScheme.onSurfaceHighlighted,
     ) {
-        Box(
-            modifier = Modifier
-                .clickable {
-                    dropdownExpanded = true
-                }
-                .padding(all = 12.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+        BoxWithConstraints {
+            Box(
+                modifier = Modifier
+                    .clickable {
+                        dropdownExpanded = true
+                    }
+                    .padding(all = 12.dp)
             ) {
-                Text(
-                    text = title,
-                    maxLines = 1,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.W500,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically)
-                )
-                Icon(
-                    modifier = Modifier
-                        .height(24.dp)
-                        .animatedRotation(rotated = dropdownExpanded),
-                    imageVector = Icons.Outlined.ExpandMore, contentDescription = "arrow dropdown"
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = title,
+                        maxLines = 1,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.W500,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                    )
+                    Icon(
+                        modifier = Modifier
+                            .height(24.dp)
+                            .animatedRotation(rotated = dropdownExpanded),
+                        imageVector = Icons.Outlined.ExpandMore, contentDescription = "arrow dropdown"
+                    )
+                }
             }
             DropdownMenu(
                 expanded = dropdownExpanded,
+                modifier = Modifier.width(this.maxWidth),
+                offset = DpOffset(x = 0.dp, y = 8.dp),
                 onDismissRequest = { dropdownExpanded = false },
             ) {
                 values.forEach { value ->
