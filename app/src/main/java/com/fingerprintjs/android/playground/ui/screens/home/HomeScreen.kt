@@ -96,10 +96,10 @@ private fun HomeScreenInternal(
                     },
                     icon = {
                         Row(modifier = Modifier.fillMaxWidth()) {
-                            Icon(
-                                modifier = Modifier.padding(start = 16.dp),
-                                imageVector = tab.iconImageVector.invoke(),
-                                contentDescription = tab.iconContentDescription,
+                            tab.icon(
+                                modifier = Modifier
+                                    .padding(start = 16.dp)
+                                    .size(20.dp)
                             )
                         }
                     },
