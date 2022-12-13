@@ -1,23 +1,36 @@
 package com.fingerprintjs.android.playground.ui.screens.home
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.PhoneAndroid
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.material3.Icon
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import com.fingerprintjs.android.playground.R
+
 
 enum class HomeScreenTab(
-    val iconImageVector: () -> ImageVector,
-    val iconContentDescription: String,
+    val icon: @Composable (modifier: Modifier) -> Unit,
     val title: String,
 ) {
     DEVICE_ID(
-        iconImageVector = { Icons.Filled.PhoneAndroid },
-        iconContentDescription = "Device ID icon",
-        title = "Device ID"
+        icon = { modifier ->
+            Icon(
+                modifier = modifier,
+                imageVector = Icons.Filled.PhoneAndroid,
+                contentDescription = "Device ID icon"
+            )
+        },
+        title = "Device ID",
     ),
     FINGERPRINT(
-        iconImageVector = { Icons.Filled.Menu },
-        iconContentDescription = "Fingerprint icon",
-        title = "Fingerprint"
+        icon = { modifier ->
+            Icon(
+                modifier = modifier,
+                painter = painterResource(R.drawable.ic_fingerprint_orange),
+                contentDescription = "Fingerprint icon"
+            )
+        },
+        title = "Device Fingerprint",
     );
 }
