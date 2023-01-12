@@ -54,7 +54,7 @@ The identifier is fully stateless and will remain the same after reinstalling or
 ## Table of Contents
 1. [Quick start](#quick-start)
 2. [Usage](#3-get-deviceids-and-fingerprints)
-3. [Playground App](#playground-app)
+3. [Playground App](#fingerprint-android-demo-app)
 
 
 ## Quick start
