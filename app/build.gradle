@@ -34,8 +34,8 @@ android {
                 keyPassword System.getenv('RELEASE_SIGN_KEY_PASSWORD')
             }
         }
-        releaseLocalSign {
-            storeFile file("release_local.jks")
+        releaseDummySign {
+            storeFile file("release_dummy.jks")
             storePassword "password"
             keyAlias "key0"
             keyPassword "password"
@@ -48,15 +48,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
-        releaseLocalSign {
+        // build release app locally using a dummy signature
+        releaseDummySign {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.releaseLocalSign
+            signingConfig signingConfigs.releaseDummySign
             matchingFallbacks = ['release']
         }
+        // same as previous, but also profileable
         // when changing the name of the following build type, don't forget to update src/{this_build_type} dir
-        releaseLocalSignProfileable {
-            initWith(buildTypes.releaseLocalSign)
+        releaseDummySignProfileable {
+            initWith(buildTypes.releaseDummySign)
         }
     }
     namespace 'com.fingerprintjs.android.playground'
