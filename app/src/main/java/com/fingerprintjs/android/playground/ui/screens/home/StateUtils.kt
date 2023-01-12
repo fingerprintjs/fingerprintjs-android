@@ -13,19 +13,19 @@ import com.fingerprintjs.android.playground.utils.mappers.*
 
 fun createDeviceIdInfoReadyState(deviceIdResult: DeviceIdResult): DeviceIdScreenState.DeviceIdInfoState.Ready {
     return DeviceIdScreenState.DeviceIdInfoState.Ready(
-        deviceId = deviceIdResult.deviceId,
+        deviceId = deviceIdResult.deviceIdPrettified,
         signals = listOf(
             DeviceIdSignalItemData(
-                signalName = ANDROID_ID_HUMAN_HAME,
-                signalValue = deviceIdResult.androidId
+                signalName = ANDROID_ID_HUMAN_NAME,
+                signalValue = deviceIdResult.androidIdPrettified
             ),
             DeviceIdSignalItemData(
-                signalName = GSF_ID_HUMAN_HAME,
-                signalValue = deviceIdResult.gsfId
+                signalName = GSF_ID_HUMAN_NAME,
+                signalValue = deviceIdResult.gsfIdPrettified
             ),
             DeviceIdSignalItemData(
-                signalName = MEDIA_DRM_ID_HUMAN_HAME,
-                signalValue = deviceIdResult.mediaDrmId
+                signalName = MEDIA_DRM_ID_HUMAN_NAME,
+                signalValue = deviceIdResult.mediaDrmIdPrettified
             ),
         )
     )

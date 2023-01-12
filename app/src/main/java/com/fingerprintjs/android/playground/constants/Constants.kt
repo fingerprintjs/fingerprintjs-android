@@ -13,4 +13,6 @@ object Constants {
     }
 
     const val DEVELOPERS_EMAIL = "android@fingerprintjs.com"
+
+    const val SIGNAL_UNKNOWN_VALUE = "Unknown"
 }
