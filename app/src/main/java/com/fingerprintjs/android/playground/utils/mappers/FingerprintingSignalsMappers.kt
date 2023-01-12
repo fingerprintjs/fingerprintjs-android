@@ -1,6 +1,7 @@
 package com.fingerprintjs.android.playground.utils.mappers
 
 import com.fingerprintjs.android.fingerprint.fingerprinting_signals.*
+import com.fingerprintjs.android.playground.constants.Constants
 import com.google.gson.annotations.SerializedName
 
 val FingerprintingSignal<*>.humanName: String
@@ -231,7 +232,7 @@ val FingerprintingSignal<*>.humanValue: String
 
 @JvmName("valueAsSimpleStringString")
 private fun FingerprintingSignal<String>.valueAsSimpleString(): String {
-    return this.value.takeIf { it.isNotEmpty() } ?: "Unknown"
+    return this.value.takeIf { it.isNotEmpty() } ?: Constants.SIGNAL_UNKNOWN_VALUE
 }
 @JvmName("valueAsSimpleStringBoolean")
 private fun FingerprintingSignal<Boolean>.valueAsSimpleString(): String {

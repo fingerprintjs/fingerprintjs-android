@@ -50,9 +50,9 @@ class ReportAttachmentCreator @Inject constructor(
             val deviceId = fingerprinter.getDeviceId(version)
             DeviceIdInfoVo(
                 version = version.description, deviceID = deviceId.deviceId, signals = listOf(
-                    DeviceIdSignalVo(name = ANDROID_ID_HUMAN_HAME, value = deviceId.androidId),
-                    DeviceIdSignalVo(name = GSF_ID_HUMAN_HAME, value = deviceId.gsfId),
-                    DeviceIdSignalVo(name = MEDIA_DRM_ID_HUMAN_HAME, value = deviceId.mediaDrmId),
+                    DeviceIdSignalVo(name = ANDROID_ID_HUMAN_NAME, value = deviceId.androidId),
+                    DeviceIdSignalVo(name = GSF_ID_HUMAN_NAME, value = deviceId.gsfId),
+                    DeviceIdSignalVo(name = MEDIA_DRM_ID_HUMAN_NAME, value = deviceId.mediaDrmId),
                 )
             )
         }
