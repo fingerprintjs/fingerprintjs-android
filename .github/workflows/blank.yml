@@ -7,6 +7,7 @@ on:
     paths-ignore:
       - '**.md'
       - app/**
+      - resources/**
   workflow_dispatch:
 
 
