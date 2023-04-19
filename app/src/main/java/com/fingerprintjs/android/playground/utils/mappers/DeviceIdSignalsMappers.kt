@@ -3,8 +3,8 @@ package com.fingerprintjs.android.playground.utils.mappers
 import com.fingerprintjs.android.fingerprint.DeviceIdResult
 import com.fingerprintjs.android.playground.constants.Constants
 
-const val ANDROID_ID_HUMAN_NAME = "GSF ID"
-const val GSF_ID_HUMAN_NAME = "Android ID"
+const val ANDROID_ID_HUMAN_NAME = "Android ID"
+const val GSF_ID_HUMAN_NAME = "GSF ID"
 const val MEDIA_DRM_ID_HUMAN_NAME = "Media DRM ID"
 
 val DeviceIdResult.deviceIdPrettified: String
