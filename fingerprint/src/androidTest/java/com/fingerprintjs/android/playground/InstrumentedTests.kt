@@ -7,6 +7,10 @@ import com.fingerprintjs.android.fingerprint.Configuration
 import com.fingerprintjs.android.fingerprint.Fingerprinter
 import com.fingerprintjs.android.fingerprint.FingerprinterFactory
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
+import com.fingerprintjs.android.fingerprint.tools.FingerprintingLegacySchemeSupportExtensions.getDeviceStateSignals
+import com.fingerprintjs.android.fingerprint.tools.FingerprintingLegacySchemeSupportExtensions.getHardwareSignals
+import com.fingerprintjs.android.fingerprint.tools.FingerprintingLegacySchemeSupportExtensions.getInstalledAppsSignals
+import com.fingerprintjs.android.fingerprint.tools.FingerprintingLegacySchemeSupportExtensions.getOsBuildSignals
 import com.fingerprintjs.android.playground.utils.callbackToSync
 import org.junit.Assert.*
 import org.junit.Test
@@ -22,7 +26,7 @@ class InstrumentedTests {
     fun testDeviceIdAvailable() {
         val fingerprinter = FingerprinterFactory.create(context)
         for (version in Fingerprinter.Version.values()) {
-            val deviceId = callbackToSync { fingerprinter.getDeviceId(version) {emit(it)} }
+            val deviceId = callbackToSync { fingerprinter.getDeviceId(version) { emit(it) } }
             assert(deviceId.deviceId.isNotEmpty())
         }
     }
@@ -122,7 +126,7 @@ class InstrumentedTests {
         }.run { assertTrue(isFailure) }
 
         val fp = FingerprinterFactory.create(context)
-        runCatching { fp.getFingerprint {  } }.run { assertTrue(isFailure) }
+        runCatching { fp.getFingerprint { } }.run { assertTrue(isFailure) }
         runCatching { fp.getDeviceId { } }.run { assertTrue(isFailure) }
     }
 
@@ -153,6 +157,28 @@ class InstrumentedTests {
                 }
             }
     }
-}
 
-private const val INSTRUMENTED_TESTS_TAG = "INSTRUMENTED_TESTS"
+    @Test
+    fun testFingerprintingSignalsProviderReturnsCorrectMatchingSignalsForLegacyVersions() {
+        val fingerprintingSignalsProvider = FingerprinterFactory.create(context).getFingerprintingSignalsProvider()
+        Fingerprinter.Version.values().takeWhile { it <= Fingerprinter.Version.fingerprintingGroupedSignalsLastVersion }
+            .forEach { version ->
+                StabilityLevel.values().forEach { stabilityLevel ->
+                    val expectedLegacySignalsInfos = listOf(
+                        fingerprintingSignalsProvider.getDeviceStateSignals(version, stabilityLevel),
+                        fingerprintingSignalsProvider.getHardwareSignals(version, stabilityLevel),
+                        fingerprintingSignalsProvider.getOsBuildSignals(version, stabilityLevel),
+                        fingerprintingSignalsProvider.getInstalledAppsSignals(version, stabilityLevel),
+                    )
+                        .flatten()
+                        .map { it.info }
+                        .toSet()
+                    val matchingSignalsInfos = fingerprintingSignalsProvider
+                        .getSignalsMatching(version, stabilityLevel)
+                        .map { it.info }
+                        .toSet()
+                    assertEquals(expectedLegacySignalsInfos, matchingSignalsInfos)
+                }
+            }
+    }
+}

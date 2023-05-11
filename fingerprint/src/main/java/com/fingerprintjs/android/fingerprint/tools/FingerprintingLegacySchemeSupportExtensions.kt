@@ -5,23 +5,6 @@ import com.fingerprintjs.android.fingerprint.fingerprinting_signals.*
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 
 internal object FingerprintingLegacySchemeSupportExtensions {
-
-    private fun <T: FingerprintingSignal<*>>createSignalIfNeeded(
-        requiredVersion: Fingerprinter.Version,
-        requiredStabilityLevel: StabilityLevel,
-        signalFingerprintingInfo: FingerprintingSignal.Info,
-        signalFactory: () -> T,
-    ): T? {
-
-        return if (
-            signalFingerprintingInfo.stabilityLevel.atLeastAsStableAs(requiredStabilityLevel)
-            && requiredVersion.inRange(signalFingerprintingInfo.addedInVersion, signalFingerprintingInfo.removedInVersion)
-        )
-            signalFactory.invoke()
-        else
-            null
-    }
-
     fun FingerprintingSignalsProvider.getHardwareSignals(
         version: Fingerprinter.Version,
         stabilityLevel: StabilityLevel,
@@ -76,7 +59,7 @@ internal object FingerprintingLegacySchemeSupportExtensions {
                 )
             }
         }.mapNotNull {
-            createSignalIfNeeded(
+            SignalsUtils.createSignalIfNeeded(
                 requiredVersion = version,
                 requiredStabilityLevel = stabilityLevel,
                 signalFingerprintingInfo = it.first,
@@ -107,7 +90,7 @@ internal object FingerprintingLegacySchemeSupportExtensions {
                 )
             }
         }.mapNotNull {
-            createSignalIfNeeded(
+            SignalsUtils.createSignalIfNeeded(
                 requiredVersion = version,
                 requiredStabilityLevel = stabilityLevel,
                 signalFingerprintingInfo = it.first,
@@ -179,7 +162,7 @@ internal object FingerprintingLegacySchemeSupportExtensions {
                 )
             }
         }.mapNotNull {
-            createSignalIfNeeded(
+            SignalsUtils.createSignalIfNeeded(
                 requiredVersion = version,
                 requiredStabilityLevel = overriddenStabilityLevel,
                 signalFingerprintingInfo = it.first,
@@ -210,7 +193,7 @@ internal object FingerprintingLegacySchemeSupportExtensions {
                 )
             }
         }.mapNotNull {
-            createSignalIfNeeded(
+            SignalsUtils.createSignalIfNeeded(
                 requiredVersion = version,
                 requiredStabilityLevel = overriddenStabilityLevel,
                 signalFingerprintingInfo = it.first,
