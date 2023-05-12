@@ -74,22 +74,18 @@ allprojects {
 
 ### 2. Add dependency
 
-Add these lines to `build.gradle` of a module.
-
-This library depends on [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/).
-
-If your application is written in Java, add `kotlin-stdlib` dependency first (it's lightweight and has excellent backward and forward compatibility).
+Add this to a `build.gradle` of a module.
 
 ```gradle
 dependencies {
-  // Add this line only if you use this library with Java
-  implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-
+  ...
   implementation "com.github.fingerprintjs:fingerprint-android:2.0.0"
 }
-
-
 ```
+
+Note that the library has the following runtime dependencies:
+- [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/)
+- [androidx.appcompat](https://developer.android.com/jetpack/androidx/releases/appcompat)
 
 ### 3. Get deviceIDs and fingerprints
 
