@@ -184,4 +184,4 @@ fingerprint-android supports API versions from 21 (Android 5.0) and higher.
 ## License
 
 This library is MIT licensed.
-Copyright FingerprintJS, Inc. 2020-2022.
+Copyright FingerprintJS, Inc. 2020-2023.
