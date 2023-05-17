@@ -8,8 +8,8 @@ import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
  */
 public sealed class FingerprintingSignal<out T> {
     /**
-     * "Meta" information about the signal. Each signal must
-     * also contain a static version of this property.
+     * "Meta" information about the signal. Must reference
+     * a static version of this property which must also be exposed.
      */
     public abstract val info: Info
     /**

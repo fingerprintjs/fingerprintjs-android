@@ -2,5 +2,4 @@ jdk:
   - openjdk11
 install:
    - ./gradlew clean
-   - ./gradlew fingerprint:assembleRelease
-   - ./gradlew fingerprint:publishMavenJavaPublicationToMavenLocal
+   - ./gradlew fingerprint:publishFpReleasePublicationToMavenLocal

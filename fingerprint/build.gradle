@@ -12,11 +12,13 @@ def libraryOutputName(String variantName) {
 
 publishing {
     publications {
-        mavenJava(MavenPublication) {
+        fpRelease(MavenPublication) {
             groupId = 'com.github.fingerprintjs'
             artifactId = "fingerprint-android"
             version = project.VERSION_NAME
-            artifact("$buildDir/outputs/aar/${libraryOutputName('release')}")
+            afterEvaluate {
+                from components.release
+            }
         }
     }
 }
