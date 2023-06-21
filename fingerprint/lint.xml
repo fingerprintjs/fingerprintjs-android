@@ -1,0 +1,4 @@
+<lint>
+    <!--  TODO: remove this rule and update to the latest target SDK -->
+    <issue id="OldTargetApi" severity="informational" />
+</lint>
