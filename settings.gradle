@@ -1,3 +1,0 @@
-include ':fingerprint'
-include ':app'
-rootProject.name = "Fingerprint-Android"
