@@ -68,6 +68,7 @@ class ExtendedColorScheme(
     onSurfaceHighlighted: Color,
     onSurfaceLight: Color,
     onBackgroundLight: Color,
+    onSurfaceLightLight: Color,
 ) {
     var primaryDark by mutableStateOf(primaryDark, structuralEqualityPolicy())
         internal set
@@ -77,6 +78,8 @@ class ExtendedColorScheme(
         internal set
     var onBackgroundLight by mutableStateOf(onBackgroundLight, structuralEqualityPolicy())
         internal set
+    var onSurfaceLightLight by mutableStateOf(onSurfaceLightLight, structuralEqualityPolicy())
+        internal set
 }
 
 val LightExtendedColorScheme = ExtendedColorScheme(
@@ -84,6 +87,7 @@ val LightExtendedColorScheme = ExtendedColorScheme(
     onSurfaceHighlighted = PaletteTokens.Primary30,
     onSurfaceLight = PaletteTokens.Neutral40,
     onBackgroundLight = PaletteTokens.Neutral40,
+    onSurfaceLightLight = PaletteTokens.Neutral40.copy(alpha = 0.6f),
 )
 
 @Preview

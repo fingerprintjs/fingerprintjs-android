@@ -16,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.fingerprintjs.android.playground.BuildConfig
 import com.fingerprintjs.android.playground.R
 import com.fingerprintjs.android.playground.ui.foundation.theme.AppTheme
 
@@ -71,7 +72,7 @@ fun MainDrawer(
                             start = 12.dp,
                             top = 56.dp,
                             end = 12.dp,
-                            bottom = 40.dp
+                            bottom = 8.dp
                         ),
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
@@ -101,29 +102,35 @@ fun MainDrawer(
                             onClick = onFpProAccuracyClicked,
                         )
                     }
-                    Row(
+                    Column(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(start = 16.dp, end = 32.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
-                        Row {
-                            BottomIconedLink(
-                                icon = { Icon(painter = painterResource(R.drawable.ic_github), contentDescription = "Github link") },
-                                onClick = onGithubClicked,
-                            )
-                            Spacer(Modifier.width(24.dp))
-                            BottomIconedLink(
-                                icon = { Icon(painter = painterResource(R.drawable.ic_linkedin), contentDescription = "Linkedin link") },
-                                onClick = onLinkedinClicked,
-                            )
-                            Spacer(Modifier.width(24.dp))
-                            BottomIconedLink(
-                                icon = { Icon(painter = painterResource(R.drawable.ic_twitter), contentDescription = "Twitter link") },
-                                onClick = onTwitterClicked,
-                            )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                        ) {
+                            Row {
+                                BottomIconedLink(
+                                    icon = { Icon(painter = painterResource(R.drawable.ic_github), contentDescription = "Github link") },
+                                    onClick = onGithubClicked,
+                                )
+                                Spacer(Modifier.width(24.dp))
+                                BottomIconedLink(
+                                    icon = { Icon(painter = painterResource(R.drawable.ic_linkedin), contentDescription = "Linkedin link") },
+                                    onClick = onLinkedinClicked,
+                                )
+                                Spacer(Modifier.width(24.dp))
+                                BottomIconedLink(
+                                    icon = { Icon(painter = painterResource(R.drawable.ic_twitter), contentDescription = "Twitter link") },
+                                    onClick = onTwitterClicked,
+                                )
+                            }
+                            FingerprintLink(onClick = onFingerprintComClicked)
                         }
-                        FingerprintLink(onClick = onFingerprintComClicked)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        AppVersion(modifier = Modifier.align(Alignment.End))
                     }
                 }
             }
@@ -215,5 +222,17 @@ private fun FingerprintLink(
         text = "fingerprint.com",
         style = MaterialTheme.typography.bodyMedium,
         fontWeight = FontWeight.W500,
+    )
+}
+
+@Composable
+private fun AppVersion(
+    modifier: Modifier = Modifier,
+) {
+    Text(
+        text = "Version: ${BuildConfig.VERSION_NAME}",
+        style = MaterialTheme.typography.bodySmall,
+        color = AppTheme.extendedColorScheme.onSurfaceLightLight,
+        modifier = modifier,
     )
 }
