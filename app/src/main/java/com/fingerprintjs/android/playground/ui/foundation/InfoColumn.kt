@@ -4,6 +4,10 @@ import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.draggable
+import androidx.compose.foundation.gestures.rememberDraggableState
+import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -76,7 +80,15 @@ fun <T> InfoColumn(
     LazyColumn(
         state = state,
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .draggable(
+                orientation = Orientation.Vertical,
+                state = rememberDraggableState { delta ->
+                    scope.launch {
+                        state.scrollBy(-delta)
+                    }
+                },
+            ),
         contentPadding = PaddingValues(
             all = 24.dp
         )
