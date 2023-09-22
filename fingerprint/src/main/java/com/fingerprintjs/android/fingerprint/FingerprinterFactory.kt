@@ -27,6 +27,8 @@ import com.fingerprintjs.android.fingerprint.signal_providers.installed_apps.Ins
 import com.fingerprintjs.android.fingerprint.signal_providers.os_build.OsBuildSignalGroupProvider
 import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 import com.fingerprintjs.android.fingerprint.tools.hashers.MurMur3x64x128Hasher
+import com.fingerprintjs.android.fingerprint.tools.safe.safeLazy
+import com.fingerprintjs.android.fingerprint.tools.safe.safe
 
 
 /**
@@ -34,7 +36,7 @@ import com.fingerprintjs.android.fingerprint.tools.hashers.MurMur3x64x128Hasher
  */
 public object FingerprinterFactory {
 
-    private var configuration: Configuration = Configuration(version = Fingerprinter.Version.fingerprintingGroupedSignalsLastVersion.intValue)
+    private var configuration = Configuration(version = Fingerprinter.Version.fingerprintingGroupedSignalsLastVersion.intValue)
     private var instance: Fingerprinter? = null
     private var hasher: Hasher = MurMur3x64x128Hasher()
 
@@ -179,83 +181,73 @@ public object FingerprinterFactory {
     private fun createCpuInfoProvider() = CpuInfoProviderImpl()
 
     private fun createMemoryInfoProvider(context: Context): MemInfoProvider {
-        val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        val internalStorageDir = Environment.getRootDirectory().absolutePath
-        val internalStorageStatFs = StatFs(internalStorageDir)
-
-        val externalStorageDir = context.getExternalFilesDir(null)
-        val externalStorageDirPath = externalStorageDir?.absolutePath
-        val externalStorageStatFs =
-            if (externalStorageDirPath != null && externalStorageDir.canRead()) {
-                StatFs(externalStorageDirPath)
-            } else {
-                null
-            }
-
         return MemInfoProviderImpl(
-            activityManager,
-            internalStorageStatFs,
-            externalStorageStatFs
+            activityManager = safeLazy { context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager },
+            internalStorageStats = safeLazy { StatFs(Environment.getRootDirectory()!!.absolutePath!!) },
+            externalStorageStats = safeLazy {
+                context.getExternalFilesDir(null)
+                    ?.takeIf { it.canRead() }
+                    ?.let { StatFs(it.absolutePath!!) }!!
+            },
         )
     }
 
     private fun createOsBuildInfoProvider() = OsBuildInfoProviderImpl()
 
-    private fun createGsfIdProvider(context: Context) = GsfIdProvider(context.contentResolver!!)
+    private fun createGsfIdProvider(context: Context) = GsfIdProvider(
+        safe { context.contentResolver!! }.getOrDefault(null)
+    )
 
     private fun createMediaDrmProvider() = MediaDrmIdProvider()
 
-    private fun createAndroidIdProvider(context: Context) =
-        AndroidIdProvider(context.contentResolver!!)
+    private fun createAndroidIdProvider(context: Context) = AndroidIdProvider(
+        safe { context.contentResolver!! }.getOrDefault(null)
+    )
 
     private fun createSensorDataSource(context: Context) = SensorDataSourceImpl(
-        context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        safeLazy { context.getSystemService(Context.SENSOR_SERVICE) as SensorManager }
     )
 
     private fun createInputDevicesDataSource(context: Context) = InputDevicesDataSourceImpl(
-        context.getSystemService(Context.INPUT_SERVICE) as InputManager
+        safeLazy { context.getSystemService(Context.INPUT_SERVICE) as InputManager }
     )
 
     private fun createPackageManagerDataSource(context: Context) = PackageManagerDataSourceImpl(
-        context.packageManager
+        safeLazy { context.packageManager!! }
     )
 
     private fun createSettingsDataSource(context: Context) = SettingsDataSourceImpl(
-        context.contentResolver
+        safeLazy { context.contentResolver!! }
     )
 
 
     private fun createDevicePersonalizationDataSource(context: Context) =
         DevicePersonalizationInfoProviderImpl(
-            RingtoneManager(context),
-            context.assets,
-            context.resources.configuration
+            ringtoneManager = safeLazy { RingtoneManager(context) },
+            assetManager = safeLazy { context.assets!! },
+            configuration = safeLazy { context.resources!!.configuration!! },
         )
 
     private fun createFingerprintSensorStatusProvider(context: Context) =
         FingerprintSensorInfoProviderImpl(
-            FingerprintManagerCompat.from(context)
+            safeLazy { FingerprintManagerCompat.from(context)!! }
         )
 
     private fun createDeviceSecurityProvider(context: Context) = DeviceSecurityInfoProviderImpl(
-        context.getSystemService(Context.DEVICE_POLICY_SERVICE) as? DevicePolicyManager,
-        context.getSystemService(Context.KEYGUARD_SERVICE) as? KeyguardManager
+        safeLazy { context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager },
+        safeLazy { context.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager },
     )
 
     private fun createCodecInfoProvider() = CodecInfoProviderImpl(
-        MediaCodecList(MediaCodecList.ALL_CODECS)
+        safeLazy { MediaCodecList(MediaCodecList.ALL_CODECS) }
     )
 
-    private fun createBatteryInfoDataSource(context: Context) = BatteryInfoProviderImpl(
-        context
-    )
+    private fun createBatteryInfoDataSource(context: Context) = BatteryInfoProviderImpl(context)
 
-    private fun createCameraInfoProvider(): CameraInfoProvider {
-        return CameraInfoProviderImpl()
-    }
+    private fun createCameraInfoProvider(): CameraInfoProvider = CameraInfoProviderImpl()
 
     private fun createGpuInfoProvider(context: Context) =
-        GpuInfoProviderImpl(context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager)
+        GpuInfoProviderImpl(safeLazy { context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager } )
 
     //endregion
 

@@ -3,8 +3,7 @@ package com.fingerprintjs.android.fingerprint.info_providers
 
 import android.hardware.Camera
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
-import com.fingerprintjs.android.fingerprint.tools.await
-import com.fingerprintjs.android.fingerprint.tools.executeSafe
+import com.fingerprintjs.android.fingerprint.tools.safe.safe
 import java.util.LinkedList
 
 
@@ -23,16 +22,16 @@ public interface CameraInfoProvider {
 internal class CameraInfoProviderImpl(
 ) : CameraInfoProvider {
     override fun getCameraInfo(): List<CameraInfo> {
-        return executeSafe({ extractInfo() }, emptyList())
+        return safe {
+            extractInfo()
+        }.getOrDefault(emptyList())
     }
 
     private fun extractInfo(): List<CameraInfo> {
-        // Avoiding thread hanging forever. Workaround for:
+        // There is a report that the following call might hang forever (it's handled now by [safe] function).
         // https://github.com/fingerprintjs/fingerprintjs-android/issues/35
         // Normally it takes around 1-5ms to get the number of cameras.
-        val numberOfCameras = await(timeoutMillis = 1000) {
-            Camera.getNumberOfCameras()
-        }.getOrDefault(0)
+        val numberOfCameras = Camera.getNumberOfCameras()
         val result = LinkedList<CameraInfo>()
 
         for (i in 0 until numberOfCameras) {

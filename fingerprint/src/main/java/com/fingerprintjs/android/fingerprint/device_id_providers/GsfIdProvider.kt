@@ -4,25 +4,25 @@ package com.fingerprintjs.android.fingerprint.device_id_providers
 import android.content.ContentResolver
 import android.net.Uri
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
-import com.fingerprintjs.android.fingerprint.tools.executeSafe
+import com.fingerprintjs.android.fingerprint.tools.safe.safe
 
 
 @Deprecated(message = DeprecationMessages.UNREACHABLE_SYMBOL_UNINTENDED_PUBLIC_API)
 public class GsfIdProvider(
-    private val contentResolver: ContentResolver
+    private val contentResolver: ContentResolver?
 ) {
 
     public fun getGsfAndroidId(): String? {
-        return executeSafe(
-            { getGsfId() }, ""
-        )
+        return safe {
+            getGsfId()
+        }.getOrDefault("")
     }
 
     private fun getGsfId(): String? {
         val URI = Uri.parse(URI_GSF_CONTENT_PROVIDER)
         val params = arrayOf(ID_KEY)
         return try {
-            val cursor = contentResolver
+            val cursor = contentResolver!!
                 .query(URI, null, null, params, null)
 
             if (cursor == null) {
@@ -34,7 +34,7 @@ public class GsfIdProvider(
                 return null
             }
             try {
-                val result = java.lang.Long.toHexString(cursor.getString(1).toLong())
+                val result: String? = java.lang.Long.toHexString(cursor.getString(1).toLong())
                 cursor.close()
                 result
             } catch (e: NumberFormatException) {

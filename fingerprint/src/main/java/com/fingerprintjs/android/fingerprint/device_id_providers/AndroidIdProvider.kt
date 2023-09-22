@@ -5,20 +5,20 @@ import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.provider.Settings
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
-import com.fingerprintjs.android.fingerprint.tools.executeSafe
+import com.fingerprintjs.android.fingerprint.tools.safe.safe
 
 
 @Deprecated(message = DeprecationMessages.UNREACHABLE_SYMBOL_UNINTENDED_PUBLIC_API)
 public class AndroidIdProvider(
-    private val contentResolver: ContentResolver
+    private val contentResolver: ContentResolver?
 ) {
     @SuppressLint("HardwareIds")
     public fun getAndroidId(): String {
-        return executeSafe({
+        return safe {
             Settings.Secure.getString(
-                contentResolver,
+                contentResolver!!,
                 Settings.Secure.ANDROID_ID
-            )
-        }, "")
+            )!!
+        }.getOrDefault("")
     }
 }

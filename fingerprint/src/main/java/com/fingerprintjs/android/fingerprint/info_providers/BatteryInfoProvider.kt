@@ -7,7 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
-import com.fingerprintjs.android.fingerprint.tools.executeSafe
+import com.fingerprintjs.android.fingerprint.tools.safe.safe
 
 
 @Deprecated(message = DeprecationMessages.UNREACHABLE_SYMBOL_UNINTENDED_PUBLIC_API)
@@ -20,32 +20,32 @@ internal class BatteryInfoProviderImpl(
         private val applicationContext: Context
 ) : BatteryInfoProvider {
     override fun batteryHealth(): String {
-        val intent = applicationContext
-                .registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED)) ?: return ""
+        return safe {
+            val intent = applicationContext
+                .registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))!!
 
-        val health = intent.getIntExtra(BatteryManager.EXTRA_HEALTH, -1)
+            val health = intent.getIntExtra(BatteryManager.EXTRA_HEALTH, -1)
 
-        return if (health != -1) {
-            batteryHealthStringDescription(health)
-        } else {
-            ""
-        }
+            if (health != -1) {
+                batteryHealthStringDescription(health)
+            } else {
+                ""
+            }
+        }.getOrDefault("")
     }
 
     @SuppressLint("PrivateApi")
     override fun batteryTotalCapacity(): String {
-
-        return executeSafe({
+        return safe {
             val mPowerProfile = Class.forName(POWER_PROFILE_CLASS_NAME)
-                    .getConstructor(Context::class.java)
-                    .newInstance(applicationContext)
+                .getConstructor(Context::class.java)
+                .newInstance(applicationContext)
             val batteryCapacity = Class
-                    .forName(POWER_PROFILE_CLASS_NAME)
-                    .getMethod(BATTERY_CAPACITY_METHOD_NAME)
-                    .invoke(mPowerProfile) as Double
-
+                .forName(POWER_PROFILE_CLASS_NAME)
+                .getMethod(BATTERY_CAPACITY_METHOD_NAME)
+                .invoke(mPowerProfile) as Double
             batteryCapacity.toString()
-        }, "")
+        }.getOrDefault("")
     }
 
     private fun batteryHealthStringDescription(batteryHealth: Int) = when(batteryHealth) {

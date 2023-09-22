@@ -3,7 +3,7 @@ package com.fingerprintjs.android.fingerprint.info_providers
 
 import android.os.Build
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
-import com.fingerprintjs.android.fingerprint.tools.executeSafe
+import com.fingerprintjs.android.fingerprint.tools.safe.safe
 
 
 @Deprecated(message = DeprecationMessages.UNREACHABLE_SYMBOL_UNINTENDED_PUBLIC_API)
@@ -19,26 +19,26 @@ public interface OsBuildInfoProvider {
 internal class OsBuildInfoProviderImpl :
     OsBuildInfoProvider {
     override fun modelName(): String {
-        return executeSafe({ Build.MODEL }, "")
+        return safe { Build.MODEL!! }.getOrDefault("")
     }
 
     override fun manufacturerName(): String {
-        return executeSafe({ Build.MANUFACTURER }, "")
+        return safe { Build.MANUFACTURER!! }.getOrDefault("")
     }
 
     override fun androidVersion(): String {
-        return executeSafe({ Build.VERSION.RELEASE }, "")
+        return safe { Build.VERSION.RELEASE!! }.getOrDefault("")
     }
 
     override fun sdkVersion(): String {
-        return executeSafe({ Build.VERSION.SDK_INT.toString() }, "")
+        return safe { Build.VERSION.SDK_INT.toString() }.getOrDefault("")
     }
 
     override fun kernelVersion(): String {
-        return executeSafe({ System.getProperty("os.version") ?: "" }, "")
+        return safe { System.getProperty("os.version")!! }.getOrDefault("")
     }
 
     override fun fingerprint(): String {
-        return executeSafe({ Build.FINGERPRINT }, "")
+        return safe { Build.FINGERPRINT!! }.getOrDefault("")
     }
 }

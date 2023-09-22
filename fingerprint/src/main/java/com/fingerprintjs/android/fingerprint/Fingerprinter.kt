@@ -13,11 +13,14 @@ import com.fingerprintjs.android.fingerprint.signal_providers.hardware.HardwareS
 import com.fingerprintjs.android.fingerprint.signal_providers.installed_apps.InstalledAppsSignalGroupProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.os_build.OsBuildSignalGroupProvider
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
+import com.fingerprintjs.android.fingerprint.tools.DummyResults
 import com.fingerprintjs.android.fingerprint.tools.FingerprintingLegacySchemeSupportExtensions
 import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 import com.fingerprintjs.android.fingerprint.tools.hashers.MurMur3x64x128Hasher
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
+import com.fingerprintjs.android.fingerprint.tools.logs.Logger
+import com.fingerprintjs.android.fingerprint.tools.logs.ePleaseReport
+import com.fingerprintjs.android.fingerprint.tools.safe.safe
+import com.fingerprintjs.android.fingerprint.tools.safe.safeAsync
 
 
 public class Fingerprinter internal constructor(
@@ -25,10 +28,9 @@ public class Fingerprinter internal constructor(
     private val fpSignalsProvider: FingerprintingSignalsProvider,
     private val deviceIdSignalsProvider: DeviceIdSignalsProvider,
 ) {
-
-    private val executor: ExecutorService = Executors.newSingleThreadExecutor()
-
+    @Volatile
     private var deviceIdResult: DeviceIdResult? = null
+    @Volatile
     private var fingerprintResult: FingerprintResult? = null
 
     /**
@@ -59,7 +61,12 @@ public class Fingerprinter internal constructor(
             return
         }
 
-        executor.execute {
+        safeAsync(
+            onError = {
+                listener.invoke(DummyResults.deviceIdResult)
+                Logger.ePleaseReport(it)
+            }
+        ) {
             val deviceIdResult = DeviceIdResult(
                 legacyArgs.deviceIdProvider.fingerprint(),
                 legacyArgs.deviceIdProvider.rawData().gsfId().value,
@@ -82,7 +89,12 @@ public class Fingerprinter internal constructor(
      * @param listener device ID listener.
      */
     public fun getDeviceId(version: Version, listener: (DeviceIdResult) -> Unit) {
-        executor.execute {
+        safeAsync(
+            onError = {
+                listener.invoke(DummyResults.deviceIdResult)
+                Logger.ePleaseReport(it)
+            }
+        ) {
             listener.invoke(
                 DeviceIdResult(
                     deviceId = deviceIdSignalsProvider.getSignalMatching(version).getIdString(),
@@ -128,7 +140,12 @@ public class Fingerprinter internal constructor(
             listener.invoke(it)
             return
         }
-        executor.execute {
+        safeAsync(
+            onError = {
+                listener.invoke(DummyResults.fingerprintResult)
+                Logger.ePleaseReport(it)
+            }
+        ) {
             val fingerprintSb = StringBuilder()
 
             fingerprintSb.apply {
@@ -178,8 +195,12 @@ public class Fingerprinter internal constructor(
         hasher: Hasher = MurMur3x64x128Hasher(),
         listener: (String) -> (Unit),
     ) {
-        executor.execute {
-
+        safeAsync(
+            onError = {
+                listener.invoke(DummyResults.fingerprint)
+                Logger.ePleaseReport(it)
+            }
+        ) {
             val result = if (version < Version.fingerprintingFlattenedSignalsFirstVersion) {
                 val joinedHashes = with(FingerprintingLegacySchemeSupportExtensions) {
                     listOf(
@@ -221,7 +242,9 @@ public class Fingerprinter internal constructor(
         fingerprintingSignals: List<FingerprintingSignal<*>>,
         hasher: Hasher = MurMur3x64x128Hasher(),
     ): String {
-        return hasher.hash(fingerprintingSignals)
+        return safe { hasher.hash(fingerprintingSignals) }
+            .onFailure { Logger.ePleaseReport(it) }
+            .getOrDefault(DummyResults.fingerprint)
     }
 
     private fun Hasher.hash(fingerprintingSignals: List<FingerprintingSignal<*>>): String {

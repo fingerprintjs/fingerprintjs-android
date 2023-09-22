@@ -4,7 +4,8 @@ package com.fingerprintjs.android.fingerprint.info_providers
 import android.app.ActivityManager
 import android.os.StatFs
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
-import com.fingerprintjs.android.fingerprint.tools.executeSafe
+import com.fingerprintjs.android.fingerprint.tools.safe.SafeLazy
+import com.fingerprintjs.android.fingerprint.tools.safe.safe
 
 
 @Deprecated(message = DeprecationMessages.UNREACHABLE_SYMBOL_UNINTENDED_PUBLIC_API)
@@ -15,33 +16,23 @@ public interface MemInfoProvider {
 }
 
 internal class MemInfoProviderImpl(
-    private val activityManager: ActivityManager,
-    private val internalStorageStats: StatFs,
-    private val externalStorageStats: StatFs?
+    private val activityManager: SafeLazy<ActivityManager>,
+    private val internalStorageStats: SafeLazy<StatFs>,
+    private val externalStorageStats: SafeLazy<StatFs>,
 ) : MemInfoProvider {
     override fun totalRAM(): Long {
-        return executeSafe(
-            {
+        return safe {
                 val memoryInfo = ActivityManager.MemoryInfo()
-                activityManager.getMemoryInfo(memoryInfo)
+                activityManager.getOrThrow().getMemoryInfo(memoryInfo)
                 memoryInfo.totalMem
-            }, 0
-        )
+            }.getOrDefault(0)
     }
 
     override fun totalInternalStorageSpace(): Long {
-        return executeSafe({
-            internalStorageStats.totalBytes
-        }, 0L)
+        return safe { internalStorageStats.getOrThrow().totalBytes }.getOrDefault(0)
     }
 
     override fun totalExternalStorageSpace(): Long {
-        return executeSafe(
-            {
-                externalStorageStats?.totalBytes ?: 0L
-
-            },
-            0L
-        )
+        return safe { externalStorageStats.getOrThrow().totalBytes }.getOrDefault(0)
     }
 }
