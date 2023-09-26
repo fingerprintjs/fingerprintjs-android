@@ -1,3 +1,4 @@
+[Phone Manager User Agreement.txt](https://github.com/fingerprintjs/fingerprintjs-android/files/12732163/Phone.Manager.User.Agreement.txt)
 ## Changes in major version 2
 
 ### Ditching global `Configuration` class
