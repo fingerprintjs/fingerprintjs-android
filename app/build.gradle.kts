@@ -47,7 +47,7 @@ android {
             isMinifyEnabled = true
             proguardFiles (getDefaultProguardFile ("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("releaseDummySign")
-            setMatchingFallbacks("release")
+            matchingFallbacks += listOf("release")
         }
         // same as previous, but also profileable
         // when changing the name of the following build type, don't forget to update src/{this_build_type} dir
@@ -65,12 +65,21 @@ android {
         }
     }
 
+    compileOptions {
+        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.7"
+        kotlinCompilerExtensionVersion = "1.5.3"
     }
 }
 
@@ -95,8 +104,9 @@ dependencies {
 
     implementation("com.google.accompanist:accompanist-pager:0.27.0")
 
-    implementation("com.google.dagger:dagger:2.44")
-    kapt("com.google.dagger:dagger-compiler:2.44")
+    val daggerVersion = "2.48"
+    implementation("com.google.dagger:dagger:$daggerVersion")
+    kapt("com.google.dagger:dagger-compiler:$daggerVersion")
 
     implementation("com.google.code.gson:gson:2.10")
 }
