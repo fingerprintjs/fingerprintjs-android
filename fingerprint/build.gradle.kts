@@ -32,7 +32,7 @@ android {
         }
     }
 
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         // This property does not affect the library itself, but affects test apk and lint.
