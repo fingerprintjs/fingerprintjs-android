@@ -23,6 +23,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Set up Java env
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
