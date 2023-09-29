@@ -19,6 +19,7 @@ import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 import com.fingerprintjs.android.fingerprint.tools.hashers.MurMur3x64x128Hasher
 import com.fingerprintjs.android.fingerprint.tools.logs.Logger
 import com.fingerprintjs.android.fingerprint.tools.logs.ePleaseReport
+import com.fingerprintjs.android.fingerprint.tools.safe.Safe
 import com.fingerprintjs.android.fingerprint.tools.safe.safe
 import com.fingerprintjs.android.fingerprint.tools.safe.safeAsync
 
@@ -242,7 +243,7 @@ public class Fingerprinter internal constructor(
         fingerprintingSignals: List<FingerprintingSignal<*>>,
         hasher: Hasher = MurMur3x64x128Hasher(),
     ): String {
-        return safe { hasher.hash(fingerprintingSignals) }
+        return safe(timeoutMs = Safe.timeoutLong) { hasher.hash(fingerprintingSignals) }
             .onFailure { Logger.ePleaseReport(it) }
             .getOrDefault(DummyResults.fingerprint)
     }

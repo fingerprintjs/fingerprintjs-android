@@ -1,10 +1,12 @@
 package com.fingerprintjs.android.fingerprint
 
 import com.fingerprintjs.android.fingerprint.tools.safe.ExecutionTimeoutException
+import com.fingerprintjs.android.fingerprint.tools.safe.Safe
 import com.fingerprintjs.android.fingerprint.tools.safe.safe
 import com.fingerprintjs.android.fingerprint.tools.safe.safeAsync
 import com.fingerprintjs.android.fingerprint.tools.safe.safeLazy
 import junit.framework.TestCase
+import org.junit.After
 import org.junit.Test
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.ExecutionException
@@ -12,6 +14,11 @@ import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
 
 class SafeTests {
+
+    @After
+    fun recreateExecutor() {
+        Safe.executor = Safe.createThreadPoolExecutor()
+    }
 
     @Test
     fun safeValueReturned() {
@@ -64,6 +71,59 @@ class SafeTests {
         TestCase.assertTrue(elapsedTime - TimeConstants.t1 < TimeConstants.epsilon)
     }
 
+    @Test
+    fun safeThreadsAreReused() {
+        for (i in 0 until 4) {
+            safe { }
+            TestCase.assertEquals(1, Safe.executor.poolSize)
+            Thread.sleep(TimeConstants.epsilon)
+        }
+    }
+
+    // this is a sad fact but we will leave it as it is
+    @Test
+    fun safeThreadCountGrowsIfThreadsCantInterrupt() {
+        for (i in 1 until 5) {
+            safe(timeoutMs = TimeConstants.epsilon) { neverReturn() }
+            TestCase.assertEquals(i, Safe.executor.poolSize)
+            Thread.sleep(TimeConstants.epsilon)
+        }
+    }
+
+    @Test
+    fun safeOuterTimeoutDominatesOverInner() {
+        val elapsedTime = elapsedTimeMs {
+            safe(timeoutMs = TimeConstants.t1) {
+                safe(timeoutMs = TimeConstants.t2) {
+                    Thread.sleep(TimeConstants.t3)
+                }
+            }
+        }
+        TestCase.assertTrue(elapsedTime - TimeConstants.t1 < TimeConstants.epsilon)
+    }
+
+    @Test
+    fun safeNestedSafeInterrupted() {
+        val errLvl1: Throwable?
+        var errLvl2: Throwable? = null
+        var errLvl3: Throwable? = null
+        val countDownLatch = CountDownLatch(1)
+        errLvl1 = safe(timeoutMs = TimeConstants.t1) {
+            errLvl2 = safe(timeoutMs = TimeConstants.t2) {
+                try {
+                    Thread.sleep(TimeConstants.t3)
+                } catch (t: Throwable) {
+                    errLvl3 = t
+                    countDownLatch.countDown()
+                }
+            }.exceptionOrNull()
+        }.exceptionOrNull()
+        countDownLatch.await()
+        TestCase.assertTrue(errLvl1 is ExecutionTimeoutException)
+        TestCase.assertTrue(errLvl2 is InterruptedException)
+        TestCase.assertTrue(errLvl3 is InterruptedException)
+    }
+
     @Suppress("VARIABLE_WITH_REDUNDANT_INITIALIZER")
     @Test
     fun safeLazyEvaluatedOnce() {
@@ -109,6 +169,14 @@ class SafeTests {
         safeAsync { lazy.res }
         countDownLatch.await()
         TestCase.assertEquals(1, atomicInteger.get())
+    }
+
+    @Test
+    fun safeLazyNestedInterrupted() {
+        val v1 = safeLazy(timeoutMs = TimeConstants.t1) { Thread.sleep(TimeConstants.t2) }
+        val v2 = safe(timeoutMs = TimeConstants.epsilon) { v1.getOrThrow() }
+        TestCase.assertTrue(v1.res.exceptionOrNull() is InterruptedException)
+        TestCase.assertTrue(v2.exceptionOrNull() is ExecutionTimeoutException)
     }
 
     @Test
@@ -194,4 +262,9 @@ private inline fun elapsedTimeMs(block: () -> Unit): Long {
     val currentTime = System.currentTimeMillis()
     block()
     return System.currentTimeMillis() - currentTime
+}
+
+@Suppress("ControlFlowWithEmptyBody")
+private fun neverReturn() {
+    while (true);
 }
