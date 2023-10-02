@@ -5,13 +5,13 @@ import com.fingerprintjs.android.fingerprint.device_id_providers.AndroidIdProvid
 import com.fingerprintjs.android.fingerprint.device_id_providers.GsfIdProvider
 import com.fingerprintjs.android.fingerprint.device_id_providers.MediaDrmIdProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.device_id.DeviceIdProvider
-import com.nhaarman.mockitokotlin2.mock
+import io.mockk.mockk
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertNotNull
 import org.junit.Test
 
 
-// Check that there is no unhandled exceptions. Calling mock methods produces NPE.
+// Check that there is no unhandled exceptions. Calling mocked methods will result in errors.
 class InfoProvidersExceptionsHandlingTests {
     @Test
     fun `CPUInfo provider crash free`() {
@@ -26,9 +26,9 @@ class InfoProvidersExceptionsHandlingTests {
     fun `Memory Info provider crash free`() {
         val memInfoProvider =
             MemInfoProviderImpl(
-                mock(),
-                mock(),
-                mock()
+                mockk(),
+                mockk(),
+                mockk()
             )
 
         assertNotNull(memInfoProvider.totalRAM())
@@ -40,9 +40,9 @@ class InfoProvidersExceptionsHandlingTests {
     fun `DevicePersonalizationDataSource crash free`() {
         val devicePersonalizationDataSource =
             DevicePersonalizationInfoProviderImpl(
-                mock(),
-                mock(),
-                mock()
+                mockk(),
+                mockk(),
+                mockk()
             )
 
         assertNotNull(devicePersonalizationDataSource.ringtoneSource())
@@ -55,7 +55,7 @@ class InfoProvidersExceptionsHandlingTests {
     fun `InputDeviceDataSource crash free`() {
         val inputDeviceDatasource =
             InputDevicesDataSourceImpl(
-                mock()
+                mockk()
             )
         assertNotNull(inputDeviceDatasource.getInputDeviceData().size)
     }
@@ -64,7 +64,7 @@ class InfoProvidersExceptionsHandlingTests {
     fun `SensorsDataSource crash free`() {
         val sensorsDataSource =
             SensorDataSourceImpl(
-                mock()
+                mockk()
             )
         assertNotNull(sensorsDataSource.sensors().size)
     }
@@ -73,7 +73,7 @@ class InfoProvidersExceptionsHandlingTests {
     fun `PackageManager datasource crash free`() {
         val packageManagerDataSource =
             PackageManagerDataSourceImpl(
-                mock()
+                mockk()
             )
         assertNotNull(packageManagerDataSource.getApplicationsList())
         assertNotNull(packageManagerDataSource.getSystemApplicationsList())
@@ -83,7 +83,7 @@ class InfoProvidersExceptionsHandlingTests {
     fun `SettingsDataSource crash free`() {
         val settingsDataSource =
             SettingsDataSourceImpl(
-                mock()
+                mockk()
             )
         assertEquals("", settingsDataSource.accessibilityEnabled())
         assertEquals("", settingsDataSource.adbEnabled())
@@ -109,8 +109,8 @@ class InfoProvidersExceptionsHandlingTests {
     @Test
     fun `DeviceId crash free`() {
         val deviceIdProvider = DeviceIdProvider(
-            GsfIdProvider(mock()),
-            AndroidIdProvider(mock()),
+            GsfIdProvider(mockk()),
+            AndroidIdProvider(mockk()),
             MediaDrmIdProvider(),
             2
         )
@@ -119,7 +119,7 @@ class InfoProvidersExceptionsHandlingTests {
 
     @Test
     fun `BatteryInfoProvider crash free`() {
-        val batteryInfoProvider = BatteryInfoProviderImpl(mock())
+        val batteryInfoProvider = BatteryInfoProviderImpl(mockk())
         assertNotNull(batteryInfoProvider.batteryHealth())
         assertNotNull(batteryInfoProvider.batteryTotalCapacity())
     }
@@ -132,19 +132,19 @@ class InfoProvidersExceptionsHandlingTests {
 
     @Test
     fun `CodecInfoProvider crash free`() {
-        val codecInfoProvider = CodecInfoProviderImpl(mock())
+        val codecInfoProvider = CodecInfoProviderImpl(mockk())
         assertNotNull(codecInfoProvider.codecsList())
     }
 
     @Test
     fun `GpuInfo provider`() {
-        val gpuInfoProvider = GpuInfoProviderImpl(mock())
+        val gpuInfoProvider = GpuInfoProviderImpl(mockk())
         assertNotNull(gpuInfoProvider.glesVersion())
     }
 
     @Test
     fun `DeviceSecurityInfoProvider crash free`() {
-        val deviceSecurityInfoProvider = DeviceSecurityInfoProviderImpl(mock(), mock())
+        val deviceSecurityInfoProvider = DeviceSecurityInfoProviderImpl(mockk(), mockk())
         assertNotNull(deviceSecurityInfoProvider.encryptionStatus())
         assertNotNull(deviceSecurityInfoProvider.isPinSecurityEnabled())
         assertNotNull(deviceSecurityInfoProvider.securityProvidersData())
@@ -153,7 +153,7 @@ class InfoProvidersExceptionsHandlingTests {
     @Test
     fun `DevicePersonalizationInfoProvider crash free`() {
         val devicePersonalizationDataSource =
-            DevicePersonalizationInfoProviderImpl(mock(), mock(), mock())
+            DevicePersonalizationInfoProviderImpl(mockk(), mockk(), mockk())
         assertNotNull(devicePersonalizationDataSource.availableLocales())
         assertNotNull(devicePersonalizationDataSource.defaultLanguage())
         assertNotNull(devicePersonalizationDataSource.regionCountry())

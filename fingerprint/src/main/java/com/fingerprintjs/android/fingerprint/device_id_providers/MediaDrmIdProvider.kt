@@ -4,16 +4,16 @@ package com.fingerprintjs.android.fingerprint.device_id_providers
 import android.media.MediaDrm
 import android.os.Build
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
-import com.fingerprintjs.android.fingerprint.tools.executeSafe
+import com.fingerprintjs.android.fingerprint.tools.safe.safe
 import java.security.MessageDigest
 import java.util.UUID
 
 
 @Deprecated(message = DeprecationMessages.UNREACHABLE_SYMBOL_UNINTENDED_PUBLIC_API)
 public class MediaDrmIdProvider {
-    public fun getMediaDrmId(): String? = executeSafe({
+    public fun getMediaDrmId(): String? = safe {
         mediaDrmId()
-    }, null)
+    }.getOrDefault(null)
 
     private fun mediaDrmId(): String {
         val widevineUUID = UUID(WIDEWINE_UUID_MOST_SIG_BITS, WIDEWINE_UUID_LEAST_SIG_BITS)

@@ -4,7 +4,8 @@ package com.fingerprintjs.android.fingerprint.info_providers
 import android.app.KeyguardManager
 import android.app.admin.DevicePolicyManager
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
-import com.fingerprintjs.android.fingerprint.tools.executeSafe
+import com.fingerprintjs.android.fingerprint.tools.safe.SafeLazy
+import com.fingerprintjs.android.fingerprint.tools.safe.safe
 import java.security.Security
 
 
@@ -16,29 +17,29 @@ public interface DeviceSecurityInfoProvider {
 }
 
 internal class DeviceSecurityInfoProviderImpl(
-    private val devicePolicyManager: DevicePolicyManager?,
-    private val keyguardManager: KeyguardManager?
+    private val devicePolicyManager: SafeLazy<DevicePolicyManager>,
+    private val keyguardManager: SafeLazy<KeyguardManager>,
 ) : DeviceSecurityInfoProvider {
     override fun encryptionStatus(): String {
-        return executeSafe({
-            stringDescriptionForEncryptionStatus(devicePolicyManager?.storageEncryptionStatus)
-        }, "")
+        return safe {
+            stringDescriptionForEncryptionStatus(devicePolicyManager.getOrThrow().storageEncryptionStatus)
+        }.getOrDefault("")
     }
 
     override fun securityProvidersData(): List<Pair<String, String>> {
-        return executeSafe({
+        return safe {
             Security.getProviders().map {
-                Pair(it.name, it.info ?: "")
+                Pair(it!!.name!!, it.info ?: "")
             }
-        }, emptyList())
+        }.getOrDefault(emptyList())
     }
 
-    override fun isPinSecurityEnabled() = executeSafe(
-        { keyguardManager?.isKeyguardSecure ?: false }, false
-    )
+    override fun isPinSecurityEnabled() = safe {
+        keyguardManager.getOrThrow().isKeyguardSecure
+    }.getOrDefault(false)
 }
 
-private fun stringDescriptionForEncryptionStatus(status: Int?): String {
+private fun stringDescriptionForEncryptionStatus(status: Int): String {
     return when (status) {
         DevicePolicyManager.ENCRYPTION_STATUS_UNSUPPORTED -> UNSUPPORTED
         DevicePolicyManager.ENCRYPTION_STATUS_INACTIVE -> INACTIVE

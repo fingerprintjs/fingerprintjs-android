@@ -3,8 +3,8 @@ package com.fingerprintjs.android.fingerprint.info_providers
 
 import android.os.Build
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
-import com.fingerprintjs.android.fingerprint.tools.executeSafe
 import com.fingerprintjs.android.fingerprint.tools.parsers.parseCpuInfo
+import com.fingerprintjs.android.fingerprint.tools.safe.safe
 import java.io.File
 import java.util.Scanner
 
@@ -33,36 +33,35 @@ public interface CpuInfoProvider {
 internal class CpuInfoProviderImpl :
     CpuInfoProvider {
     override fun cpuInfo(): Map<String, String> {
-        return executeSafe({ getCpuInfo() }, emptyMap())
+        return safe {
+            getCpuInfo()
+        }.getOrDefault(emptyMap())
     }
 
     override fun cpuInfoV2(): CpuInfo {
-        return executeSafe(
-            {
-                getCpuInfoV2()
-            },
-            CpuInfo.EMPTY
-        )
+        return safe {
+            getCpuInfoV2()
+        }.getOrDefault(CpuInfo.EMPTY)
     }
 
     @Suppress("DEPRECATION")
     override fun abiType(): String {
-        return executeSafe({
-            Build.SUPPORTED_ABIS[0]
-        }, "")
+        return safe {
+            Build.SUPPORTED_ABIS[0]!!
+        }.getOrDefault("")
     }
 
     override fun coresCount(): Int {
-        return executeSafe({
-            Runtime.getRuntime().availableProcessors()
-        }, 0)
+        return safe {
+            Runtime.getRuntime()!!.availableProcessors()
+        }.getOrDefault(0)
     }
 
     private fun getCpuInfo(): Map<String, String> {
         val map: MutableMap<String, String> = HashMap()
         val s = Scanner(File(CPU_INFO_PATH))
         while (s.hasNextLine()) {
-            val cpuInfoValues = s.nextLine().split(KEY_VALUE_DELIMITER)
+            val cpuInfoValues = s.nextLine()!!.split(KEY_VALUE_DELIMITER)
             if (cpuInfoValues.size > 1) map[cpuInfoValues[0].trim { it <= ' ' }] =
                 cpuInfoValues[1].trim { it <= ' ' }
         }

@@ -944,7 +944,7 @@ public class RingtoneSourceSignal(
 }
 
 public class AvailableLocalesSignal(
-    override val value: List<String>,
+    override val value: List<String>, // theoretically, may contain "null" strings for backwards compatibility reasons
 ) : FingerprintingSignal<List<String>>() {
     override val info: Info
         get() = Companion.info
