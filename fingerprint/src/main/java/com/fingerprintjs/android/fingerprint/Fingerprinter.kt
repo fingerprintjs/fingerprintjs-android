@@ -2,7 +2,6 @@ package com.fingerprintjs.android.fingerprint
 
 import androidx.annotation.Discouraged
 import androidx.annotation.WorkerThread
-import com.fingerprintjs.android.fingerprint.device_id_signals.DeviceIdSignalsProvider
 import com.fingerprintjs.android.fingerprint.fingerprinting_signals.FingerprintingSignal
 import com.fingerprintjs.android.fingerprint.fingerprinting_signals.FingerprintingSignalsProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.SignalGroupProvider
@@ -14,25 +13,27 @@ import com.fingerprintjs.android.fingerprint.signal_providers.installed_apps.Ins
 import com.fingerprintjs.android.fingerprint.signal_providers.os_build.OsBuildSignalGroupProvider
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
 import com.fingerprintjs.android.fingerprint.tools.DummyResults
-import com.fingerprintjs.android.fingerprint.tools.FingerprintingLegacySchemeSupportExtensions
+import com.fingerprintjs.android.fingerprint.tools.flatten
 import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 import com.fingerprintjs.android.fingerprint.tools.hashers.MurMur3x64x128Hasher
 import com.fingerprintjs.android.fingerprint.tools.logs.Logger
 import com.fingerprintjs.android.fingerprint.tools.logs.ePleaseReport
-import com.fingerprintjs.android.fingerprint.tools.safe.Safe
-import com.fingerprintjs.android.fingerprint.tools.safe.safe
-import com.fingerprintjs.android.fingerprint.tools.safe.safeAsync
+import com.fingerprintjs.android.fingerprint.tools.threading.runOnAnotherThread
+import com.fingerprintjs.android.fingerprint.tools.threading.safe.Safe
+import com.fingerprintjs.android.fingerprint.tools.threading.safe.safe
 
 
 public class Fingerprinter internal constructor(
-    private val legacyArgs: LegacyArgs?,
-    private val fpSignalsProvider: FingerprintingSignalsProvider,
-    private val deviceIdSignalsProvider: DeviceIdSignalsProvider,
+    private val implFactory: () -> FingerprinterImpl,
+    private val isLegacyFactory: Boolean,
 ) {
-    @Volatile
-    private var deviceIdResult: DeviceIdResult? = null
-    @Volatile
-    private var fingerprintResult: FingerprintResult? = null
+    private val impl by lazy {
+        // we use long timeout here, so that any single hiccup during the initialization
+        // does not ruin an entire operation.
+        // another option could be to not use timeout at all, since we have a lot of timeouts
+        // deep inside.
+        safe(timeoutMs = Safe.timeoutLong) { implFactory() }
+    }
 
     /**
      * Retrieve the device ID information.
@@ -50,33 +51,15 @@ public class Fingerprinter internal constructor(
     """)
     @Throws(IllegalStateException::class)
     public fun getDeviceId(listener: (DeviceIdResult) -> Unit) {
-        if (legacyArgs == null) {
-            throw (IllegalStateException(
-                "To call this deprecated method, the instance" +
-                        "must be retrieved using deprecated factory method."
-            ))
-        }
+        checkThisLegacyMethodSupported()
 
-        deviceIdResult?.let {
-            listener.invoke(it)
-            return
-        }
-
-        safeAsync(
+        runFingerprinterImplOnAnotherThread(
             onError = {
                 listener.invoke(DummyResults.deviceIdResult)
                 Logger.ePleaseReport(it)
-            }
-        ) {
-            val deviceIdResult = DeviceIdResult(
-                legacyArgs.deviceIdProvider.fingerprint(),
-                legacyArgs.deviceIdProvider.rawData().gsfId().value,
-                legacyArgs.deviceIdProvider.rawData().androidId().value,
-                legacyArgs.deviceIdProvider.rawData().mediaDrmId().value
-            )
-            this.deviceIdResult = deviceIdResult
-            listener.invoke(deviceIdResult)
-        }
+            },
+            onSuccess = listener,
+        ) { getDeviceId() }
     }
 
     /**
@@ -90,21 +73,13 @@ public class Fingerprinter internal constructor(
      * @param listener device ID listener.
      */
     public fun getDeviceId(version: Version, listener: (DeviceIdResult) -> Unit) {
-        safeAsync(
+        runFingerprinterImplOnAnotherThread(
             onError = {
                 listener.invoke(DummyResults.deviceIdResult)
                 Logger.ePleaseReport(it)
-            }
-        ) {
-            listener.invoke(
-                DeviceIdResult(
-                    deviceId = deviceIdSignalsProvider.getSignalMatching(version).getIdString(),
-                    gsfId = deviceIdSignalsProvider.gsfIdSignal.getIdString(),
-                    androidId = deviceIdSignalsProvider.androidIdSignal.getIdString(),
-                    mediaDrmId = deviceIdSignalsProvider.mediaDrmIdSignal.getIdString(),
-                )
-            )
-        }
+            },
+            onSuccess = listener,
+        ) { getDeviceId(version) }
     }
 
     /**
@@ -130,50 +105,15 @@ public class Fingerprinter internal constructor(
         stabilityLevel: StabilityLevel = StabilityLevel.OPTIMAL,
         listener: (FingerprintResult) -> Unit
     ) {
-        if (legacyArgs == null) {
-            throw (IllegalStateException(
-                "To call this deprecated method, the instance" +
-                        "must be retrieved using deprecated factory method."
-            ))
-        }
+        checkThisLegacyMethodSupported()
 
-        fingerprintResult?.let {
-            listener.invoke(it)
-            return
-        }
-        safeAsync(
+        runFingerprinterImplOnAnotherThread(
             onError = {
                 listener.invoke(DummyResults.fingerprintResult)
                 Logger.ePleaseReport(it)
-            }
-        ) {
-            val fingerprintSb = StringBuilder()
-
-            fingerprintSb.apply {
-                append(legacyArgs.hardwareSignalProvider.fingerprint(stabilityLevel))
-                append(legacyArgs.osBuildSignalProvider.fingerprint(stabilityLevel))
-                append(legacyArgs.deviceStateSignalProvider.fingerprint(stabilityLevel))
-                append(legacyArgs.installedAppsSignalProvider.fingerprint(stabilityLevel))
-            }
-
-            val result = object : FingerprintResult {
-                override val fingerprint = legacyArgs.configuration.hasher.hash(fingerprintSb.toString())
-
-                @Suppress("UNCHECKED_CAST")
-                override fun <T : SignalGroupProvider<*>> getSignalProvider(clazz: Class<T>): T? {
-                    return when (clazz) {
-                        HardwareSignalGroupProvider::class.java -> legacyArgs.hardwareSignalProvider
-                        OsBuildSignalGroupProvider::class.java -> legacyArgs.osBuildSignalProvider
-                        DeviceStateSignalGroupProvider::class.java -> legacyArgs.deviceStateSignalProvider
-                        InstalledAppsSignalGroupProvider::class.java -> legacyArgs.installedAppsSignalProvider
-                        DeviceIdProvider::class.java -> legacyArgs.deviceIdProvider
-                        else -> null
-                    } as? T
-                }
-            }
-
-            listener.invoke(result)
-        }
+            },
+            onSuccess = listener,
+        ) { getFingerprint(stabilityLevel) }
     }
 
     /**
@@ -196,32 +136,13 @@ public class Fingerprinter internal constructor(
         hasher: Hasher = MurMur3x64x128Hasher(),
         listener: (String) -> (Unit),
     ) {
-        safeAsync(
+        runFingerprinterImplOnAnotherThread(
             onError = {
                 listener.invoke(DummyResults.fingerprint)
                 Logger.ePleaseReport(it)
-            }
-        ) {
-            val result = if (version < Version.fingerprintingFlattenedSignalsFirstVersion) {
-                val joinedHashes = with(FingerprintingLegacySchemeSupportExtensions) {
-                    listOf(
-                        hasher.hash(fpSignalsProvider.getHardwareSignals(version, stabilityLevel)),
-                        hasher.hash(fpSignalsProvider.getOsBuildSignals(version, stabilityLevel)),
-                        hasher.hash(fpSignalsProvider.getDeviceStateSignals(version, stabilityLevel)),
-                        hasher.hash(fpSignalsProvider.getInstalledAppsSignals(version, stabilityLevel)),
-                    ).joinToString(separator = "")
-                }
-
-                hasher.hash(joinedHashes)
-            } else {
-                getFingerprint(
-                    fingerprintingSignals = fpSignalsProvider.getSignalsMatching(version, stabilityLevel),
-                    hasher = hasher,
-                )
-            }
-
-            listener.invoke(result)
-        }
+            },
+            onSuccess = listener,
+        ) { getFingerprint(version, stabilityLevel, hasher) }
     }
 
     /**
@@ -243,22 +164,46 @@ public class Fingerprinter internal constructor(
         fingerprintingSignals: List<FingerprintingSignal<*>>,
         hasher: Hasher = MurMur3x64x128Hasher(),
     ): String {
-        return safe(timeoutMs = Safe.timeoutLong) { hasher.hash(fingerprintingSignals) }
+        return impl
+            .map { it.getFingerprint(fingerprintingSignals, hasher) }
+            .flatten()
             .onFailure { Logger.ePleaseReport(it) }
             .getOrDefault(DummyResults.fingerprint)
     }
 
-    private fun Hasher.hash(fingerprintingSignals: List<FingerprintingSignal<*>>): String {
-        val joinedString =
-            fingerprintingSignals.joinToString(separator = "") { it.getHashableString() }
-        return this.hash(joinedString)
+    /**
+     * @return [FingerprintingSignalsProvider] which is useful in conjunction with the getFingerprint(signals, hasher) method, or null
+     * if some unexpected error occurred.
+     */
+    @WorkerThread
+    public fun getFingerprintingSignalsProvider(): FingerprintingSignalsProvider? {
+        return impl
+            .map { it.getFingerprintingSignalsProvider() }
+            .onFailure { Logger.ePleaseReport(it) }
+            .getOrNull()
     }
 
-    /**
-     * @return [FingerprintingSignalsProvider] which is useful in conjunction with the getFingerprint(signals, hasher) method.
-     */
-    public fun getFingerprintingSignalsProvider(): FingerprintingSignalsProvider {
-        return fpSignalsProvider
+    @Suppress("NOTHING_TO_INLINE")
+    private inline fun checkThisLegacyMethodSupported() {
+        if (!isLegacyFactory) {
+            throw (IllegalStateException(
+                "To call this deprecated method, the instance " +
+                        "must be retrieved using deprecated factory method."
+            ))
+        }
+    }
+
+    private inline fun <T> runFingerprinterImplOnAnotherThread(
+        crossinline onError: (Throwable) -> Unit,
+        crossinline onSuccess: (T) -> Unit,
+        crossinline call: FingerprinterImpl.() -> Result<T>,
+    ) {
+        runOnAnotherThread {
+            impl.map { it.call() }.flatten().fold(
+                onSuccess = { onSuccess.invoke(it) },
+                onFailure = onError,
+            )
+        }.onFailure(onError)
     }
 
     /**

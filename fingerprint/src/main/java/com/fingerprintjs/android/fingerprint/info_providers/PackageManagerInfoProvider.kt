@@ -4,8 +4,7 @@ package com.fingerprintjs.android.fingerprint.info_providers
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
-import com.fingerprintjs.android.fingerprint.tools.safe.SafeLazy
-import com.fingerprintjs.android.fingerprint.tools.safe.safe
+import com.fingerprintjs.android.fingerprint.tools.threading.safe.safe
 
 
 @Deprecated(message = DeprecationMessages.UNREACHABLE_SYMBOL_UNINTENDED_PUBLIC_API)
@@ -23,11 +22,11 @@ public data class PackageInfo(
 }
 
 internal class PackageManagerDataSourceImpl(
-    private val packageManager: SafeLazy<PackageManager>,
+    private val packageManager: PackageManager?,
 ) : PackageManagerDataSource {
     @SuppressLint("QueryPermissionsNeeded")
     override fun getApplicationsList() = safe {
-        packageManager.getOrThrow()
+        packageManager!!
             .getInstalledApplications(PackageManager.GET_META_DATA)
             .map {
                 PackageInfo(
@@ -39,7 +38,7 @@ internal class PackageManagerDataSourceImpl(
 
     @SuppressLint("QueryPermissionsNeeded")
     override fun getSystemApplicationsList() = safe {
-        packageManager.getOrThrow()
+        packageManager!!
             .getInstalledApplications(PackageManager.GET_META_DATA)
             .filter {
                 it!!.sourceDir!!.contains("/system/")

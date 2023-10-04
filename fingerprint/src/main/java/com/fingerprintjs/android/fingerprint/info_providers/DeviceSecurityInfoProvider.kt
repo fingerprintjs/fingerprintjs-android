@@ -4,8 +4,7 @@ package com.fingerprintjs.android.fingerprint.info_providers
 import android.app.KeyguardManager
 import android.app.admin.DevicePolicyManager
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
-import com.fingerprintjs.android.fingerprint.tools.safe.SafeLazy
-import com.fingerprintjs.android.fingerprint.tools.safe.safe
+import com.fingerprintjs.android.fingerprint.tools.threading.safe.safe
 import java.security.Security
 
 
@@ -17,12 +16,12 @@ public interface DeviceSecurityInfoProvider {
 }
 
 internal class DeviceSecurityInfoProviderImpl(
-    private val devicePolicyManager: SafeLazy<DevicePolicyManager>,
-    private val keyguardManager: SafeLazy<KeyguardManager>,
+    private val devicePolicyManager: DevicePolicyManager?,
+    private val keyguardManager: KeyguardManager?,
 ) : DeviceSecurityInfoProvider {
     override fun encryptionStatus(): String {
         return safe {
-            stringDescriptionForEncryptionStatus(devicePolicyManager.getOrThrow().storageEncryptionStatus)
+            stringDescriptionForEncryptionStatus(devicePolicyManager!!.storageEncryptionStatus)
         }.getOrDefault("")
     }
 
@@ -35,7 +34,7 @@ internal class DeviceSecurityInfoProviderImpl(
     }
 
     override fun isPinSecurityEnabled() = safe {
-        keyguardManager.getOrThrow().isKeyguardSecure
+        keyguardManager!!.isKeyguardSecure
     }.getOrDefault(false)
 }
 

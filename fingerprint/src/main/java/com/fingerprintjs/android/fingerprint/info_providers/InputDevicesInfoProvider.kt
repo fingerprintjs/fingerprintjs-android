@@ -3,8 +3,7 @@ package com.fingerprintjs.android.fingerprint.info_providers
 
 import android.hardware.input.InputManager
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
-import com.fingerprintjs.android.fingerprint.tools.safe.SafeLazy
-import com.fingerprintjs.android.fingerprint.tools.safe.safe
+import com.fingerprintjs.android.fingerprint.tools.threading.safe.safe
 
 
 @Deprecated(message = DeprecationMessages.UNREACHABLE_SYMBOL_UNINTENDED_PUBLIC_API)
@@ -18,12 +17,12 @@ public data class InputDeviceData(
 )
 
 internal class InputDevicesDataSourceImpl(
-    private val inputDeviceManager: SafeLazy<InputManager>,
+    private val inputDeviceManager: InputManager?,
 ) : InputDeviceDataSource {
     override fun getInputDeviceData(): List<InputDeviceData> {
         return safe {
-            inputDeviceManager.getOrThrow().inputDeviceIds!!.map {
-                val inputDevice = inputDeviceManager.getOrThrow().getInputDevice(it)!!
+            inputDeviceManager!!.inputDeviceIds!!.map {
+                val inputDevice = inputDeviceManager.getInputDevice(it)!!
                 val vendorId = inputDevice.vendorId.toString()
                 InputDeviceData(
                     inputDevice.name!!,

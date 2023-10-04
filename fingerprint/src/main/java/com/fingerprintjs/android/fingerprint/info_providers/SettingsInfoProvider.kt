@@ -5,8 +5,7 @@ import android.content.ContentResolver
 import android.os.Build
 import android.provider.Settings
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
-import com.fingerprintjs.android.fingerprint.tools.safe.SafeLazy
-import com.fingerprintjs.android.fingerprint.tools.safe.safe
+import com.fingerprintjs.android.fingerprint.tools.threading.safe.safe
 
 
 @Deprecated(message = DeprecationMessages.UNREACHABLE_SYMBOL_UNINTENDED_PUBLIC_API)
@@ -36,7 +35,7 @@ public interface SettingsDataSource {
 }
 
 internal class SettingsDataSourceImpl(
-    private val contentResolver: SafeLazy<ContentResolver>,
+    private val contentResolver: ContentResolver?,
 ) : SettingsDataSource {
     //region: Global settings
     override fun adbEnabled(): String {
@@ -160,19 +159,19 @@ internal class SettingsDataSourceImpl(
 
     private fun extractGlobalSettingsParam(key: String): String {
         return safe {
-            Settings.Global.getString(contentResolver.getOrThrow(), key)!!
+            Settings.Global.getString(contentResolver!!, key)!!
         }.getOrDefault("")
     }
 
     private fun extractSecureSettingsParam(key: String): String {
         return safe {
-            Settings.Secure.getString(contentResolver.getOrThrow(), key)!!
+            Settings.Secure.getString(contentResolver!!, key)!!
         }.getOrDefault("")
     }
 
     private fun extractSystemSettingsParam(key: String): String {
         return safe {
-            Settings.System.getString(contentResolver.getOrThrow(), key)!!
+            Settings.System.getString(contentResolver!!, key)!!
         }.getOrDefault("")
     }
 }

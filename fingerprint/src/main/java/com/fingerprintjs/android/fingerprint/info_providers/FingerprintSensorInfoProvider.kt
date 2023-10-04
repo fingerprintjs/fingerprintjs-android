@@ -4,8 +4,7 @@ package com.fingerprintjs.android.fingerprint.info_providers
 import android.os.Build
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
-import com.fingerprintjs.android.fingerprint.tools.safe.SafeLazy
-import com.fingerprintjs.android.fingerprint.tools.safe.safe
+import com.fingerprintjs.android.fingerprint.tools.threading.safe.safe
 
 
 @Deprecated(message = DeprecationMessages.UNREACHABLE_SYMBOL_UNINTENDED_PUBLIC_API)
@@ -14,15 +13,15 @@ public interface FingerprintSensorInfoProvider {
 }
 
 internal class FingerprintSensorInfoProviderImpl(
-    private val fingerprintManager: SafeLazy<FingerprintManagerCompat>,
+    private val fingerprintManager: FingerprintManagerCompat?,
 ) : FingerprintSensorInfoProvider {
     override fun getStatus(): FingerprintSensorStatus {
         return safe {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                 FingerprintSensorStatus.NOT_SUPPORTED
-            } else if (!fingerprintManager.getOrThrow().isHardwareDetected) {
+            } else if (!fingerprintManager!!.isHardwareDetected) {
                 FingerprintSensorStatus.NOT_SUPPORTED
-            } else if (!fingerprintManager.getOrThrow().hasEnrolledFingerprints()) {
+            } else if (!fingerprintManager.hasEnrolledFingerprints()) {
                 FingerprintSensorStatus.SUPPORTED
             } else {
                 FingerprintSensorStatus.ENABLED

@@ -4,7 +4,7 @@ package com.fingerprintjs.android.fingerprint.info_providers
 import android.os.Build
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
 import com.fingerprintjs.android.fingerprint.tools.parsers.parseCpuInfo
-import com.fingerprintjs.android.fingerprint.tools.safe.safe
+import com.fingerprintjs.android.fingerprint.tools.threading.safe.safe
 import java.io.File
 import java.util.Scanner
 

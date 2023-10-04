@@ -4,7 +4,7 @@ package com.fingerprintjs.android.fingerprint.device_id_providers
 import android.media.MediaDrm
 import android.os.Build
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
-import com.fingerprintjs.android.fingerprint.tools.safe.safe
+import com.fingerprintjs.android.fingerprint.tools.threading.safe.safe
 import java.security.MessageDigest
 import java.util.UUID
 

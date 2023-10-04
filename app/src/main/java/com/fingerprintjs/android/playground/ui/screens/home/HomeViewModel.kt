@@ -111,10 +111,10 @@ class HomeViewModel @Inject constructor(
                 stabilityLevel = stabilityLevel
             )
             val signals = withContext(Dispatchers.IO) {
-                fingerprinter.getFingerprintingSignalsProvider().getSignalsMatching(
+                fingerprinter.getFingerprintingSignalsProvider()?.getSignalsMatching(
                     version = version,
                     stabilityLevel = stabilityLevel
-                )
+                ).orEmpty()
             }
             fingerprintScreenStateMutable.emit(
                 FingerprintScreenState(
