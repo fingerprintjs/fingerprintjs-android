@@ -4,7 +4,7 @@ package com.fingerprintjs.android.fingerprint.device_id_providers
 import android.content.ContentResolver
 import android.net.Uri
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
-import com.fingerprintjs.android.fingerprint.tools.threading.safe.safe
+import com.fingerprintjs.android.fingerprint.tools.threading.safe.safeWithTimeout
 
 
 @Deprecated(message = DeprecationMessages.UNREACHABLE_SYMBOL_UNINTENDED_PUBLIC_API)
@@ -13,7 +13,7 @@ public class GsfIdProvider(
 ) {
 
     public fun getGsfAndroidId(): String? {
-        return safe {
+        return safeWithTimeout {
             getGsfId()
         }.getOrDefault("")
     }

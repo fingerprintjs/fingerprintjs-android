@@ -14,7 +14,6 @@ import com.fingerprintjs.android.fingerprint.signal_providers.os_build.OsBuildSi
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
 import com.fingerprintjs.android.fingerprint.tools.FingerprintingLegacySchemeSupportExtensions
 import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
-import com.fingerprintjs.android.fingerprint.tools.threading.safe.Safe
 import com.fingerprintjs.android.fingerprint.tools.threading.safe.safe
 
 
@@ -25,6 +24,7 @@ internal class FingerprinterImpl internal constructor(
 ) {
     @Volatile
     private var deviceIdResult: DeviceIdResult? = null
+
     @Volatile
     private var fingerprintResult: FingerprintResult? = null
 
@@ -33,7 +33,7 @@ internal class FingerprinterImpl internal constructor(
     fun getDeviceId(): Result<DeviceIdResult> {
         require(legacyArgs != null)
 
-        return safe(timeoutMs = Safe.timeoutLong) {
+        return safe {
             deviceIdResult?.let { return@safe it }
             val deviceIdResult = DeviceIdResult(
                 legacyArgs.deviceIdProvider.fingerprint(),
@@ -48,7 +48,7 @@ internal class FingerprinterImpl internal constructor(
 
     @WorkerThread
     fun getDeviceId(version: Fingerprinter.Version): Result<DeviceIdResult> {
-        return safe(timeoutMs = Safe.timeoutLong) {
+        return safe {
             DeviceIdResult(
                 deviceId = deviceIdSignalsProvider.getSignalMatching(version).getIdString(),
                 gsfId = deviceIdSignalsProvider.gsfIdSignal.getIdString(),
@@ -65,7 +65,7 @@ internal class FingerprinterImpl internal constructor(
     ): Result<FingerprintResult> {
         require(legacyArgs != null)
 
-        return safe(timeoutMs = Safe.timeoutLong) {
+        return safe {
             fingerprintResult?.let { return@safe it }
             val fingerprintSb = StringBuilder()
 
@@ -101,7 +101,7 @@ internal class FingerprinterImpl internal constructor(
         hasher: Hasher,
     ): Result<String> {
         return if (version < Fingerprinter.Version.fingerprintingFlattenedSignalsFirstVersion) {
-            safe(timeoutMs = Safe.timeoutLong) {
+            safe {
                 val joinedHashes = with(FingerprintingLegacySchemeSupportExtensions) {
                     listOf(
                         hasher.hash(fpSignalsProvider.getHardwareSignals(version, stabilityLevel)),
@@ -126,7 +126,7 @@ internal class FingerprinterImpl internal constructor(
         fingerprintingSignals: List<FingerprintingSignal<*>>,
         hasher: Hasher,
     ): Result<String> {
-        return safe(timeoutMs = Safe.timeoutLong) { hasher.hash(fingerprintingSignals) }
+        return safe { hasher.hash(fingerprintingSignals) }
     }
 
     internal fun getFingerprintingSignalsProvider(): FingerprintingSignalsProvider {

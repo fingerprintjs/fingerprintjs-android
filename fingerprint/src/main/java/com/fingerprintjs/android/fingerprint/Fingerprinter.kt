@@ -19,7 +19,6 @@ import com.fingerprintjs.android.fingerprint.tools.hashers.MurMur3x64x128Hasher
 import com.fingerprintjs.android.fingerprint.tools.logs.Logger
 import com.fingerprintjs.android.fingerprint.tools.logs.ePleaseReport
 import com.fingerprintjs.android.fingerprint.tools.threading.runOnAnotherThread
-import com.fingerprintjs.android.fingerprint.tools.threading.safe.Safe
 import com.fingerprintjs.android.fingerprint.tools.threading.safe.safe
 
 
@@ -32,7 +31,7 @@ public class Fingerprinter internal constructor(
         // does not ruin an entire operation.
         // another option could be to not use timeout at all, since we have a lot of timeouts
         // deep inside.
-        safe(timeoutMs = Safe.timeoutLong) { implFactory() }
+        safe { implFactory() }
     }
 
     /**

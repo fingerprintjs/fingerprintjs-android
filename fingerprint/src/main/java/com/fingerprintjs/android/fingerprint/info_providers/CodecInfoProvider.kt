@@ -3,7 +3,7 @@ package com.fingerprintjs.android.fingerprint.info_providers
 
 import android.media.MediaCodecList
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
-import com.fingerprintjs.android.fingerprint.tools.threading.safe.safe
+import com.fingerprintjs.android.fingerprint.tools.threading.safe.safeWithTimeout
 
 
 public data class MediaCodecInfo(
@@ -20,7 +20,7 @@ internal class CodecInfoProviderImpl(
     private val codecList: MediaCodecList?,
 ) : CodecInfoProvider {
     override fun codecsList(): List<MediaCodecInfo> {
-        return safe {
+        return safeWithTimeout {
             extractCodecInfo()
         }.getOrDefault(emptyList())
     }

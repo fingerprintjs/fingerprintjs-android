@@ -4,7 +4,7 @@ package com.fingerprintjs.android.fingerprint.info_providers
 import android.os.Build
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
 import com.fingerprintjs.android.fingerprint.tools.parsers.parseCpuInfo
-import com.fingerprintjs.android.fingerprint.tools.threading.safe.safe
+import com.fingerprintjs.android.fingerprint.tools.threading.safe.safeWithTimeout
 import java.io.File
 import java.util.Scanner
 
@@ -33,26 +33,26 @@ public interface CpuInfoProvider {
 internal class CpuInfoProviderImpl :
     CpuInfoProvider {
     override fun cpuInfo(): Map<String, String> {
-        return safe {
+        return safeWithTimeout {
             getCpuInfo()
         }.getOrDefault(emptyMap())
     }
 
     override fun cpuInfoV2(): CpuInfo {
-        return safe {
+        return safeWithTimeout {
             getCpuInfoV2()
         }.getOrDefault(CpuInfo.EMPTY)
     }
 
     @Suppress("DEPRECATION")
     override fun abiType(): String {
-        return safe {
+        return safeWithTimeout {
             Build.SUPPORTED_ABIS[0]!!
         }.getOrDefault("")
     }
 
     override fun coresCount(): Int {
-        return safe {
+        return safeWithTimeout {
             Runtime.getRuntime()!!.availableProcessors()
         }.getOrDefault(0)
     }

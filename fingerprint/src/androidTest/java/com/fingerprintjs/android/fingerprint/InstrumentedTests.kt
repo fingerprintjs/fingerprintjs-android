@@ -1,17 +1,18 @@
-package com.fingerprintjs.android.playground
+package com.fingerprintjs.android.fingerprint
 
 import android.content.Context
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.fingerprintjs.android.fingerprint.Configuration
-import com.fingerprintjs.android.fingerprint.Fingerprinter
-import com.fingerprintjs.android.fingerprint.FingerprinterFactory
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 import com.fingerprintjs.android.fingerprint.tools.FingerprintingLegacySchemeSupportExtensions.getDeviceStateSignals
 import com.fingerprintjs.android.fingerprint.tools.FingerprintingLegacySchemeSupportExtensions.getHardwareSignals
 import com.fingerprintjs.android.fingerprint.tools.FingerprintingLegacySchemeSupportExtensions.getInstalledAppsSignals
 import com.fingerprintjs.android.fingerprint.tools.FingerprintingLegacySchemeSupportExtensions.getOsBuildSignals
-import com.fingerprintjs.android.playground.utils.callbackToSync
+import com.fingerprintjs.android.fingerprint.tools.threading.safe.Safe
+import com.fingerprintjs.android.fingerprint.utils.callbackToSync
+import io.mockk.every
+import io.mockk.mockkObject
+import junit.framework.TestCase
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -181,5 +182,26 @@ class InstrumentedTests {
                     assertEquals(expectedLegacySignalsInfos, matchingSignalsInfos)
                 }
             }
+    }
+
+    @Test
+    fun nestedSafeCallNeverHappens() {
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.P)
+            return // object mocks are not supported
+
+        var logCalled = false
+        mockkObject(Safe)
+        every { Safe.logIllegalSafeWithTimeoutUsage() } answers { logCalled = true }
+
+        Fingerprinter.Version.values().forEach { version ->
+            val fingerprinter = FingerprinterFactory.create(context)
+            val deviceId = callbackToSync { fingerprinter.getDeviceId(version = version) { emit(it) } }
+            StabilityLevel.values().forEach { stabilityLevel ->
+                val fingerprint = callbackToSync { fingerprinter.getFingerprint(version, stabilityLevel) { emit(it) } }
+            }
+            val fingerprintingSignalsProvider = fingerprinter.getFingerprintingSignalsProvider()!!
+        }
+
+        TestCase.assertEquals(false, logCalled)
     }
 }

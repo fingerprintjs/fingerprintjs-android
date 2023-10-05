@@ -4,7 +4,7 @@ package com.fingerprintjs.android.fingerprint.info_providers
 import android.app.ActivityManager
 import android.os.StatFs
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
-import com.fingerprintjs.android.fingerprint.tools.threading.safe.safe
+import com.fingerprintjs.android.fingerprint.tools.threading.safe.safeWithTimeout
 
 
 @Deprecated(message = DeprecationMessages.UNREACHABLE_SYMBOL_UNINTENDED_PUBLIC_API)
@@ -20,7 +20,7 @@ internal class MemInfoProviderImpl(
     private val externalStorageStats: StatFs?,
 ) : MemInfoProvider {
     override fun totalRAM(): Long {
-        return safe {
+        return safeWithTimeout {
                 val memoryInfo = ActivityManager.MemoryInfo()
                 activityManager!!.getMemoryInfo(memoryInfo)
                 memoryInfo.totalMem
@@ -28,10 +28,10 @@ internal class MemInfoProviderImpl(
     }
 
     override fun totalInternalStorageSpace(): Long {
-        return safe { internalStorageStats!!.totalBytes }.getOrDefault(0)
+        return safeWithTimeout { internalStorageStats!!.totalBytes }.getOrDefault(0)
     }
 
     override fun totalExternalStorageSpace(): Long {
-        return safe { externalStorageStats!!.totalBytes }.getOrDefault(0)
+        return safeWithTimeout { externalStorageStats!!.totalBytes }.getOrDefault(0)
     }
 }
