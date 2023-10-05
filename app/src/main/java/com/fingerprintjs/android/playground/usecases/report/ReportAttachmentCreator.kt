@@ -31,9 +31,9 @@ class ReportAttachmentCreator @Inject constructor(
             StabilityLevel.values().map { value -> version to value }
         }.map { (version, stabilityLevel) ->
             val fingerprint = fingerprinter.getFingerprint(version, stabilityLevel)
-            val signals = fingerprinter.getFingerprintingSignalsProvider().getSignalsMatching(
+            val signals = fingerprinter.getFingerprintingSignalsProvider()?.getSignalsMatching(
                 version, stabilityLevel
-            )
+            ).orEmpty()
             FingerprintInfoVo(version = version.description,
                 stabilityLevel = stabilityLevel.description,
                 fingerprint = fingerprint,

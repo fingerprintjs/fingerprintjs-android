@@ -5,8 +5,7 @@ import android.content.res.AssetManager
 import android.content.res.Configuration
 import android.media.RingtoneManager
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
-import com.fingerprintjs.android.fingerprint.tools.safe.SafeLazy
-import com.fingerprintjs.android.fingerprint.tools.safe.safe
+import com.fingerprintjs.android.fingerprint.tools.threading.safe.safe
 import java.util.Locale
 import java.util.TimeZone
 
@@ -21,25 +20,25 @@ public interface DevicePersonalizationInfoProvider {
 }
 
 internal class DevicePersonalizationInfoProviderImpl(
-    private val ringtoneManager: SafeLazy<RingtoneManager>,
-    private val assetManager: SafeLazy<AssetManager>,
-    private val configuration: SafeLazy<Configuration>,
+    private val ringtoneManager: RingtoneManager?,
+    private val assetManager: AssetManager?,
+    private val configuration: Configuration?,
 ) : DevicePersonalizationInfoProvider {
 
     override fun ringtoneSource(): String {
-        return safe{ ringtoneManager.getOrThrow().getRingtoneUri(0)!!.toString()!! }.getOrDefault("")
+        return safe{ ringtoneManager!!.getRingtoneUri(0)!!.toString()!! }.getOrDefault("")
     }
 
     override fun availableLocales(): Array<String> {
         return safe {
-            assetManager.getOrThrow().locales!!
+            assetManager!!.locales!!
                 .map { locale: String? -> locale.toString() }.toTypedArray()
         }.getOrDefault(emptyArray())
     }
 
     @Suppress("DEPRECATION")
     override fun regionCountry(): String {
-        return safe{ configuration.getOrThrow().locale!!.country!! }.getOrDefault("")
+        return safe{ configuration!!.locale!!.country!! }.getOrDefault("")
     }
 
     override fun defaultLanguage(): String {

@@ -3,7 +3,7 @@ package com.fingerprintjs.android.fingerprint.info_providers
 
 import android.os.Build
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
-import com.fingerprintjs.android.fingerprint.tools.safe.safe
+import com.fingerprintjs.android.fingerprint.tools.threading.safe.safe
 
 
 @Deprecated(message = DeprecationMessages.UNREACHABLE_SYMBOL_UNINTENDED_PUBLIC_API)

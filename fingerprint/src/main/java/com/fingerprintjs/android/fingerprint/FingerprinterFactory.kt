@@ -27,8 +27,7 @@ import com.fingerprintjs.android.fingerprint.signal_providers.installed_apps.Ins
 import com.fingerprintjs.android.fingerprint.signal_providers.os_build.OsBuildSignalGroupProvider
 import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 import com.fingerprintjs.android.fingerprint.tools.hashers.MurMur3x64x128Hasher
-import com.fingerprintjs.android.fingerprint.tools.safe.safeLazy
-import com.fingerprintjs.android.fingerprint.tools.safe.safe
+import com.fingerprintjs.android.fingerprint.tools.threading.safe.safe
 
 
 /**
@@ -105,16 +104,21 @@ public object FingerprinterFactory {
         this.hasher = configuration.hasher
 
         return Fingerprinter(
-            legacyArgs = Fingerprinter.LegacyArgs(
-                hardwareSignalProvider = createHardwareSignalGroupProvider(context),
-                osBuildSignalProvider = createOsBuildInfoSignalGroupProvider(context),
-                deviceIdProvider = createDeviceIdProvider(context),
-                installedAppsSignalProvider = createInstalledApplicationsSignalGroupProvider(context),
-                deviceStateSignalProvider = createDeviceStateSignalGroupProvider(context),
-                configuration = configuration,
-            ),
-            fpSignalsProvider = createFingerprintingSignalsProvider(context),
-            deviceIdSignalsProvider = createDeviceIdSignalsProvider(context),
+            implFactory = {
+                FingerprinterImpl(
+                    legacyArgs = Fingerprinter.LegacyArgs(
+                        hardwareSignalProvider = createHardwareSignalGroupProvider(context),
+                        osBuildSignalProvider = createOsBuildInfoSignalGroupProvider(context),
+                        deviceIdProvider = createDeviceIdProvider(context),
+                        installedAppsSignalProvider = createInstalledApplicationsSignalGroupProvider(context),
+                        deviceStateSignalProvider = createDeviceStateSignalGroupProvider(context),
+                        configuration = configuration,
+                    ),
+                    fpSignalsProvider = createFingerprintingSignalsProvider(context),
+                    deviceIdSignalsProvider = createDeviceIdSignalsProvider(context),
+                )
+            },
+            isLegacyFactory = true,
         )
     }
 
@@ -122,9 +126,14 @@ public object FingerprinterFactory {
         context: Context,
     ): Fingerprinter {
         return Fingerprinter(
-            legacyArgs = null,
-            fpSignalsProvider = createFingerprintingSignalsProvider(context),
-            deviceIdSignalsProvider = createDeviceIdSignalsProvider(context),
+            implFactory = {
+                FingerprinterImpl(
+                    legacyArgs = null,
+                    fpSignalsProvider = createFingerprintingSignalsProvider(context),
+                    deviceIdSignalsProvider = createDeviceIdSignalsProvider(context),
+                )
+            },
+            isLegacyFactory = false,
         )
     }
 
@@ -182,13 +191,13 @@ public object FingerprinterFactory {
 
     private fun createMemoryInfoProvider(context: Context): MemInfoProvider {
         return MemInfoProviderImpl(
-            activityManager = safeLazy { context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager },
-            internalStorageStats = safeLazy { StatFs(Environment.getRootDirectory()!!.absolutePath!!) },
-            externalStorageStats = safeLazy {
+            activityManager = safe { context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager }.getOrNull(),
+            internalStorageStats = safe { StatFs(Environment.getRootDirectory()!!.absolutePath!!) }.getOrNull(),
+            externalStorageStats = safe {
                 context.getExternalFilesDir(null)
                     ?.takeIf { it.canRead() }
                     ?.let { StatFs(it.absolutePath!!) }!!
-            },
+            }.getOrNull(),
         )
     }
 
@@ -205,41 +214,41 @@ public object FingerprinterFactory {
     )
 
     private fun createSensorDataSource(context: Context) = SensorDataSourceImpl(
-        safeLazy { context.getSystemService(Context.SENSOR_SERVICE) as SensorManager }
+        safe { context.getSystemService(Context.SENSOR_SERVICE) as SensorManager }.getOrNull()
     )
 
     private fun createInputDevicesDataSource(context: Context) = InputDevicesDataSourceImpl(
-        safeLazy { context.getSystemService(Context.INPUT_SERVICE) as InputManager }
+        safe { context.getSystemService(Context.INPUT_SERVICE) as InputManager }.getOrNull()
     )
 
     private fun createPackageManagerDataSource(context: Context) = PackageManagerDataSourceImpl(
-        safeLazy { context.packageManager!! }
+        safe { context.packageManager!! }.getOrNull()
     )
 
     private fun createSettingsDataSource(context: Context) = SettingsDataSourceImpl(
-        safeLazy { context.contentResolver!! }
+        safe { context.contentResolver!! }.getOrNull()
     )
 
 
     private fun createDevicePersonalizationDataSource(context: Context) =
         DevicePersonalizationInfoProviderImpl(
-            ringtoneManager = safeLazy { RingtoneManager(context) },
-            assetManager = safeLazy { context.assets!! },
-            configuration = safeLazy { context.resources!!.configuration!! },
+            ringtoneManager = safe { RingtoneManager(context) }.getOrNull(),
+            assetManager = safe { context.assets!! }.getOrNull(),
+            configuration = safe { context.resources!!.configuration!! }.getOrNull(),
         )
 
     private fun createFingerprintSensorStatusProvider(context: Context) =
         FingerprintSensorInfoProviderImpl(
-            safeLazy { FingerprintManagerCompat.from(context)!! }
+            safe { FingerprintManagerCompat.from(context)!! }.getOrNull()
         )
 
     private fun createDeviceSecurityProvider(context: Context) = DeviceSecurityInfoProviderImpl(
-        safeLazy { context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager },
-        safeLazy { context.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager },
+        safe { context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager }.getOrNull(),
+        safe { context.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager }.getOrNull(),
     )
 
     private fun createCodecInfoProvider() = CodecInfoProviderImpl(
-        safeLazy { MediaCodecList(MediaCodecList.ALL_CODECS) }
+        safe { MediaCodecList(MediaCodecList.ALL_CODECS) }.getOrNull()
     )
 
     private fun createBatteryInfoDataSource(context: Context) = BatteryInfoProviderImpl(context)
@@ -247,7 +256,7 @@ public object FingerprinterFactory {
     private fun createCameraInfoProvider(): CameraInfoProvider = CameraInfoProviderImpl()
 
     private fun createGpuInfoProvider(context: Context) =
-        GpuInfoProviderImpl(safeLazy { context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager } )
+        GpuInfoProviderImpl(safe { context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager }.getOrNull())
 
     //endregion
 

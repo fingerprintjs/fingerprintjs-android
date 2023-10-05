@@ -3,8 +3,7 @@ package com.fingerprintjs.android.fingerprint.info_providers
 
 import android.media.MediaCodecList
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
-import com.fingerprintjs.android.fingerprint.tools.safe.SafeLazy
-import com.fingerprintjs.android.fingerprint.tools.safe.safe
+import com.fingerprintjs.android.fingerprint.tools.threading.safe.safe
 
 
 public data class MediaCodecInfo(
@@ -18,7 +17,7 @@ public interface CodecInfoProvider {
 }
 
 internal class CodecInfoProviderImpl(
-    private val codecList: SafeLazy<MediaCodecList>,
+    private val codecList: MediaCodecList?,
 ) : CodecInfoProvider {
     override fun codecsList(): List<MediaCodecInfo> {
         return safe {
@@ -27,7 +26,7 @@ internal class CodecInfoProviderImpl(
     }
 
     private fun extractCodecInfo(): List<MediaCodecInfo> {
-        return codecList.getOrThrow().codecInfos.map {
+        return codecList!!.codecInfos.map {
             MediaCodecInfo(
                 it!!.name!!,
                 it.supportedTypes!!.map { type: String? -> type.toString() },

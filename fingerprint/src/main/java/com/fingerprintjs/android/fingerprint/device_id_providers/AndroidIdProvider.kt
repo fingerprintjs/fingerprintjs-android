@@ -5,7 +5,7 @@ import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.provider.Settings
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
-import com.fingerprintjs.android.fingerprint.tools.safe.safe
+import com.fingerprintjs.android.fingerprint.tools.threading.safe.safe
 
 
 @Deprecated(message = DeprecationMessages.UNREACHABLE_SYMBOL_UNINTENDED_PUBLIC_API)

@@ -1,4 +1,4 @@
-package com.fingerprintjs.android.fingerprint.tools.safe
+package com.fingerprintjs.android.fingerprint.tools.threading.safe
 
 import java.util.concurrent.TimeoutException
 
