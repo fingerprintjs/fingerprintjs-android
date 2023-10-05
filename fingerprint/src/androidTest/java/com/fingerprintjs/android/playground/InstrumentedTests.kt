@@ -144,10 +144,10 @@ class InstrumentedTests {
                     }
                     val fp2 = fingerprinter.getFingerprint(
                         fingerprintingSignals = fingerprinter.getFingerprintingSignalsProvider()
-                            .getSignalsMatching(
+                            ?.getSignalsMatching(
                                 version = version,
                                 stabilityLevel = stabilityLevel
-                            )
+                            ).orEmpty()
                     )
                     if (version >= Fingerprinter.Version.fingerprintingFlattenedSignalsFirstVersion) {
                         assertEquals(fp1, fp2)
@@ -165,16 +165,17 @@ class InstrumentedTests {
             .forEach { version ->
                 StabilityLevel.values().forEach { stabilityLevel ->
                     val expectedLegacySignalsInfos = listOf(
-                        fingerprintingSignalsProvider.getDeviceStateSignals(version, stabilityLevel),
-                        fingerprintingSignalsProvider.getHardwareSignals(version, stabilityLevel),
-                        fingerprintingSignalsProvider.getOsBuildSignals(version, stabilityLevel),
-                        fingerprintingSignalsProvider.getInstalledAppsSignals(version, stabilityLevel),
+                        fingerprintingSignalsProvider?.getDeviceStateSignals(version, stabilityLevel).orEmpty(),
+                        fingerprintingSignalsProvider?.getHardwareSignals(version, stabilityLevel).orEmpty(),
+                        fingerprintingSignalsProvider?.getOsBuildSignals(version, stabilityLevel).orEmpty(),
+                        fingerprintingSignalsProvider?.getInstalledAppsSignals(version, stabilityLevel).orEmpty(),
                     )
                         .flatten()
                         .map { it.info }
                         .toSet()
                     val matchingSignalsInfos = fingerprintingSignalsProvider
-                        .getSignalsMatching(version, stabilityLevel)
+                        ?.getSignalsMatching(version, stabilityLevel)
+                        .orEmpty()
                         .map { it.info }
                         .toSet()
                     assertEquals(expectedLegacySignalsInfos, matchingSignalsInfos)
