@@ -5,6 +5,7 @@ import android.media.MediaDrm
 import android.os.Build
 import com.fingerprintjs.android.fingerprint.BuildConfig
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
+import com.fingerprintjs.android.fingerprint.tools.threading.safe.Safe
 import com.fingerprintjs.android.fingerprint.tools.threading.safe.safeWithTimeout
 import java.security.MessageDigest
 import java.util.UUID
@@ -48,4 +49,4 @@ private const val WIDEWINE_UUID_MOST_SIG_BITS = -0x121074568629b532L
 private const val WIDEWINE_UUID_LEAST_SIG_BITS = -0x5c37d8232ae2de13L
 // on CI, the timeout of 1s is not enough for emulator with api 32 and google apis.
 // therefore, let's make it much higher for CI tests and a bit higher for all builds (just in case)
-private val MEDIA_DRM_ID_TIMEOUT_MS = if (BuildConfig.CI_TEST) 600_000L else 3000L
+private val MEDIA_DRM_ID_TIMEOUT_MS = if (BuildConfig.CI_TEST) 600_000L else Safe.timeoutLong

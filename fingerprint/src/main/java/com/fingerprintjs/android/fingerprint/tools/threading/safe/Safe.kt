@@ -11,6 +11,7 @@ import java.util.concurrent.atomic.AtomicReference
 
 internal object Safe {
     const val timeoutShort = 1_000L
+    const val timeoutLong = 3_000L
 
     private val runningInsideSafeWithTimeout = ThreadLocal<Boolean>()
 

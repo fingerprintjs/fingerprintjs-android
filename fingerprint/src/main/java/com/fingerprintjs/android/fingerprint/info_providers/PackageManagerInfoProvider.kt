@@ -4,6 +4,7 @@ package com.fingerprintjs.android.fingerprint.info_providers
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
+import com.fingerprintjs.android.fingerprint.tools.threading.safe.Safe
 import com.fingerprintjs.android.fingerprint.tools.threading.safe.safeWithTimeout
 
 
@@ -25,7 +26,7 @@ internal class PackageManagerDataSourceImpl(
     private val packageManager: PackageManager?,
 ) : PackageManagerDataSource {
     @SuppressLint("QueryPermissionsNeeded")
-    override fun getApplicationsList() = safeWithTimeout {
+    override fun getApplicationsList() = safeWithTimeout(timeoutMs = Safe.timeoutLong) {
         packageManager!!
             .getInstalledApplications(PackageManager.GET_META_DATA)
             .map {
@@ -37,7 +38,7 @@ internal class PackageManagerDataSourceImpl(
 
 
     @SuppressLint("QueryPermissionsNeeded")
-    override fun getSystemApplicationsList() = safeWithTimeout {
+    override fun getSystemApplicationsList() = safeWithTimeout(timeoutMs = Safe.timeoutLong) {
         packageManager!!
             .getInstalledApplications(PackageManager.GET_META_DATA)
             .filter {
