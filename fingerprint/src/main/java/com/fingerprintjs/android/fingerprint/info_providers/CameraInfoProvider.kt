@@ -3,7 +3,7 @@ package com.fingerprintjs.android.fingerprint.info_providers
 
 import android.hardware.Camera
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
-import com.fingerprintjs.android.fingerprint.tools.threading.safe.safe
+import com.fingerprintjs.android.fingerprint.tools.threading.safe.safeWithTimeout
 import java.util.LinkedList
 
 
@@ -22,7 +22,7 @@ public interface CameraInfoProvider {
 internal class CameraInfoProviderImpl(
 ) : CameraInfoProvider {
     override fun getCameraInfo(): List<CameraInfo> {
-        return safe {
+        return safeWithTimeout {
             extractInfo()
         }.getOrDefault(emptyList())
     }

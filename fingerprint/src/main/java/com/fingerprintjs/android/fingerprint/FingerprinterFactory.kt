@@ -27,7 +27,7 @@ import com.fingerprintjs.android.fingerprint.signal_providers.installed_apps.Ins
 import com.fingerprintjs.android.fingerprint.signal_providers.os_build.OsBuildSignalGroupProvider
 import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 import com.fingerprintjs.android.fingerprint.tools.hashers.MurMur3x64x128Hasher
-import com.fingerprintjs.android.fingerprint.tools.threading.safe.safe
+import com.fingerprintjs.android.fingerprint.tools.threading.safe.safeWithTimeout
 
 
 /**
@@ -191,9 +191,9 @@ public object FingerprinterFactory {
 
     private fun createMemoryInfoProvider(context: Context): MemInfoProvider {
         return MemInfoProviderImpl(
-            activityManager = safe { context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager }.getOrNull(),
-            internalStorageStats = safe { StatFs(Environment.getRootDirectory()!!.absolutePath!!) }.getOrNull(),
-            externalStorageStats = safe {
+            activityManager = safeWithTimeout { context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager }.getOrNull(),
+            internalStorageStats = safeWithTimeout { StatFs(Environment.getRootDirectory()!!.absolutePath!!) }.getOrNull(),
+            externalStorageStats = safeWithTimeout {
                 context.getExternalFilesDir(null)
                     ?.takeIf { it.canRead() }
                     ?.let { StatFs(it.absolutePath!!) }!!
@@ -204,51 +204,51 @@ public object FingerprinterFactory {
     private fun createOsBuildInfoProvider() = OsBuildInfoProviderImpl()
 
     private fun createGsfIdProvider(context: Context) = GsfIdProvider(
-        safe { context.contentResolver!! }.getOrDefault(null)
+        safeWithTimeout { context.contentResolver!! }.getOrDefault(null)
     )
 
     private fun createMediaDrmProvider() = MediaDrmIdProvider()
 
     private fun createAndroidIdProvider(context: Context) = AndroidIdProvider(
-        safe { context.contentResolver!! }.getOrDefault(null)
+        safeWithTimeout { context.contentResolver!! }.getOrDefault(null)
     )
 
     private fun createSensorDataSource(context: Context) = SensorDataSourceImpl(
-        safe { context.getSystemService(Context.SENSOR_SERVICE) as SensorManager }.getOrNull()
+        safeWithTimeout { context.getSystemService(Context.SENSOR_SERVICE) as SensorManager }.getOrNull()
     )
 
     private fun createInputDevicesDataSource(context: Context) = InputDevicesDataSourceImpl(
-        safe { context.getSystemService(Context.INPUT_SERVICE) as InputManager }.getOrNull()
+        safeWithTimeout { context.getSystemService(Context.INPUT_SERVICE) as InputManager }.getOrNull()
     )
 
     private fun createPackageManagerDataSource(context: Context) = PackageManagerDataSourceImpl(
-        safe { context.packageManager!! }.getOrNull()
+        safeWithTimeout { context.packageManager!! }.getOrNull()
     )
 
     private fun createSettingsDataSource(context: Context) = SettingsDataSourceImpl(
-        safe { context.contentResolver!! }.getOrNull()
+        safeWithTimeout { context.contentResolver!! }.getOrNull()
     )
 
 
     private fun createDevicePersonalizationDataSource(context: Context) =
         DevicePersonalizationInfoProviderImpl(
-            ringtoneManager = safe { RingtoneManager(context) }.getOrNull(),
-            assetManager = safe { context.assets!! }.getOrNull(),
-            configuration = safe { context.resources!!.configuration!! }.getOrNull(),
+            ringtoneManager = safeWithTimeout { RingtoneManager(context) }.getOrNull(),
+            assetManager = safeWithTimeout { context.assets!! }.getOrNull(),
+            configuration = safeWithTimeout { context.resources!!.configuration!! }.getOrNull(),
         )
 
     private fun createFingerprintSensorStatusProvider(context: Context) =
         FingerprintSensorInfoProviderImpl(
-            safe { FingerprintManagerCompat.from(context)!! }.getOrNull()
+            safeWithTimeout { FingerprintManagerCompat.from(context)!! }.getOrNull()
         )
 
     private fun createDeviceSecurityProvider(context: Context) = DeviceSecurityInfoProviderImpl(
-        safe { context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager }.getOrNull(),
-        safe { context.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager }.getOrNull(),
+        safeWithTimeout { context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager }.getOrNull(),
+        safeWithTimeout { context.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager }.getOrNull(),
     )
 
     private fun createCodecInfoProvider() = CodecInfoProviderImpl(
-        safe { MediaCodecList(MediaCodecList.ALL_CODECS) }.getOrNull()
+        safeWithTimeout { MediaCodecList(MediaCodecList.ALL_CODECS) }.getOrNull()
     )
 
     private fun createBatteryInfoDataSource(context: Context) = BatteryInfoProviderImpl(context)
@@ -256,7 +256,7 @@ public object FingerprinterFactory {
     private fun createCameraInfoProvider(): CameraInfoProvider = CameraInfoProviderImpl()
 
     private fun createGpuInfoProvider(context: Context) =
-        GpuInfoProviderImpl(safe { context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager }.getOrNull())
+        GpuInfoProviderImpl(safeWithTimeout { context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager }.getOrNull())
 
     //endregion
 

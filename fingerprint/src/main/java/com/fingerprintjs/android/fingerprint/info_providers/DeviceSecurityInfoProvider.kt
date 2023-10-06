@@ -4,7 +4,7 @@ package com.fingerprintjs.android.fingerprint.info_providers
 import android.app.KeyguardManager
 import android.app.admin.DevicePolicyManager
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
-import com.fingerprintjs.android.fingerprint.tools.threading.safe.safe
+import com.fingerprintjs.android.fingerprint.tools.threading.safe.safeWithTimeout
 import java.security.Security
 
 
@@ -20,20 +20,20 @@ internal class DeviceSecurityInfoProviderImpl(
     private val keyguardManager: KeyguardManager?,
 ) : DeviceSecurityInfoProvider {
     override fun encryptionStatus(): String {
-        return safe {
+        return safeWithTimeout {
             stringDescriptionForEncryptionStatus(devicePolicyManager!!.storageEncryptionStatus)
         }.getOrDefault("")
     }
 
     override fun securityProvidersData(): List<Pair<String, String>> {
-        return safe {
+        return safeWithTimeout {
             Security.getProviders().map {
                 Pair(it!!.name!!, it.info ?: "")
             }
         }.getOrDefault(emptyList())
     }
 
-    override fun isPinSecurityEnabled() = safe {
+    override fun isPinSecurityEnabled() = safeWithTimeout {
         keyguardManager!!.isKeyguardSecure
     }.getOrDefault(false)
 }

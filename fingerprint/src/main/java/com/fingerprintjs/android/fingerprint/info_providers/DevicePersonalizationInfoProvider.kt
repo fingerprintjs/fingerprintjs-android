@@ -5,7 +5,7 @@ import android.content.res.AssetManager
 import android.content.res.Configuration
 import android.media.RingtoneManager
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
-import com.fingerprintjs.android.fingerprint.tools.threading.safe.safe
+import com.fingerprintjs.android.fingerprint.tools.threading.safe.safeWithTimeout
 import java.util.Locale
 import java.util.TimeZone
 
@@ -26,11 +26,11 @@ internal class DevicePersonalizationInfoProviderImpl(
 ) : DevicePersonalizationInfoProvider {
 
     override fun ringtoneSource(): String {
-        return safe{ ringtoneManager!!.getRingtoneUri(0)!!.toString()!! }.getOrDefault("")
+        return safeWithTimeout { ringtoneManager!!.getRingtoneUri(0)!!.toString()!! }.getOrDefault("")
     }
 
     override fun availableLocales(): Array<String> {
-        return safe {
+        return safeWithTimeout {
             assetManager!!.locales!!
                 .map { locale: String? -> locale.toString() }.toTypedArray()
         }.getOrDefault(emptyArray())
@@ -38,14 +38,14 @@ internal class DevicePersonalizationInfoProviderImpl(
 
     @Suppress("DEPRECATION")
     override fun regionCountry(): String {
-        return safe{ configuration!!.locale!!.country!! }.getOrDefault("")
+        return safeWithTimeout{ configuration!!.locale!!.country!! }.getOrDefault("")
     }
 
     override fun defaultLanguage(): String {
-        return safe { Locale.getDefault()!!.language!! } .getOrDefault("")
+        return safeWithTimeout { Locale.getDefault()!!.language!! } .getOrDefault("")
     }
 
     override fun timezone(): String {
-        return safe { TimeZone.getDefault()!!.displayName!! }.getOrDefault("")
+        return safeWithTimeout { TimeZone.getDefault()!!.displayName!! }.getOrDefault("")
     }
 }
