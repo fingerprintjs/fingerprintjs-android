@@ -8,17 +8,13 @@ import com.fingerprintjs.android.fingerprint.tools.FingerprintingLegacySchemeSup
 import com.fingerprintjs.android.fingerprint.tools.FingerprintingLegacySchemeSupportExtensions.getHardwareSignals
 import com.fingerprintjs.android.fingerprint.tools.FingerprintingLegacySchemeSupportExtensions.getInstalledAppsSignals
 import com.fingerprintjs.android.fingerprint.tools.FingerprintingLegacySchemeSupportExtensions.getOsBuildSignals
-import com.fingerprintjs.android.fingerprint.tools.threading.safe.Safe
 import com.fingerprintjs.android.fingerprint.utils.callbackToSync
-import io.mockk.every
-import io.mockk.mockkObject
-import junit.framework.TestCase
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class InstrumentedTests {
+class ApiTests {
 
     private val context: Context
         get() = InstrumentationRegistry.getInstrumentation().targetContext
@@ -182,26 +178,5 @@ class InstrumentedTests {
                     assertEquals(expectedLegacySignalsInfos, matchingSignalsInfos)
                 }
             }
-    }
-
-    @Test
-    fun nestedSafeCallNeverHappens() {
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.P)
-            return // object mocks are not supported
-
-        var logCalled = false
-        mockkObject(Safe)
-        every { Safe.logIllegalSafeWithTimeoutUsage() } answers { logCalled = true }
-
-        Fingerprinter.Version.values().forEach { version ->
-            val fingerprinter = FingerprinterFactory.create(context)
-            val deviceId = callbackToSync { fingerprinter.getDeviceId(version = version) { emit(it) } }
-            StabilityLevel.values().forEach { stabilityLevel ->
-                val fingerprint = callbackToSync { fingerprinter.getFingerprint(version, stabilityLevel) { emit(it) } }
-            }
-            val fingerprintingSignalsProvider = fingerprinter.getFingerprintingSignalsProvider()!!
-        }
-
-        TestCase.assertEquals(false, logCalled)
     }
 }

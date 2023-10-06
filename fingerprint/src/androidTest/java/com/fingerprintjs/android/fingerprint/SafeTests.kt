@@ -1,11 +1,17 @@
 package com.fingerprintjs.android.fingerprint
 
+import android.content.Context
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 import com.fingerprintjs.android.fingerprint.tools.threading.createSharedExecutor
 import com.fingerprintjs.android.fingerprint.tools.threading.runOnAnotherThread
 import com.fingerprintjs.android.fingerprint.tools.threading.safe.ExecutionTimeoutException
 import com.fingerprintjs.android.fingerprint.tools.threading.safe.Safe
 import com.fingerprintjs.android.fingerprint.tools.threading.safe.safeWithTimeout
 import com.fingerprintjs.android.fingerprint.tools.threading.sharedExecutor
+import com.fingerprintjs.android.fingerprint.utils.callbackToSync
+import com.fingerprintjs.android.fingerprint.utils.mockkObjectSupported
 import io.mockk.every
 import io.mockk.mockkObject
 import io.mockk.unmockkObject
@@ -14,10 +20,15 @@ import io.mockk.verifyOrder
 import junit.framework.TestCase
 import org.junit.After
 import org.junit.Test
+import org.junit.runner.RunWith
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.ExecutionException
 
+@RunWith(AndroidJUnit4::class)
 class SafeTests {
+
+    private val context: Context
+        get() = InstrumentationRegistry.getInstrumentation().targetContext
 
     @After
     fun recreateExecutor() {
@@ -106,6 +117,7 @@ class SafeTests {
      */
     @Test
     fun safeWithTimeoutNestedSafeInterruptedBehaviour() {
+        if (!mockkObjectSupported()) return
         val errLvl1: Throwable?
         var errLvl2: Throwable? = null
         var errLvl3: Throwable? = null
@@ -138,6 +150,7 @@ class SafeTests {
      */
     @Test
     fun safeWithTimeoutNestedValueReturned() {
+        if (!mockkObjectSupported()) return
         mockkObject(Safe)
         every { Safe.logIllegalSafeWithTimeoutUsage() } answers { }
 
@@ -156,6 +169,7 @@ class SafeTests {
         safeWithTimeoutContextFlagUnset(whenBlockThrows = true)
 
     private fun safeWithTimeoutContextFlagUnset(whenBlockThrows: Boolean) {
+        if (!mockkObjectSupported()) return
         mockkObject(Safe)
         var clearThreadId: Long? = null
         every { Safe.clearInsideSafeWithTimeout() } answers {
@@ -186,6 +200,7 @@ class SafeTests {
 
     @Test
     fun safeWithTimeoutNestedUsageReported() {
+        if (!mockkObjectSupported()) return
         var logCalled = false
         mockkObject(Safe)
         every { Safe.logIllegalSafeWithTimeoutUsage() } answers { logCalled = true }
@@ -196,6 +211,26 @@ class SafeTests {
         TestCase.assertEquals(true, logCalled)
     }
 
+
+    @Test
+    fun nestedSafeCallNeverHappens() {
+        if (!mockkObjectSupported()) return
+
+        var logCalled = false
+        mockkObject(Safe)
+        every { Safe.logIllegalSafeWithTimeoutUsage() } answers { logCalled = true }
+
+        Fingerprinter.Version.values().forEach { version ->
+            val fingerprinter = FingerprinterFactory.create(context)
+            val deviceId = callbackToSync { fingerprinter.getDeviceId(version = version) { emit(it) } }
+            StabilityLevel.values().forEach { stabilityLevel ->
+                val fingerprint = callbackToSync { fingerprinter.getFingerprint(version, stabilityLevel) { emit(it) } }
+            }
+            val fingerprintingSignalsProvider = fingerprinter.getFingerprintingSignalsProvider()!!
+        }
+
+        TestCase.assertEquals(false, logCalled)
+    }
 }
 
 private object TimeConstants {
