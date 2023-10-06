@@ -13,6 +13,7 @@ on:
     paths-ignore:
       - '**.md'
       - app/**
+  workflow_dispatch:
 
 jobs:
   instrumented_tests:
