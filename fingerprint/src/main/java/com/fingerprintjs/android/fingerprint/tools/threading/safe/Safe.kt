@@ -8,13 +8,26 @@ import java.util.concurrent.Callable
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 import java.util.concurrent.atomic.AtomicReference
-import kotlin.concurrent.getOrSet
 
 internal object Safe {
     const val timeoutShort = 1_000L
 
+    private val runningInsideSafeWithTimeout = ThreadLocal<Boolean>()
+
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    internal val runningInsideSafeWithTimeout = ThreadLocal<Boolean>()
+    internal fun markInsideSafeWithTimeout() {
+        runningInsideSafeWithTimeout.set(true)
+    }
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal fun clearInsideSafeWithTimeout() {
+        runningInsideSafeWithTimeout.remove()
+    }
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal fun getInsideSafeWithTimeout(): Boolean {
+        return runningInsideSafeWithTimeout.get() ?: false
+    }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     internal fun logIllegalSafeWithTimeoutUsage() {
@@ -35,19 +48,19 @@ internal fun <T> safeWithTimeout(
     // we can't make a local variable volatile, hence using atomic reference here
     val executionThread = AtomicReference<Thread>(null)
 
-    if (Safe.runningInsideSafeWithTimeout.getOrSet { false }) {
+    if (Safe.getInsideSafeWithTimeout()) {
         Safe.logIllegalSafeWithTimeoutUsage()
     }
 
     val future = runCatching {
         sharedExecutor.submit(
             Callable {
-                Safe.runningInsideSafeWithTimeout.set(true)
+                Safe.markInsideSafeWithTimeout()
                 executionThread.set(Thread.currentThread())
                 try {
                     block()
                 } finally {
-                    Safe.runningInsideSafeWithTimeout.remove()
+                    Safe.clearInsideSafeWithTimeout()
                 }
             }
         )!!

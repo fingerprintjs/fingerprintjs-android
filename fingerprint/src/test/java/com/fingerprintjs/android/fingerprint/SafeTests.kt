@@ -9,13 +9,13 @@ import com.fingerprintjs.android.fingerprint.tools.threading.sharedExecutor
 import io.mockk.every
 import io.mockk.mockkObject
 import io.mockk.unmockkObject
+import io.mockk.verify
+import io.mockk.verifyOrder
 import junit.framework.TestCase
 import org.junit.After
 import org.junit.Test
-import java.util.concurrent.Callable
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.ExecutionException
-import kotlin.concurrent.getOrSet
 
 class SafeTests {
 
@@ -156,27 +156,32 @@ class SafeTests {
         safeWithTimeoutContextFlagUnset(whenBlockThrows = true)
 
     private fun safeWithTimeoutContextFlagUnset(whenBlockThrows: Boolean) {
-        var executionThread1: Long? = null
-        var executionThread2: Long? = null
+        mockkObject(Safe)
+        var clearThreadId: Long? = null
+        every { Safe.clearInsideSafeWithTimeout() } answers {
+            callOriginal().also { clearThreadId = Thread.currentThread().id }
+        }
+        var markThreadId: Long? = null
+        every { Safe.markInsideSafeWithTimeout() } answers {
+            callOriginal().also { markThreadId = Thread.currentThread().id }
+        }
 
         safeWithTimeout {
-            executionThread1 = Thread.currentThread().id
             if (whenBlockThrows)
                 throw Exception()
         }
 
-        val countDownLatch = CountDownLatch(1)
-        var insideSafe: Boolean? = null
-        sharedExecutor.submit(Callable {
-            executionThread2 = Thread.currentThread().id
-            insideSafe = Safe.runningInsideSafeWithTimeout.getOrSet { false }
-            countDownLatch.countDown()
-        })
-        countDownLatch.await()
+        verify(exactly = 1) {
+            Safe.markInsideSafeWithTimeout()
+            Safe.clearInsideSafeWithTimeout()
+        }
+        verifyOrder {
+            Safe.markInsideSafeWithTimeout()
+            Safe.clearInsideSafeWithTimeout()
+        }
 
+        TestCase.assertEquals(markThreadId, clearThreadId)
         unmockkObject(Safe)
-        TestCase.assertEquals(executionThread1, executionThread2)
-        TestCase.assertEquals(false, insideSafe)
     }
 
     @Test
