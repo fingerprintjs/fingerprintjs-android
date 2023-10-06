@@ -45,6 +45,8 @@ android {
         minSdk = 21
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        buildConfigField("boolean", "CI_TEST", (project.properties.get("CItest") as? String) ?: "false")
     }
 
     lint {
@@ -81,6 +83,10 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 }
 
