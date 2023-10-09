@@ -7,7 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
-import com.fingerprintjs.android.fingerprint.tools.threading.safe.safe
+import com.fingerprintjs.android.fingerprint.tools.threading.safe.safeWithTimeout
 
 
 @Deprecated(message = DeprecationMessages.UNREACHABLE_SYMBOL_UNINTENDED_PUBLIC_API)
@@ -20,7 +20,7 @@ internal class BatteryInfoProviderImpl(
         private val applicationContext: Context
 ) : BatteryInfoProvider {
     override fun batteryHealth(): String {
-        return safe {
+        return safeWithTimeout {
             val intent = applicationContext
                 .registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))!!
 
@@ -36,7 +36,7 @@ internal class BatteryInfoProviderImpl(
 
     @SuppressLint("PrivateApi")
     override fun batteryTotalCapacity(): String {
-        return safe {
+        return safeWithTimeout {
             val mPowerProfile = Class.forName(POWER_PROFILE_CLASS_NAME)
                 .getConstructor(Context::class.java)
                 .newInstance(applicationContext)

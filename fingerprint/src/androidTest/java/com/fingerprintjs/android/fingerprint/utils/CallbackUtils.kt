@@ -1,4 +1,4 @@
-package com.fingerprintjs.android.playground.utils
+package com.fingerprintjs.android.fingerprint.utils
 
 import java.util.concurrent.CountDownLatch
 

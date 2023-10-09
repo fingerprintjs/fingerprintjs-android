@@ -36,7 +36,7 @@ jobs:
         run: ./gradlew fingerprint:lint
 
       - name: Test
-        run: ./gradlew fingerprint:test
+        run: ./gradlew fingerprint:test -PCItest="true"
 
       - name: Build library
         run: ./gradlew fingerprint:assembleRelease

@@ -5,7 +5,7 @@ import android.content.ContentResolver
 import android.os.Build
 import android.provider.Settings
 import com.fingerprintjs.android.fingerprint.tools.DeprecationMessages
-import com.fingerprintjs.android.fingerprint.tools.threading.safe.safe
+import com.fingerprintjs.android.fingerprint.tools.threading.safe.safeWithTimeout
 
 
 @Deprecated(message = DeprecationMessages.UNREACHABLE_SYMBOL_UNINTENDED_PUBLIC_API)
@@ -158,19 +158,19 @@ internal class SettingsDataSourceImpl(
     //endregion
 
     private fun extractGlobalSettingsParam(key: String): String {
-        return safe {
+        return safeWithTimeout {
             Settings.Global.getString(contentResolver!!, key)!!
         }.getOrDefault("")
     }
 
     private fun extractSecureSettingsParam(key: String): String {
-        return safe {
+        return safeWithTimeout {
             Settings.Secure.getString(contentResolver!!, key)!!
         }.getOrDefault("")
     }
 
     private fun extractSystemSettingsParam(key: String): String {
-        return safe {
+        return safeWithTimeout {
             Settings.System.getString(contentResolver!!, key)!!
         }.getOrDefault("")
     }

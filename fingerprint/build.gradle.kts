@@ -45,6 +45,8 @@ android {
         minSdk = 21
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        buildConfigField("boolean", "CI_TEST", (project.properties.get("CItest") as? String) ?: "false")
     }
 
     lint {
@@ -82,6 +84,16 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    buildFeatures {
+        buildConfig = true
+    }
+}
+
+androidComponents {
+    onVariants {
+        it.androidTest?.packaging?.resources?.excludes?.add("META-INF/*")
+    }
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class.java) {
@@ -94,7 +106,9 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${Constants.kotlinVersion}")
     implementation("androidx.appcompat:appcompat:1.6.1")
     testImplementation("junit:junit:4.13.2")
-    testImplementation("io.mockk:mockk:1.12.7")
+    testImplementation("io.mockk:mockk:1.12.8")
+    androidTestImplementation("io.mockk:mockk:1.12.8")
+    androidTestImplementation ("io.mockk:mockk-android:1.12.8")
     androidTestImplementation("androidx.test.ext:junit-ktx:1.1.5")
     androidTestImplementation("androidx.test:runner:1.5.2")
 }

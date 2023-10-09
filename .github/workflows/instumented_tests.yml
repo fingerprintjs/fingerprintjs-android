@@ -50,7 +50,7 @@ jobs:
             touch emulator.log
             chmod 777 emulator.log
             adb logcat >> emulator.log &
-            ./gradlew :fingerprint:connectedCheck
+            ./gradlew :fingerprint:connectedCheck -PCItest="true"
 
       - name: Save report if tests failed
         if: always() && (steps.instrumented_tests.outcome == 'failure')

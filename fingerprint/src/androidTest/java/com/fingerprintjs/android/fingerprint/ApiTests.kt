@@ -1,23 +1,20 @@
-package com.fingerprintjs.android.playground
+package com.fingerprintjs.android.fingerprint
 
 import android.content.Context
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.fingerprintjs.android.fingerprint.Configuration
-import com.fingerprintjs.android.fingerprint.Fingerprinter
-import com.fingerprintjs.android.fingerprint.FingerprinterFactory
 import com.fingerprintjs.android.fingerprint.signal_providers.StabilityLevel
 import com.fingerprintjs.android.fingerprint.tools.FingerprintingLegacySchemeSupportExtensions.getDeviceStateSignals
 import com.fingerprintjs.android.fingerprint.tools.FingerprintingLegacySchemeSupportExtensions.getHardwareSignals
 import com.fingerprintjs.android.fingerprint.tools.FingerprintingLegacySchemeSupportExtensions.getInstalledAppsSignals
 import com.fingerprintjs.android.fingerprint.tools.FingerprintingLegacySchemeSupportExtensions.getOsBuildSignals
-import com.fingerprintjs.android.playground.utils.callbackToSync
+import com.fingerprintjs.android.fingerprint.utils.callbackToSync
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class InstrumentedTests {
+class ApiTests {
 
     private val context: Context
         get() = InstrumentationRegistry.getInstrumentation().targetContext
@@ -144,10 +141,10 @@ class InstrumentedTests {
                     }
                     val fp2 = fingerprinter.getFingerprint(
                         fingerprintingSignals = fingerprinter.getFingerprintingSignalsProvider()
-                            .getSignalsMatching(
+                            ?.getSignalsMatching(
                                 version = version,
                                 stabilityLevel = stabilityLevel
-                            )
+                            ).orEmpty()
                     )
                     if (version >= Fingerprinter.Version.fingerprintingFlattenedSignalsFirstVersion) {
                         assertEquals(fp1, fp2)
@@ -165,16 +162,17 @@ class InstrumentedTests {
             .forEach { version ->
                 StabilityLevel.values().forEach { stabilityLevel ->
                     val expectedLegacySignalsInfos = listOf(
-                        fingerprintingSignalsProvider.getDeviceStateSignals(version, stabilityLevel),
-                        fingerprintingSignalsProvider.getHardwareSignals(version, stabilityLevel),
-                        fingerprintingSignalsProvider.getOsBuildSignals(version, stabilityLevel),
-                        fingerprintingSignalsProvider.getInstalledAppsSignals(version, stabilityLevel),
+                        fingerprintingSignalsProvider?.getDeviceStateSignals(version, stabilityLevel).orEmpty(),
+                        fingerprintingSignalsProvider?.getHardwareSignals(version, stabilityLevel).orEmpty(),
+                        fingerprintingSignalsProvider?.getOsBuildSignals(version, stabilityLevel).orEmpty(),
+                        fingerprintingSignalsProvider?.getInstalledAppsSignals(version, stabilityLevel).orEmpty(),
                     )
                         .flatten()
                         .map { it.info }
                         .toSet()
                     val matchingSignalsInfos = fingerprintingSignalsProvider
-                        .getSignalsMatching(version, stabilityLevel)
+                        ?.getSignalsMatching(version, stabilityLevel)
+                        .orEmpty()
                         .map { it.info }
                         .toSet()
                     assertEquals(expectedLegacySignalsInfos, matchingSignalsInfos)
