@@ -177,6 +177,10 @@ Try the library features in the [Fingerprint Android Demo App](https://github.co
 
 fingerprint-android supports API versions from 21 (Android 5.0) and higher.
 
+## iOS version
+
+-   [Fingerprint iOS -- iOS identification and fingerprinting in native apps](https://github.com/fingerprintjs/fingerprintjs-ios)
+
 ## License
 
 This library is MIT licensed.
