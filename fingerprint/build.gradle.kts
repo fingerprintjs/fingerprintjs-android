@@ -98,7 +98,7 @@ androidComponents {
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class.java) {
     if (!this.name.contains("Test")) {
-        kotlinOptions.freeCompilerArgs += "-Xexplicit-api=warning"
+        kotlinOptions.freeCompilerArgs += "-Xexplicit-api=strict"
     }
 }
 
