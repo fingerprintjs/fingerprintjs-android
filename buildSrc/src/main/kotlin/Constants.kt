@@ -1,3 +1,3 @@
 object Constants {
-    const val kotlinVersion = "1.9.10"
+    const val kotlinVersion = "1.9.25"
 }
