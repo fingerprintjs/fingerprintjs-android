@@ -32,16 +32,9 @@ android {
         }
     }
 
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
-        // This property does not affect the library itself, but affects test apk and lint.
-        // As for now, I don't see any non-deprecated ways of accomplishing this task.
-        // Discussions:
-        // https://stackoverflow.com/questions/76084080/apply-targetsdk-in-android-instrumentation-test
-        // https://issuetracker.google.com/issues/230625468 (looks like lint.targetSdk and testOptions.targetSdk will become available soon)
-        targetSdk = 33
-
         minSdk = 21
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -52,6 +45,7 @@ android {
     lint {
         abortOnError = true
         warningsAsErrors = true
+        targetSdk = 35
     }
 
     buildTypes {
@@ -87,6 +81,11 @@ android {
 
     buildFeatures {
         buildConfig = true
+    }
+
+    @Suppress("UnstableApiUsage")
+    testOptions {
+        targetSdk = 35
     }
 }
 
