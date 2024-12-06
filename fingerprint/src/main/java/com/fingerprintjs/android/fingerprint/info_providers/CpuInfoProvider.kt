@@ -59,11 +59,12 @@ internal class CpuInfoProviderImpl :
 
     private fun getCpuInfo(): Map<String, String> {
         val map: MutableMap<String, String> = HashMap()
-        val s = Scanner(File(CPU_INFO_PATH))
-        while (s.hasNextLine()) {
-            val cpuInfoValues = s.nextLine()!!.split(KEY_VALUE_DELIMITER)
-            if (cpuInfoValues.size > 1) map[cpuInfoValues[0].trim { it <= ' ' }] =
-                cpuInfoValues[1].trim { it <= ' ' }
+        Scanner(File(CPU_INFO_PATH)).use { s ->
+            while (s.hasNextLine()) {
+                val cpuInfoValues = s.nextLine()!!.split(KEY_VALUE_DELIMITER)
+                if (cpuInfoValues.size > 1) map[cpuInfoValues[0].trim { it <= ' ' }] =
+                    cpuInfoValues[1].trim { it <= ' ' }
+            }
         }
 
         return map
