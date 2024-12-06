@@ -14,6 +14,7 @@ val FingerprintingSignal<*>.humanName: String
         is ApplicationsListSignal -> "Applications List"
         is AvailableLocalesSignal -> "Available Locales"
         is BatteryFullCapacitySignal -> "Battery Full Capacity"
+        is BatteryFullCapacityV2Signal -> "Battery Full Capacity V2"
         is BatteryHealthSignal -> "Battery Health"
         is CameraListSignal -> "Camera List"
         is CodecListSignal -> "Codec List"
@@ -70,6 +71,7 @@ val FingerprintingSignal<*>.jsonifiableValue: Any
         is ApplicationsListSignal -> this.value.map { it.packageName }
         is AvailableLocalesSignal -> this.value
         is BatteryFullCapacitySignal -> this.value
+        is BatteryFullCapacityV2Signal -> this.value
         is BatteryHealthSignal -> this.value
         is CameraListSignal -> this.value.map {
             CameraListSignalItemVo(
@@ -154,6 +156,7 @@ val FingerprintingSignal<*>.humanValue: String
         is ApplicationsListSignal -> valueAsSimpleListString { appendLine(it) }
         is AvailableLocalesSignal -> valueAsSimpleListString { appendLine(it) }
         is BatteryFullCapacitySignal -> valueAsSimpleString()
+        is BatteryFullCapacityV2Signal -> valueAsSimpleString()
         is BatteryHealthSignal -> valueAsSimpleString()
         is CameraListSignal -> valueAsSeparatedListString {
             appendLine(it.cameraName)

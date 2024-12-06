@@ -78,6 +78,7 @@ public class FingerprintingSignalsProvider internal constructor(
             InputDevicesV2Signal.info to { inputDevicesV2Signal },
             BatteryHealthSignal.info to { batteryHealthSignal },
             BatteryFullCapacitySignal.info to { batteryFullCapacitySignal },
+            BatteryFullCapacityV2Signal.info to { batteryFullCapacityV2Signal },
             CameraListSignal.info to { cameraListSignal },
             GlesVersionSignal.info to { glesVersionSignal },
             AbiTypeSignal.info to { abiTypeSignal },
@@ -202,6 +203,11 @@ public class FingerprintingSignalsProvider internal constructor(
     @get:WorkerThread
     public val batteryFullCapacitySignal: BatteryFullCapacitySignal by lazy {
         BatteryFullCapacitySignal(batteryInfoProvider.batteryTotalCapacity())
+    }
+
+    @get:WorkerThread
+    public val batteryFullCapacityV2Signal: BatteryFullCapacityV2Signal by lazy {
+        BatteryFullCapacityV2Signal(batteryInfoProvider.batteryTotalCapacity())
     }
 
     @get:WorkerThread
