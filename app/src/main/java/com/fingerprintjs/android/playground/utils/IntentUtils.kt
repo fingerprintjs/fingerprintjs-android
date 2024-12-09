@@ -3,6 +3,7 @@ package com.fingerprintjs.android.playground.utils
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.core.content.FileProvider
 import com.fingerprintjs.android.playground.BuildConfig
 import com.fingerprintjs.android.playground.constants.Constants.DEVELOPERS_EMAIL
@@ -10,12 +11,16 @@ import java.io.File
 
 object IntentUtils {
     fun openUrl(activity: Activity, url: String) {
-        val uri = runCatching { Uri.parse(url) }.getOrNull() ?: return
-        val intent = Intent(Intent.ACTION_VIEW, uri)
-        activity.run {
-            if (intent.resolveActivity(packageManager) != null) {
-                startActivity(intent)
-            }
+        runCatching {
+            val uri = Uri.parse(url)!!
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            activity.startActivity(intent)
+        }.onFailure {
+            Toast.makeText(
+                activity,
+                "Error opening $url",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
