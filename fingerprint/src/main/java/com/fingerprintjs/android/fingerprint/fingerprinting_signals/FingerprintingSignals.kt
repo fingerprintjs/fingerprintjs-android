@@ -244,8 +244,30 @@ public class BatteryFullCapacitySignal(
     public companion object {
         public val info: Info = Info(
             addedInVersion = Fingerprinter.Version.V_2,
-            removedInVersion = null,
+            removedInVersion = Fingerprinter.Version.V_6,
             stabilityLevel = StabilityLevel.STABLE,
+        )
+    }
+}
+
+/**
+ * Same as [BatteryFullCapacitySignal], but [StabilityLevel] is downgraded to [StabilityLevel.OPTIMAL]
+ */
+public class BatteryFullCapacityV2Signal(
+    override val value: String,
+) : FingerprintingSignal<String>() {
+    override val info: Info
+        get() = Companion.info
+
+    override fun getHashableString(): String {
+        return value
+    }
+
+    public companion object {
+        public val info: Info = Info(
+            addedInVersion = Fingerprinter.Version.V_6,
+            removedInVersion = null,
+            stabilityLevel = StabilityLevel.OPTIMAL,
         )
     }
 }

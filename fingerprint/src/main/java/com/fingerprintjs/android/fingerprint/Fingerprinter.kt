@@ -220,7 +220,8 @@ public class Fingerprinter internal constructor(
         V_2(intValue = 2),
         V_3(intValue = 3),
         V_4(intValue = 4),
-        V_5(intValue = 5);
+        V_5(intValue = 5),
+        V_6(intValue = 6);
 
         public companion object {
             @get:Discouraged(
