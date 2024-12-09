@@ -22,26 +22,11 @@ public class GsfIdProvider(
         val URI = Uri.parse(URI_GSF_CONTENT_PROVIDER)
         val params = arrayOf(ID_KEY)
         return try {
-            val cursor = contentResolver!!
-                .query(URI, null, null, params, null)
-
-            if (cursor == null) {
-                return null
+            contentResolver!!.query(URI, null, null, params, null)!!.use { cursor ->
+                check(cursor.moveToFirst() && cursor.columnCount >= 2)
+                java.lang.Long.toHexString(cursor.getString(1).toLong())
             }
-
-            if (!cursor.moveToFirst() || cursor.columnCount < 2) {
-                cursor.close()
-                return null
-            }
-            try {
-                val result: String? = java.lang.Long.toHexString(cursor.getString(1).toLong())
-                cursor.close()
-                result
-            } catch (e: NumberFormatException) {
-                cursor.close()
-                null
-            }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             null
         }
     }
