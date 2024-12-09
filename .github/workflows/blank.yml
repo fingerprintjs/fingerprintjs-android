@@ -42,14 +42,16 @@ jobs:
         run: ./gradlew fingerprint:assembleRelease
 
       - name: Save library to artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
+          name: lib
           path: fingerprint/build/outputs/aar/*
 
       - name: Build App
         run: ./gradlew app:assembleRelease
 
       - name: Save application to artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
+          name: app
           path: app/build/outputs/apk/release/*
