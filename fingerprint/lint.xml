@@ -1,4 +1,4 @@
 <lint>
-    <!--  TODO: remove this rule and update to the latest target SDK -->
-    <issue id="OldTargetApi" severity="informational" />
+  <issue id="OldTargetApi" severity="warning" />
+  <issue id="GradleDependency" severity="warning" />
 </lint>

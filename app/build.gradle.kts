@@ -8,12 +8,12 @@ plugins {
 }
 
 android {
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.fingerprintjs.android.playground"
         minSdk = 21
-        targetSdk = 33
+        targetSdk = 34
         versionCode = Integer.parseInt(project.property("VERSION_CODE") as String)
         versionName = project.property("VERSION_NAME") as String
 
@@ -79,13 +79,12 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.3"
+        kotlinCompilerExtensionVersion = "1.5.15"
     }
 }
 
 dependencies {
     implementation(project(":fingerprint"))
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:${Constants.kotlinVersion}")
     implementation("com.google.android.material:material:1.9.0")
     implementation("androidx.core:core-ktx:1.10.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
