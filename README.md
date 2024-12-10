@@ -79,7 +79,7 @@ Add this to a `build.gradle` of a module.
 ```gradle
 dependencies {
   ...
-  implementation "com.github.fingerprintjs:fingerprint-android:2.1.0"
+  implementation "com.github.fingerprintjs:fingerprint-android:2.2.0"
 }
 ```
 
@@ -171,7 +171,7 @@ Check out [Migration to V2](docs/migration_to_v2.md) for migration steps and the
 
 ## Fingerprint Android Demo App
 
-Try the library features in the [Fingerprint Android Demo App](https://github.com/fingerprintjs/fingerprintjs-android/releases/download/2.1.0/Playground-release-2.1.0.apk).
+Try the library features in the [Fingerprint Android Demo App](https://github.com/fingerprintjs/fingerprintjs-android/releases/download/2.2.0/Playground-release-2.2.0.apk).
 
 ## Android API support
 
