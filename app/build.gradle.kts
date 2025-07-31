@@ -13,7 +13,7 @@ android {
     defaultConfig {
         applicationId = "com.fingerprintjs.android.playground"
         minSdk = 21
-        targetSdk = 34
+        targetSdk = 35
         versionCode = Integer.parseInt(project.property("VERSION_CODE") as String)
         versionName = project.property("VERSION_NAME") as String
 
