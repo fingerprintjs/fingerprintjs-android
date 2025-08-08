@@ -8,12 +8,12 @@ plugins {
 }
 
 android {
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.fingerprintjs.android.playground"
         minSdk = 21
-        targetSdk = 34
+        targetSdk = 36
         versionCode = Integer.parseInt(project.property("VERSION_CODE") as String)
         versionName = project.property("VERSION_NAME") as String
 
